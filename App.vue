@@ -1,6 +1,9 @@
 <script>
 	export default {
 		onLaunch: function() {
+			this.$i18n.locale = uni.getStorageSync('selectLang') || 'en';
+			uni.setLocale(uni.getStorageSync('selectLang') || 'en')
+			uni.setStorageSync('selectLang', this.$i18n.locale);
 		},
 		onShow: function() {
 		},

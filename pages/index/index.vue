@@ -1,5 +1,6 @@
 <template>
 	<view class="login">
+		<language></language>
 		<view class="top">
 			<image src="../../static/images/login/logo.png"></image>
 			<view class="sub-title">
@@ -8,7 +9,7 @@
 		</view>
 		<view class="form">
 			<view class="title">{{$t('login.begin.text')}}</view>
-			<view class="email-box">
+			<view class="email-box" @click="goRegister">
 				<uni-icons type="email-filled" size="30" color="#000"></uni-icons>
 				<view class="text">{{$t('login.email.placehoder')}}</view>
 			</view>
@@ -27,14 +28,22 @@
 </template>
 
 <script>
+	import language from '@/components/language.vue'
 	export default {
+		components:{
+			language
+		},
 		data() {
 			return {
 				
 			}
 		},
 		methods: {
-			
+			goRegister(){
+				uni.navigateTo({
+					url:'/pages/login/register'
+				})
+			}
 		}
 	}
 </script>

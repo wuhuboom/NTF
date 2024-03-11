@@ -1,3 +1,10 @@
 {
-   
+   "login.logo.text":"Track all your expenses and income in one place",
+   "login.begin.text":"let's start",
+   "login.email.placehoder":"Continue using email",
+   "login.hasaccount.text":"Already have an account?",
+   "login.login.text":"Login",
+   "login.down.text":"DOWNLOAD APP",
+   "ruls.xxx.please": "Please enter {name}",
+   "ruls.xxx.empty": "{name} cannot be empty"
 }

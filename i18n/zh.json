@@ -4,5 +4,19 @@
 	"login.email.placehoder":"使用电子邮件继续",
 	"login.hasaccount.text":"已经有账户了?",
 	"login.login.text":"登录",
-	"login.down.text":"下载APP"
+	"login.down.text":"下载APP",
+	"register.title.text":"创建账户",
+	"register.username.text":"用户名",
+	"register.email.text":"电子邮件",
+	"register.code.text":"验证码",
+	"register.sendCode.text":"发送验证码",
+	"register.password.text":"密码",
+	"register.twoPassword.text":"确认密码",
+	"register.invitationCode.text":"邀请码",
+	"register.confirm.text":"确认",
+	"ruls.xxx.please": "请输入 {name}",
+	"ruls.xxx.empty": "{name} 不能为空",
+	"ruls.email":"请输入正确的邮箱地址",
+	"ruls.twoPassword":"两次密码输入不一致"
+	
 }

@@ -15,7 +15,7 @@
 			</view>
 			<view class="hasAccount">
 				<view class="tips">{{$t('login.hasaccount.text')}}</view>
-				<view class="login-link">{{$t('login.login.text')}}</view>
+				<view class="login-link" @click="gologin">{{$t('login.login.text')}}</view>
 			</view>
 			
 			<view class="down-box">
@@ -39,6 +39,11 @@
 			}
 		},
 		methods: {
+			gologin(){
+				uni.navigateTo({
+					url:'/pages/login/login'
+				})
+			},
 			goRegister(){
 				uni.navigateTo({
 					url:'/pages/login/register'

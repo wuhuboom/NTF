@@ -1,17 +1,14 @@
 <template>
-	<view class="register">
-		<language></language>
+	<view class="forgetPwd">
+		<!-- <language></language> -->
 		<view class="back" @click="goBack">
 			<uni-icons type="arrow-left" size="40" color="#fff"></uni-icons>
 		</view>
 		<view class="title">
-			{{$t('register.title.text')}}
+			{{$t('forget.title.text')}}
 		</view>
 		<view class="form">
 			<uni-forms ref="form" :modelValue="formData" :rules="rules" label-position="top">
-				<uni-forms-item :label="$t('register.username.text')" name="username">
-					<uni-easyinput type="text" prefixIcon="auth" v-model="formData.username" :placeholder="$t('ruls.xxx.please',{name:$t('register.username.text')})" />
-				</uni-forms-item>
 				<uni-forms-item :label="$t('register.email.text')" name="email">
 					<uni-easyinput type="text" prefixIcon="email" v-model="formData.email" :placeholder="$t('ruls.xxx.please',{name:$t('register.email.text')})" />
 				</uni-forms-item>
@@ -29,16 +26,8 @@
 				<uni-forms-item :label="$t('register.twoPassword.text')" name="twoPassword">
 					<uni-easyinput type="password" prefixIcon="locked" v-model="formData.twoPassword" :placeholder="$t('ruls.xxx.please',{name:$t('register.twoPassword.text')})" />
 				</uni-forms-item>
-				<uni-forms-item :label="$t('register.invitationCode.text')" name="invitationCode">
-					<uni-easyinput type="text" prefixIcon="personadd" v-model="formData.invitationCode" :placeholder="$t('ruls.xxx.please',{name:$t('register.invitationCode.text')})" />
-				</uni-forms-item>
 			</uni-forms>
-			<button class="btn" @click="submit">{{$t('register.confirm.text')}}</button>
-		</view>
-		
-		<view class="hasAccount">
-			<view class="tips">{{$t('login.hasaccount.text')}}</view>
-			<view class="login-link" @click="goLogin">{{$t('login.login.text')}}</view>
+			<button class="btn" @click="submit">{{$t('forget.btn.text')}}</button>
 		</view>
 	</view>
 </template>
@@ -52,19 +41,12 @@
 		data() {
 			return {
 				formData:{
-					username:'',
 					password :'',
 					twoPassword :'',
-					invitationCode:'',
 					code :'',
 					email :''
 				},
 				rules: {
-					username: {
-						rules: [
-							{required: true,errorMessage: this.$t('ruls.xxx.empty',{name:this.$t('register.username.text')})}
-						]
-					},
 					 password: {
 					 	rules: [
 					 		{required: true,errorMessage: this.$t('ruls.xxx.empty',{name:this.$t('register.password.text')})}
@@ -83,11 +65,6 @@
 							}
 					 	]
 					 },
-					 invitationCode: {
-					 	rules: [
-					 		{required: true,errorMessage: this.$t('ruls.xxx.empty',{name:this.$t('register.invitationCode.text')})}
-					 	]
-					 },
 					 code: {
 					 	rules: [
 					 		{required: true,errorMessage: this.$t('ruls.xxx.empty',{name:this.$t('register.code.text')})}
@@ -101,12 +78,10 @@
 					}
 				},
 				isSendCode:false,
-				countTime:60,
-				invitation_code:1
+				countTime:60
 			}
 		},
 		onLoad() {
-			this.getSysConfig()
 		},
 		methods: {
 			goBack(){
@@ -114,21 +89,13 @@
 					delta:1
 				})
 			},
-			goLogin(){
-				uni.navigateTo({
-					url:'/pages/login/login'
-				})
-			},
 			submit(){
-				if(this.invitation_code ==2){
-					delete this.rules.invitationCode
-				}
 				this.$refs.form.validate().then(res=>{
 					const para = Object.assign({},this.formData)
-					this.$http.post('/player/auth/regist',para,(res=>{
+					this.$http.post('/player/mail/change_pwd_online',para,(res=>{
 						if(res.code ==200){
 							uni.showToast({
-								title:this.$t('register.success.text'),
+								title:this.$t('oper.tip.success.text'),
 								duration:2000,
 								success() {
 									uni.navigateTo({
@@ -144,13 +111,6 @@
 					console.log( err);
 				})
 			},
-			getSysConfig(){
-				this.$http.get('/player/auth/sys_config',(res=>{
-					if(res.code == 200){
-						this.invitation_code = res.data.invitation_code || 1
-					}
-				}))
-			},
 			sendCode(){
 				if(!this.formData.email){
 					uni.showToast({
@@ -162,7 +122,7 @@
 				let para = {
 					email : this.formData.email
 				}
-				this.$http.post('/player/auth/code', para,(res)=>{
+				this.$http.post('/player/mail/change_pwd', para,(res)=>{
 					if(res.code == 200){
 						uni.showToast({
 							title:this.$t('register.sendCode.success'),
@@ -188,7 +148,7 @@
 </script>
 
 <style lang="scss" scoped>
-.register{
+.forgetPwd{
 	width: 670upx;
 	height: 100vh;
 	padding: 40upx;
@@ -214,6 +174,7 @@
 		.btn{
 			background-color: $fontColor;
 			color: #fff;
+			margin-top: 80upx;
 		}
 		.sendCode{
 			color: $fontColor;

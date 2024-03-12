@@ -19,11 +19,16 @@
 	"register.confirm.text":"确认",
 	"register.success.text":"注册成功，去登录",
 	"login.title.text":"登录",
-	"login.subtitle.text":"请现在登录，以便一个地方追踪所有的支出和收入",
+	"login.subtitle.text":"请现在登录，以便在一个地方追踪所有的支出和收入",
+	"login.forgetpwd.text":"忘记密码？",
+	"login.resetpwd.text":"重置密码",
+	"forget.title.text":"重置登录密码",
+	"forget.btn.text":"重置密码",
+	"home.game.tool.title.text":"游戏道具",
+	"home.game.tool.more.text":"更多",
 	
 	
-	
-	
+	"oper.tip.success.text":"操作成功",
 	"ruls.xxx.please": "请输入 {name}",
 	"ruls.xxx.empty": "{name} 不能为空",
 	"ruls.email":"请输入正确的邮箱地址",

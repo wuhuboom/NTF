@@ -1,6 +1,9 @@
 <template>
 	<view class="login">
 		<language></language>
+		<view class="back" @click="goBack">
+			<uni-icons type="arrow-left" size="40" color="#fff"></uni-icons>
+		</view>
 		<view class="title">
 			{{$t('login.title.text')}}
 		</view>
@@ -18,6 +21,14 @@
 				</uni-forms-item>
 				
 			</uni-forms>
+			<view class="forget-box">
+				<view class="forget">
+					{{$t('login.forgetpwd.text')}}
+				</view>
+				<view class="reset" @click="goReset">
+					{{$t('login.resetpwd.text')}}
+				</view>
+			</view>
 			<button class="btn" @click="submit">{{$t('login.login.text')}}</button>
 		</view>
 		
@@ -63,6 +74,16 @@
 		onLoad() {
 		},
 		methods: {
+			goReset(){
+				uni.navigateTo({
+					url:'/pages/login/forgetPwd'
+				})
+			},
+			goBack(){
+				uni.navigateBack({
+					delta:1
+				})
+			},
 			goRegister(){
 				uni.navigateTo({
 					url:'/pages/login/register'
@@ -88,14 +109,19 @@
 
 <style lang="scss" scoped>
 .login{
-	width: 750upx;
+	width: 670upx;
 	height: 100vh;
 	padding: 40upx;
 	.title{
-		height: 8vh;
 		color: #fff;
 		font-size: 24px;
 		margin-top: 40upx;
+	}
+	.sub-title{
+		color:#fff;
+		font-size: 14px;
+		margin-bottom: 60upx;
+		letter-spacing: 2upx;
 	}
 	.form{
 		width: 670upx;
@@ -113,6 +139,15 @@
 		.btn{
 			background-color: $fontColor;
 			color: #fff;
+		}
+		.forget-box{
+			display: flex;
+			justify-content: end;
+			color: #fff;
+			margin-bottom: 40upx;
+			.reset{
+				color: $fontColor;
+			}
 		}
 	}
 	.hasAccount{

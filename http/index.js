@@ -15,10 +15,10 @@ const vueInstance = new Vue({
   i18n,
 });
 
-const AUTH_TOKEN = 'Token'
+const AUTH_TOKEN = 'token'
 http.setBaseUrl(baseUrl)
 http.beforeRequestFilter = function(res){
-	const token = uni.getStorageInfoSync(AUTH_TOKEN);
+	const token = uni.getStorageSync(AUTH_TOKEN);
 	if(token){
 		http.header.token = token
 	}

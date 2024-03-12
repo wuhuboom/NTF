@@ -127,6 +127,8 @@
 					const para = Object.assign({},this.formData)
 					this.$http.post('/player/auth/regist',para,(res=>{
 						if(res.code ==200){
+							uni.setStorageSync("token",res.data.token)
+							uni.setStorageSync("user",res.data.user)
 							uni.showToast({
 								title:this.$t('register.success.text'),
 								duration:2000,

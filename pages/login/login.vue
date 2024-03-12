@@ -1,108 +1,146 @@
 <template>
 	<view class="login">
-		<view class="top">
-			<image src="../../static/images/login/logo.png"></image>
-			<view class="sub-title">
-				{{$t('login.logo.text')}}
-			</view>
+		<language></language>
+		<view class="title">
+			{{$t('login.title.text')}}
+		</view>
+		<view class="sub-title">
+			{{$t('login.subtitle.text')}}
 		</view>
 		<view class="form">
-			<view class="title">{{$t('login.begin.text')}}</view>
-			<view class="email-box">
-				<uni-icons type="email-filled" size="30" color="#000"></uni-icons>
-				<view class="text">{{$t('login.email.placehoder')}}</view>
-			</view>
-			<view class="hasAccount">
-				<view class="tips">{{$t('login.hasaccount.text')}}</view>
-				<view class="login-link">{{$t('login.login.text')}}</view>
-			</view>
-			
-			<view class="down-box">
-				<view class="down-text">{{$t('login.down.text')}}</view>
-				<uni-icons type="download" size="30" color="#fff"></uni-icons>
-			</view>
+			<uni-forms ref="form" :modelValue="formData" :rules="rules" label-position="top">
+				<uni-forms-item :label="$t('register.email.text')" name="email">
+					<uni-easyinput type="text" prefixIcon="email" v-model="formData.email" :placeholder="$t('ruls.xxx.please',{name:$t('register.email.text')})" />
+				</uni-forms-item>
 				
+				<uni-forms-item :label="$t('register.password.text')" name="password">
+					<uni-easyinput type="password" prefixIcon="locked" v-model="formData.password" :placeholder="$t('ruls.xxx.please',{name:$t('register.password.text')})" />
+				</uni-forms-item>
+				
+			</uni-forms>
+			<button class="btn" @click="submit">{{$t('login.login.text')}}</button>
+		</view>
+		
+		<view class="hasAccount">
+			<view class="tips">{{$t('login.noaccount.text')}}</view>
+			<view class="login-link" @click="goRegister">{{$t('login.register.text')}}</view>
+		</view>
+		
+		<view class="down-box">
+			<view class="down-text">{{$t('login.down.text')}}</view>
+			<uni-icons type="download" size="30" color="#fff"></uni-icons>
 		</view>
 	</view>
 </template>
 
 <script>
+	import language  from '@/components/language.vue'
 	export default {
+		components:{
+			language
+		},
 		data() {
 			return {
-				
+				formData:{
+					password :'',
+					email :''
+				},
+				rules: {
+					 password: {
+					 	rules: [
+					 		{required: true,errorMessage: this.$t('ruls.xxx.empty',{name:this.$t('register.password.text')})}
+					 	]
+					 },
+					email: {
+						rules: [
+							{required: true,errorMessage: this.$t('ruls.xxx.empty',{name:this.$t('register.email.text')})},
+							{format: 'email',errorMessage: this.$t('ruls.email')},
+						]
+					}
+				}
 			}
 		},
+		onLoad() {
+		},
 		methods: {
-			
-		}
+			goRegister(){
+				uni.navigateTo({
+					url:'/pages/login/register'
+				})
+			},
+			submit(){
+				this.$refs.form.validate().then(res=>{
+					const para = Object.assign({},this.formData)
+					this.$http.post('/player/auth/login',para,(res=>{
+						if(res.code ==200){
+							uni.navigateTo({
+								url:'/pages/home/home'
+							})
+						}
+					}))
+				}).catch(err =>{
+					console.log(err);
+				})
+			},
+		}	 
 	}
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .login{
-	height: 100vh;
 	width: 750upx;
-	color: #fff;
-	.top{
-		padding-top: 20vh;
-		text-align: center;
-		image{
-			width: 500upx;
-			height: 12vh;
-		}
-		.sub-title{
-			font-size: 14px;
-			letter-spacing: 1.5upx;
-			margin-top: 10upx;
-		}
+	height: 100vh;
+	padding: 40upx;
+	.title{
+		height: 8vh;
+		color: #fff;
+		font-size: 24px;
+		margin-top: 40upx;
 	}
 	.form{
-		margin-top: 10vh;
-		padding:40upx;
-		text-align: center;
-		.title{
-			font-size: 16px;
+		width: 670upx;
+		::v-deep .uni-forms-item__label{
+			color: #fff;
 		}
-		.email-box{
-			display: flex;
-			align-items: center;
-			background-color: #fff;
-			height: 90upx;
-			border-radius: 10upx;
-			margin-top: 20upx;
-			padding-left: 40upx;
-			.text{
-				color: #000;
-				padding-left: 80upx;
-			}
+		::v-deep .uni-easyinput__content{
+			background-color: rgb(24, 24, 34)!important;
+			border-color: rgb(24, 24, 34)!important;
+			color: rgb(255,255,255)!important;
 		}
-		.hasAccount{
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			margin-top: 40upx;
-			.tips{
-				margin-right: 20upx;
-			}
-			.login-link{
-				margin-left: 20upx;
-				color: $fontColor;
-			}
+		::v-deep .uni-icons{
+			color: $fontColor!important;
 		}
-		.down-box{
-			display: flex;
-			align-items: center;
-			justify-content: center;
+		.btn{
 			background-color: $fontColor;
 			color: #fff;
-			height: 90upx;
-			border-radius: 10upx;
-			margin-top: 20upx;
-			padding-left: 40upx;
-			.down-text{
-				margin-right: 30upx;
-			}
+		}
+	}
+	.hasAccount{
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-top: 40upx;
+		.tips{
+			margin-right: 20upx;
+			color:#fff;
+		}
+		.login-link{
+			margin-left: 20upx;
+			color: $fontColor;
+		}
+	}
+	.down-box{
+		display: flex;
+		width: 670upx;
+		align-items: center;
+		justify-content: center;
+		background-color: $fontColor;
+		color: #fff;
+		height: 90upx;
+		border-radius: 10upx;
+		margin-top: 20upx;
+		.down-text{
+			margin-right: 30upx;
 		}
 	}
 }

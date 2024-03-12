@@ -5,7 +5,9 @@ let http = {
         }
         http.baseUrl = url;
     },
-    'header': {},
+    'header': {
+		"Content-Type" : "application/x-www-form-urlencoded"
+	},
     'beforeRequestFilter': (config) => { return config },
     'beforeResponseFilter': (res) => { return res },
     'afterResponseFilter': (successResult) => { },

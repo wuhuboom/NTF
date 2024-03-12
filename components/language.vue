@@ -59,7 +59,10 @@
 		}
 		::v-deep .uni-select__selector{
 			background-color: transparent;
-			border: 1px solid slategray;
+			border: 1px solid $fontColor;
+		}
+		::v-deep .uni-select{
+			border: 1px solid $fontColor;
 		}
 	}
 </style>

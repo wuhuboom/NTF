@@ -19,7 +19,7 @@
 					<uni-easyinput type="text" v-model="formData.code" :placeholder="$t('ruls.xxx.please',{name:$t('register.code.text')})" >
 						<template #right>
 								<view v-if="!isSendCode" @click="sendCode" class="sendCode">{{$t('register.sendCode.text')}}</view>
-								<view v-else class="sendCode"> {{countTime}}s</view>
+								<view v-else class="sendCode"> {{countTime}} s</view>
 							</template>
 					</uni-easyinput>
 				</uni-forms-item>
@@ -34,6 +34,11 @@
 				</uni-forms-item>
 			</uni-forms>
 			<button class="btn" @click="submit">{{$t('register.confirm.text')}}</button>
+		</view>
+		
+		<view class="hasAccount">
+			<view class="tips">{{$t('login.hasaccount.text')}}</view>
+			<view class="login-link" @click="goLogin">{{$t('login.login.text')}}</view>
 		</view>
 	</view>
 </template>
@@ -96,21 +101,55 @@
 					}
 				},
 				isSendCode:false,
-				countTime:60
+				countTime:60,
+				invitation_code:1
 			}
 		},
+		onLoad() {
+			this.getSysConfig()
+		},
 		methods: {
-			submit(){
-				this.$refs.form.validate().then(res=>{
-					console.log('表单数据信息：', res);
-				}).catch(err =>{
-					console.log('表单错误信息：', err);
+			goLogin(){
+				uni.navigateTo({
+					url:'/pages/login/login'
 				})
+			},
+			submit(){
+				if(this.invitation_code ==2){
+					delete this.rules.invitationCode
+				}
+				this.$refs.form.validate().then(res=>{
+					const para = Object.assign({},this.formData)
+					this.$http.post('/player/auth/regist',para,(res=>{
+						if(res.code ==200){
+							uni.showToast({
+								title:this.$t('register.success.text'),
+								duration:2000,
+								success() {
+									uni.navigateTo({
+										url:'/pages/login/login'
+									})
+								}
+							})
+						}else{
+							this.isSendCode = false
+						}
+					}))
+				}).catch(err =>{
+					console.log( err);
+				})
+			},
+			getSysConfig(){
+				this.$http.get('/player/auth/sys_config',(res=>{
+					if(res.code == 200){
+						this.invitation_code = res.data.invitation_code || 1
+					}
+				}))
 			},
 			sendCode(){
 				if(!this.formData.email){
 					uni.showToast({
-						title: this.$t('ruls.xxx.empty',{name:this.$t('register.password.text')}),
+						title: this.$t('ruls.xxx.empty',{name:this.$t('register.email.text')}),
 						duration: 3000
 					})
 					return 
@@ -118,9 +157,25 @@
 				let para = {
 					email : this.formData.email
 				}
-				this.$http.post('/player/mail/change_pwd', para,(res)=>{
-					console.log(res)
+				this.$http.post('/player/auth/code', para,(res)=>{
+					if(res.code == 200){
+						uni.showToast({
+							title:this.$t('register.sendCode.success'),
+							duration:2000
+						})
+						this.isSendCode = true
+						this.startCount()
+					}
 				})
+			},
+			startCount(){
+				if(this.countTime <= 0){
+					this.countTime = 60
+					this.isSendCode = false
+				}else{
+					this.countTime--
+					setTimeout(this.startCount,1000)
+				}
 			}
 			
 		}
@@ -158,6 +213,20 @@
 		.sendCode{
 			color: $fontColor;
 			padding-right: 30upx;
+		}
+	}
+	.hasAccount{
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-top: 40upx;
+		.tips{
+			margin-right: 20upx;
+			color:#fff;
+		}
+		.login-link{
+			margin-left: 20upx;
+			color: $fontColor;
 		}
 	}
 }

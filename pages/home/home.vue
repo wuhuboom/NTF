@@ -16,36 +16,56 @@
 		</view>
 		<view class="game-tools">
 			<view class="title">{{$t('home.game.tool.title.text')}}</view>
-			<view class="more">
+			<view class="more" @click="getMore">
 				<view>{{$t('home.game.tool.more.text')}}</view>
 				<uni-icons type="right" color="#fff"></uni-icons>
 			</view>
 		</view>
 		<view class="game">
 			<swiper class="swiper-game" @change="change" :display-multiple-items="2">
-				<swiper-item v-for="(item ,index) in gameTools" :key="index" >
+				<swiper-item v-for="(item ,index) in gameTools" :key="index" @click="showDetail(item)">
 					<view class="swiper-item">
 						<view class="img-bg">
 							<!-- <image :src="item.path" model="aspectFill"></image> -->
 							<img :src="item.path"/>
 						</view>
 						<view class="game-tools-title">{{item.title}}</view>
-						<view class="game-tools-money">${{item.money}}</view>
+						<view class="game-tools-money">${{item.price}}</view>
 					</view>
 				</swiper-item>
 			</swiper>
 		</view>
 		 
-		<view class="game-zhi">
-			
+		<view class="game-tab">
+			<view class="tab-bar" :class="tabIndex==1?'tab-active':''" @click="changeTab(1)">{{$t('home.game.zhishu.text')}}</view>
+			<view class="tab-bar" :class="tabIndex==2?'tab-active':''" @click="changeTab(2)">{{$t('home.game.down.text')}}</view>
 		</view>
-		<view class="game-down">
-			
+		<view class="game-zhi" v-if="tabIndex==1">
+			<view class="game-item" v-for="(item,index) in gamezhis" :key="index" :style="{'backgroundImage':'url('+item.path+')'}">
+				<view class="title">{{item.name}}</view>
+				<view class="info">
+					<view class="left">
+						<image src="../../static/images/home/10026.png" mode="scaleToFill"></image>
+						<view class="number">{{$t('home.game.player.num.text')}} {{formatNum(item.num)}}</view>
+					</view>
+					<view class="right">
+						<image src="../../static/images/home/10027.png" mode="scaleToFill"></image>
+						<view class="number">{{$t('home.game.rate.num.text')}} {{formatNum(item.rate)}}</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		<view class="game-down" v-else>
+			<view class="game-item" v-for="(item,index) in gamedowns" :key="index" :style="{'backgroundImage':'url('+item.path+')'}" @click="download(item)">
+				<view class="title">{{item.name}}</view>
+			</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	import {formatNum} from '@/utils/util.js'
+	// console.log(formatNum(12345))
 	export default {
 		data() {
 			return {
@@ -60,14 +80,32 @@
 					content:'[单行] 这是 NoticeBar 通告栏，这是 NoticeBar 通告栏，这是 NoticeBar 通告栏'
 				},
 				gameTools:[
-					{title:'Shadow Draggers(*) | Damason sheel',money:'97',path:'../../static/images/home/10006.png'},
-					{title:'Eahsl Eosdfsqq of the Ciwer Where',money:'560.16',path:'../../static/images/home/10007.png'},
-					{title:'sdfsrwer sdfsd dsfsdfsd',money:'15',path:'../../static/images/home/10008.png'},
-					{title:'Huasdas garara swerw cxcgwer',money:'108',path:'../../static/images/home/10009.png'}
-				]
+					{id:'1',title:'Shadow Draggers(*) | Damason sheel',price:'97',path:'../../static/images/home/10006.png'},
+					{id:'2',title:'Eahsl Eosdfsqq of the Ciwer Where',price:'560.16',path:'../../static/images/home/10007.png'},
+					{id:'3',title:'sdfsrwer sdfsd dsfsdfsd',price:'15',path:'../../static/images/home/10008.png'},
+					{id:'4',title:'Huasdas garara swerw cxcgwer',price:'108',path:'../../static/images/home/10009.png'}
+				],
+				tabIndex:1,
+				gamezhis:[
+					{name:'Counter',num:'166820652',rate:'178548579',path:'../../static/images/home/10032.png'},
+					{name:'Dota2',num:'166820652',rate:'178548579',path:'../../static/images/home/10031.png'},
+					{name:'Fortnite',num:'166820652',rate:'178548579',path:'../../static/images/home/10033.png'},
+					{name:'Counter',num:'166820652',rate:'178548579',path:'../../static/images/home/10041.png'}
+				],
+				gamedowns:[
+					{name:'Genshin',path:'../../static/images/home/10028.png',url:'https://www.baidu.com'},
+					{name:'Worder of Warcarit',path:'../../static/images/home/10029.png',url:'https://www.baidu.com'},
+					{name:'Grand Theft Auto V',path:'../../static/images/home/10030.png',url:'https://www.baidu.com'},
+					{name:'Genshin',path:'../../static/images/home/10031.png',url:'https://www.baidu.com'}
+				],
+				formatNum:formatNum
 			}
 		},
 		methods: {
+			// 
+			changeTab(index){
+				this.tabIndex = index
+			},
 			loadSwiper(){
 				this.$http.get('/player/home/slider',(res)=>{
 					
@@ -85,6 +123,22 @@
 				uni.navigateTo({
 					url:'./notice'
 				})
+			},
+			getMore(){
+				uni.navigateTo({
+					url:'/pages/home/gameTools'
+				})
+			},
+			download(item){
+				if(item.url){
+					window.location.href=item.url
+				}
+			},
+			showDetail(item){
+				uni.navigateTo({
+					url:'/pages/home/gameToolsDetai?id=' + item.id,
+					
+				})
 			}
 		}
 	}
@@ -96,7 +150,7 @@
 	min-height: 100vh;
 	padding: 40upx;
 	background-image: url('../../static/images/home/10046.png');
-	background-size: 100% 100&;
+	background-size: 100% 100%;
 	background-repeat: no-repeat;
 	.swiper{
 		height: 20vh;
@@ -190,5 +244,51 @@
 			}
 		}
 	} 
+	.game-tab{
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+		color: rgb(183,186,188);
+		.tab-bar{
+			width: 150upx;
+			height: 90upx;
+		}
+		.tab-active{
+			color: #fff;
+			background-image: url('../../static/images/home/10049.png');
+			background-size: 100% 100%;
+			height: 90upx;
+		}
+	}
+	.game-zhi,.game-down {
+		.game-item{
+			height: 100upx;
+			background-size: 100% 100%;
+			padding-top: 240upx;
+			padding-left: 20upx;
+			padding-right: 20upx;
+			margin-bottom: 40upx;
+			box-shadow: inset 0px -30px 30px -20px $fontColor;
+			// box-shadow: inset 0px 0px 0px -0px transparent, 
+			// 			inset 0px -20px 10px -10px $fontColor;
+			.title{
+				color: #fff;
+				margin-bottom: 10upx;
+			}
+			.info{
+				color: #fff;
+				display: flex;
+				justify-content: space-between;
+				font-size: 24upx;
+				.left,.right{
+					display: flex;
+				}
+				image{
+					width: 50upx;
+					height: 50upx;
+				}
+			}
+		}
+	}
 }
 </style>

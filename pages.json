@@ -50,7 +50,26 @@
 			"style" : 
 			{
 				"navigationBarTitleText" : "",
-				"enablePullDownRefresh" : false
+				"enablePullDownRefresh" : false,
+				"navigationStyle":"custom"
+			}
+		},
+		{
+			"path" : "pages/home/gameTools",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false,
+				"navigationStyle":"custom"
+			}
+		},
+		{
+			"path" : "pages/home/gameToolsDetai",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false,
+				"navigationStyle":"custom"
 			}
 		}
 	],

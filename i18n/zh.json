@@ -26,6 +26,21 @@
 	"forget.btn.text":"重置密码",
 	"home.game.tool.title.text":"游戏道具",
 	"home.game.tool.more.text":"更多",
+	"home.game.tool.model":"图标模板:",
+	"home.game.tool.sun":"磨损度:",
+	"home.game.tool.attr":"属性描述:",
+	"home.game.tool.attr.kind":"种类:",
+	"home.game.tool.attr.type":"类型:",
+	"home.game.tool.attr.brand":"品质:",
+	"home.game.tool.attr.out":"外观:",
+	"home.game.tool.attr.price":"价格:",
+	"home.game.zhishu.text":"游戏指数",
+	"home.game.down.text":"游戏下载",
+	"home.game.player.num.text":"当前玩家",
+	"home.game.rate.num.text":"今日峰值",
+	"home.notice.page.title":"公告列表",
+	"home.notice.time.title":"时间:",
+	
 	
 	
 	"oper.tip.success.text":"操作成功",

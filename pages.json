@@ -71,6 +71,105 @@
 				"enablePullDownRefresh" : false,
 				"navigationStyle":"custom"
 			}
+		},
+		{
+			"path" : "pages/user/user",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false,
+				"navigationStyle":"custom"
+			}
+		},
+		{
+			"path" : "pages/invest/invest",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false,
+				"navigationStyle":"custom"
+			}
+		},
+		{
+			"path" : "pages/information/information",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false,
+				"navigationStyle":"custom"
+			}
+		},
+		{
+			"path" : "pages/user/invite",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false,
+				"navigationStyle":"custom"
+			}
+		},
+		{
+			"path" : "pages/user/property",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false,
+				"navigationStyle":"custom"
+			}
+		},
+		{
+			"path" : "pages/user/investment",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false,
+				"navigationStyle":"custom"
+			}
+		},
+		{
+			"path" : "pages/user/income",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false,
+				"navigationStyle":"custom"
+			}
+		},
+		{
+			"path" : "pages/user/security",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false,
+				"navigationStyle":"custom"
+			}
+		},
+		{
+			"path" : "pages/user/myfriend",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false,
+				"navigationStyle":"custom"
+			}
+		},
+		{
+			"path" : "pages/user/contract",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false,
+				"navigationStyle":"custom"
+			}
+		},
+		{
+			"path" : "pages/user/setting",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false,
+				"navigationStyle":"custom"
+			}
 		}
 	],
 	"globalStyle": {
@@ -78,6 +177,35 @@
 		"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"color": "#f5f5f5",
+		"selectedColor": "#f5f5f5",
+		"borderStyle": "black",
+		"backgroundColor": "rgb(23,23,23)",
+		"list": [
+			{
+				"pagePath": "pages/home/home",
+				"selectedIconPath": "static/images/tabbar/homeActive.png",
+				"iconPath": "static/images/tabbar/home.png"
+			},
+			{
+				"pagePath": "pages/invest/invest",
+				"selectedIconPath": "static/images/tabbar/investActive.png",
+				"iconPath": "static/images/tabbar/invest.png"
+			},
+			{
+				"pagePath": "pages/information/information",
+				"selectedIconPath": "static/images/tabbar/infoActive.png",
+				"iconPath": "static/images/tabbar/info.png"
+			},
+			{
+				"pagePath": "pages/user/user",
+				"selectedIconPath": "static/images/tabbar/userActive.png",
+				"iconPath": "static/images/tabbar/user.png"
+			}
+			
+		]
 	},
 	"uniIdRouter": {}
 }

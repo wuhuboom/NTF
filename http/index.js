@@ -36,7 +36,7 @@ http.beforeResponseFilter = function (res) {
 		res = res.data
 		if(res.code == 200){
 			return res
-		}else if(res.code == 103){
+		}else if(res.code == 103 || res.code == 105){
 			const data = res.data;
 			
 			if(data.length > 0){

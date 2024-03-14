@@ -147,8 +147,8 @@
 <style scoped lang="scss">
 .home{
 	width: 670upx;
-	min-height: 100vh;
 	padding: 40upx;
+	min-height: 100vh;
 	background-image: url('../../static/images/home/10046.png');
 	background-size: 100% 100%;
 	background-repeat: no-repeat;

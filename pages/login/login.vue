@@ -94,7 +94,7 @@
 						if(res.code ==200){
 							uni.setStorageSync("token",res.data.token)
 							uni.setStorageSync("user",res.data.user)
-							uni.navigateTo({
+							uni.switchTab({
 								url:'/pages/home/home'
 							})
 						}

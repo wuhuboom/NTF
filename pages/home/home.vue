@@ -2,7 +2,7 @@
 	<view class="home">
 		<view class="swiper">
 			<uni-swiper-dot :info="swipers" :current="current" field="content" :mode="mode">
-				<swiper class="swiper-box" @change="change">
+				<swiper class="swiper-box" @change="change" :autoplay="true" :circular="true">
 					<swiper-item v-for="(item ,index) in swipers" :key="index">
 						<view class="swiper-item">
 							<image :src="item.path" model="scaleToFill"></image>
@@ -23,7 +23,7 @@
 		</view>
 		<view class="game">
 			<swiper class="swiper-game" @change="change" :display-multiple-items="2">
-				<swiper-item v-for="(item ,index) in gameTools" :key="index" @click="showDetail(item)">
+				<swiper-item v-for="(item ,index) in gameTools" :key="index" @click="showDetail(item)" next-margin="20">
 					<view class="swiper-item">
 						<view class="img-bg">
 							<!-- <image :src="item.path" model="aspectFill"></image> -->
@@ -201,6 +201,9 @@
 			height: 100%;
 			::v-deep .uni-swiper__warp,.swiper-box{
 				height: 100%;
+			}
+			::v-deep .uni-swiper-slide-frame{
+				width: 40%!important;
 			}
 			.swiper-item{
 				padding:40upx;

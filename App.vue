@@ -13,6 +13,7 @@
 </script>
 
 <style lang="scss">
+	@import "@/static/font/iconfont.css";
 	*{
 		padding: 0upx;
 		margin: 0upx;

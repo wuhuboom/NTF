@@ -5,13 +5,14 @@
 		<view class="top">
 			<view class="header">
 				<view class="title">{{$t('property.header.title')}}</view>
-				<uni-icons :type="isShow?'eye':'eye-slash'" color="#fff" :size="24"></uni-icons>
+				<uni-icons :type="isShow?'eye':'eye-slash'" color="#fff" :size="24"  @click="showBalance"></uni-icons>
 			</view>
-			<view class="balance">$000</view>
+			<view class="balance" v-if="isShow">${{balance.totalBalance}}</view>
+			<view class="balance" v-else>${{gethideNum(balance.totalBalance)}}</view>
 		</view>
 		
 		<view class="sub-page">
-			<view class="sub-item" v-for="(item,index) in subPages" :key="index">
+			<view class="sub-item" v-for="(item,index) in subPages" :key="index" @click="goPage(item.path)">
 				<image :src="item.icon" mode="scaleToFill"></image>
 				<view class="sub-item-title">{{item.title}}</view>
 			</view>
@@ -20,14 +21,15 @@
 		<view class="sub-title">{{$t('property.navbar.title')}}</view>
 		
 		<view class="balances">
-			<view class="balance-item" v-for="(item,index) in balances" :key="index">
+			<view class="balance-item" v-for="(item,index) in balance.list" :key="index">
 				<view class="left">
-					<img :src="item.icon"/>
+					<img :src="item.currency.imgUrl"/>
 				</view>
 				<view class="right">
-					<view class="menu-text">{{item.name}}</view>
+					<view class="menu-text">{{item.currency.name}}</view>
 					<view class="menu-num">
-						{{item.num}}
+						<view class="up">{{item.balance}}</view>
+						<view class="rate">${{item.currency.rate}}</view>
 					</view>
 				</view>
 			</view>
@@ -40,19 +42,73 @@
 		data() {
 			return {
 				isShow:false,
+				hidenum:'',
 				subPages:[
-					{title:this.$t('property.subpage.title1'),icon:'../../static/images/user/10023.png',path:''},
-					{title:this.$t('property.subpage.title2'),icon:'',path:''},
-					{title:this.$t('property.subpage.title3'),icon:'',path:''}
+					{title:this.$t('property.subpage.title1'),icon:'../../static/images/user/10023.png',path:'./recharge'},
+					{title:this.$t('property.subpage.title2'),icon:'../../static/images/user/zjtq.png',path:''},
+					{title:this.$t('property.subpage.title3'),icon:'../../static/images/user/sd.png',path:''}
 				],
-				balances:[
-					{name:'USD',num:'100',icon:'../../static/images/user/10024.png',path:''},
-					{name:'USDT',num:'100',icon:'../../static/images/user/10025.png',path:''},
-					{name:'TFI',num:'0',icon:'../../static/images/user/10026.png',path:''}
-				]
+				// balances:[
+				// 	{name:'USD',num:'100',icon:'../../static/images/user/10024.png',path:''},
+				// 	{name:'USDT',num:'100',icon:'../../static/images/user/10025.png',path:''},
+				// 	{name:'TFI',num:'0',icon:'../../static/images/user/10026.png',path:''}
+				// ],
+				balance:{
+					totalBalance:'0',
+					list:[
+						{
+						balance: '100',
+						currency: {
+							name: "USD",
+							imgUrl: "../../static/images/user/10024.png",
+							rate: '7.12'
+						}},
+						{
+						balance: '0',
+						currency: {
+							name: "USDT",
+							imgUrl: "../../static/images/user/10025.png",
+							rate: '7.12'
+						}},
+						{
+						balance: '80',
+						currency: {
+							name: "TFI",
+							imgUrl: "../../static/images/user/10026.png",
+							rate: '7.12'
+						}},
+						
+					]
+				}
 			}
 		},
+		onLoad() {
+			this.getCurrency()
+		},
 		methods: {
+			getCurrency(){
+				this.$http.get('/player/currency/list',res=>{
+					if(res.code == 200){
+						// this.balance = res.data
+					}
+				})
+			},
+			goPage(path){
+				uni.navigateTo({
+					url:path
+				})
+			},
+			showBalance(){
+				console.log(this.isShow)
+				this.isShow = !this.isShow
+			},
+			gethideNum(num){
+				let val = "*"
+				for(var i = 0;i<num.length ;i++){
+					val +'*'
+				}
+				return val
+			},
 			goBack(){
 				uni.navigateBack({
 					delta:1
@@ -133,6 +189,14 @@
 				align-items: center;
 				border-bottom: 1px solid $fontColor;
 				padding-bottom: 6upx;
+				.menu-num{
+					.up{
+						font-size: 36upx;
+					}
+					.rate{
+						font-size: 24upx;
+					}
+				}
 			}
 		}
 	}

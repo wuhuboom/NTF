@@ -203,7 +203,7 @@
 				height: 100%;
 			}
 			::v-deep .uni-swiper-slide-frame{
-				width: 40%!important;
+				width: 45%!important;
 			}
 			.swiper-item{
 				padding:40upx;

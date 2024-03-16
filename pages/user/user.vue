@@ -18,7 +18,7 @@
 		</view>
 		<view class="title">{{$t('user.service.text')}}</view>
 		<view class="menu">
-			<view class="menu-item" v-for="(item,index) in menus" :key="index">
+			<view class="menu-item" v-for="(item,index) in menus" :key="index" @click="goSubPage(item)">
 				<view class="left">
 					<uni-icons :type="item.icon" color="rgb(185,185,185)" :size="24"></uni-icons>
 					<view class="menu-text">{{item.title}}</view>

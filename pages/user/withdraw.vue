@@ -1,11 +1,11 @@
 <template>
 	<view class="recharge">
-		<uni-nav-bar left-icon="left"  :title="$t('property.subpage.title1')" background-color="rgb(1,2,3)" color="#fff" :border="false" right-icon="icon-record" @clickLeft="goBack" @clickRight="goRecord">
+		<uni-nav-bar left-icon="left"  :title="$t('property.subpage.title2')" background-color="rgb(1,2,3)" color="#fff" :border="false" right-icon="icon-record" @clickLeft="goBack" @clickRight="goRecord">
 			<view slot="right">
 				<uni-icons custom-prefix="iconfont" type="icon-record" size="22" color="#fff"></uni-icons>
 			</view>
 		</uni-nav-bar>
-		<view class="title">{{$t('recharge.payway.title')}}</view>
+		<view class="title">{{$t('withdraw.payway.title')}}</view>
 		
 		<view class="payways">
 			<view class="show-box" @click="isShow = !isShow">
@@ -14,7 +14,7 @@
 						<img :src="sectItem.img"/>
 					</view>
 					<view class="right">
-							<view class="way-name">{{sectItem.name}} - {{sectItem.currencySymbol}}</view>
+							<view class="way-name">{{sectItem.name}}</view>
 							<view class="way-minMax">{{sectItem.minMax}}</view>
 					</view>
 					<uni-icons :type="isShow?'up':'down'" color="#fff" size="24"></uni-icons>
@@ -26,7 +26,7 @@
 						<img :src="item.img"/>
 					</view>
 					<view class="right">
-						<view class="way-name">{{item.name}} - {{item.currencySymbol}}</view>
+						<view class="way-name">{{item.name}}</view>
 						<view class="way-minMax">{{item.minMax}}</view>
 					</view>
 				</view>
@@ -34,8 +34,11 @@
 		</view>
 		<view class="form">
 			<uni-forms ref="form" :modelValue="formData" :rules="rules" label-position="top">
-				<uni-forms-item :label="$t('recharge.money.text')" name="money">
+				<uni-forms-item :label="$t('withdraw.money.text')" name="money">
 					<uni-easyinput type="text" v-model="formData.money" :placeholder="$t('ruls.xxx.please',{name:$t('recharge.money.text')})" />
+				</uni-forms-item>
+				<uni-forms-item :label="$t('withdraw.password.text')" name="password">
+					<uni-easyinput type="password" v-model="formData.password" :placeholder="$t('ruls.xxx.please',{name:$t('withdraw.password.text')})" />
 				</uni-forms-item>
 			</uni-forms>
 			<button class="btn" @click="submit">{{$t('btn.continue.text')}}</button>
@@ -50,87 +53,83 @@
 				isShow: false,
 				formData:{
 					money:'',
-					payId:''
+					type:'',
+					password:''
 				},
 				rules: {
 					money: {
 						rules: [
 							{required: true,errorMessage: this.$t('ruls.xxx.empty',{name:this.$t('recharge.money.text')})}
 						]
+					},
+					password: {
+						rules: [
+							{required: true,errorMessage: this.$t('ruls.xxx.empty',{name:this.$t('withdraw.password.text')})}
+						]
 					}
 				},
 				payways:[
 					  {
-					    "img": "https://img.sgodown.cc/bankCharge.png",
-					    "fast": "200",
-					    "unholdMsg": "invalid",
-					    "def": 0,
-					    "rate": "1",
-					    "name": "INPAY",
-					    "minMax": "100-99999",
-					    "currencySymbol": "USDT",
-					    "id": 6,
-					    "sort": 0,
-					    "type": 64,
-					    "unhold": 0
+						"img": "https://img.sgodown.cc/bankCharge.png",
+						"withdrawalRateMax": 100000,
+						"withdrawalRate": 8,
+						"currencySymbol": "USDT",
+						"withdrawMax": 10000,
+						"everydayWithdrawTimes": 30,
+						"type": 1,
+						"wiModelRe": 0,
+						"wiModelRate": 0,
+						"everydayWithdrawFree": 0,
+						"withdrawalToday": 0,
+						"withdrawalRateMin": 0,
+						"wiModel": 0,
+						"rate": "1",
+						"withdrawMin": 150,
+						"name": "Bank"
 					  },
 					  {
-					    "img": null,
-					    "fast": "200-300",
-					    "unholdMsg": "invalid",
-					    "def": 0,
-					    "rate": "1",
-					    "name": "JYPAY",
-					    "minMax": "100-999999",
-					    "currencySymbol": "Rp",
-					    "id": 9,
-					    "sort": 0,
-					    "type": 68,
-					    "unhold": 0
+						"img": "https://sgo.uunn.org/USDT.png",
+						"withdrawalRateMax": 1000,
+						"withdrawalRate": 8,
+						"currencySymbol": "USDT",
+						"withdrawMax": 1000,
+						"everydayWithdrawTimes": 30,
+						"type": 2,
+						"wiModelRe": 0,
+						"wiModelRate": 0,
+						"everydayWithdrawFree": 0,
+						"withdrawalToday": 0,
+						"withdrawalRateMin": 0,
+						"wiModel": 0,
+						"rate": "1",
+						"withdrawMin": 10,
+						"name": "USDT"
 					  },
 					  {
-					    "img": "https://img.sgodown.cc/bankCharge.png",
-					    "fast": "200-500-1000-3000-5000-10000-15000",
-					    "unholdMsg": "invalid",
-					    "def": 0,
-					    "rate": "1",
-					    "name": "Boypay",
-					    "minMax": "100-99999",
-					    "currencySymbol": "EGP",
-					    "id": 7,
-					    "sort": 0,
-					    "type": 65,
-					    "unhold": 0
-					  },
-					  {
-					    "img": "https://img.sgodown.cc/bankCharge.png",
-					    "fast": "1000",
-					    "unholdMsg": "invalid",
-					    "def": 0,
-					    "rate": "1",
-					    "name": "污渍",
-					    "minMax": null,
-					    "currencySymbol": "UZS",
-					    "id": 8,
-					    "sort": 0,
-					    "type": 66,
-					    "unhold": 0
-					  },
-					  {
-					    "img": "https://img.sgodown.cc/virtual.png",
-					    "fast": "5-10-15-30-50-100-300-500-1000-3000-5000-10000",
-					    "unholdMsg": "invalid",
-					    "def": 0,
-					    "rate": "100",
-					    "name": "USDT",
-					    "minMax": "5-9999999",
-					    "currencySymbol": "USDT",
-					    "id": 3,
-					    "sort": 0,
-					    "type": 1,
-					    "unhold": 0
+						"types": [
+						  "Vodafone",
+						  "Orange",
+						  "Etisalat",
+						  "We"
+						],
+						"img": "https://img.sgodown.cc/wallet.png",
+						"withdrawalRateMax": 100000,
+						"withdrawalRate": 8,
+						"currencySymbol": "USDT",
+						"withdrawMax": 10000,
+						"everydayWithdrawTimes": 30,
+						"type": 4,
+						"wiModelRe": 0,
+						"wiModelRate": 0,
+						"everydayWithdrawFree": 0,
+						"withdrawalToday": 0,
+						"withdrawalRateMin": 0,
+						"wiModel": 0,
+						"rate": "1",
+						"withdrawMin": 150,
+						"name": "E-Wallet"
 					  }
-				],
+					],
 				sectItem:{}
 			}
 		},
@@ -144,9 +143,10 @@
 				this.$refs.form.validate().then(res=>{
 					const para = {
 						money : this.formData.money,
-						payId : this.sectItem.id
+						password: this.formData.password,
+						type : this.sectItem.type
 					}
-					this.$http.post('/player/recharge',para,(res=>{
+					this.$http.post('/player/withdrawal',para,(res=>{
 						if(res.code ==200){
 							res = res.data
 							if (res?.UrlAddress) {
@@ -159,7 +159,7 @@
 				})
 			},
 			loadPayWays(){
-				this.$http.get('/player/recharge_pre',res => {
+				this.$http.get('/player/withdrawal_pre',res => {
 					console.log(res,'------------')
 					this.sectItem = this.payways[0] || {}
 				})
@@ -170,7 +170,7 @@
 			},
 			goRecord(){
 				uni.navigateTo({
-					url:'./inrecord'
+					url:'./outrecord'
 				})
 			},
 			goBack(){
@@ -206,7 +206,7 @@
 			z-index: 99;
 		}
 		.way-item{
-			height: 80upx;
+			height: 70upx;
 			display: flex;
 			justify-content: space-between;
 			align-items: center;

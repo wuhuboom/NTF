@@ -15,17 +15,14 @@
 			return {
 				langVal: uni.getLocale(),
 				langOpt:[
-					{value:'en',text:'EN'},
-					{value:'zh',text:'CN'}
+					{value:'en',text:'EN',name:'English'},
+					{value:'zh',text:'ZH',name:'中文'}
 				]
 			}
 		},
 		computed: {
 		    getLangName() {
 		        return () => {
-		            if (this.langVal == 'zh') {
-		                return 'CN'
-		            }
 		            return this.langOpt.find(item => item.value == this.langVal).label
 		        }
 		    }
@@ -49,6 +46,7 @@
 		// width: 80upx;
 		// height: 50upx;
 		background-color: transparent;
+		
 		color: #fff;
 		::v-deep .uni-select__input-text{
 			color: #fff;
@@ -58,8 +56,9 @@
 			// display: none;
 		}
 		::v-deep .uni-select__selector{
-			background-color: transparent;
+			background-color: $bgColor;
 			border: 1px solid $fontColor;
+			backdrop-filter: 6px;
 		}
 		::v-deep .uni-select{
 			border: 1px solid $fontColor;

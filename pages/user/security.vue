@@ -28,8 +28,8 @@
 			return {
 				menus:[
 					{title:this.$t('security.menu1.text'),info:this.$t('security.menu1.info'),type:1,path:'./updateEmail'},
-					{title:this.$t('security.menu2.text'),info:this.$t('security.menu2.info'),type:2,path:''},
-					{title:this.$t('security.menu3.text'),info:this.$t('security.menu3.info'),type:2,path:''},
+					{title:this.$t('security.menu2.text'),info:this.$t('security.menu2.info'),type:2,path:'./updatePassword'},
+					{title:this.$t('security.menu3.text'),info:this.$t('security.menu3.info'),type:2,path:'./updateFundPwd'},
 					{title:this.$t('security.menu4.text'),info:this.$t('security.menu4.info'),type:3,path:''},
 					{title:this.$t('security.menu5.text'),info:this.$t('security.menu5.info'),type:3,path:''}
 				],
@@ -38,7 +38,7 @@
 		},
 		onReady() {
 			const user = uni.getStorageSync('user')
-			this.email = this.format(user.email +'@weqwe.com')
+			this.email = this.format(user.email )
 		},
 		methods: {
 			goPage(item){

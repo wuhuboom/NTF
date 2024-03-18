@@ -94,7 +94,7 @@
 			    // if (this.status == 'more') {
 			        
 			    // }
-				this.getData()
+				this.loadData()
 			},
 			//下拉刷新
 			getRefresherrefresh(){

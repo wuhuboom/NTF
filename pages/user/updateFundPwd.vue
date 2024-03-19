@@ -4,10 +4,10 @@
 		<view class="form">
 			<uni-forms ref="form" :modelValue="formData" :rules="rules" label-position="top" :label-width="300">
 				<uni-forms-item :label="$t('security.update.fundpwd.label')" name="newpwd">
-					<uni-easyinput type="newpwd " prefixIcon="locked" v-model="formData.newpwd " :placeholder="$t('ruls.xxx.please',{name:$t('security.update.fundpwd.label')})" />
+					<uni-easyinput type="password " prefixIcon="locked" v-model="formData.newpwd " :placeholder="$t('ruls.xxx.please',{name:$t('security.update.fundpwd.label')})" />
 				</uni-forms-item>
 				<uni-forms-item :label="$t('security.update.fundpwd.confirm.label')" name="confirmed">
-					<uni-easyinput type="newpwd " prefixIcon="locked" v-model="formData.confirmed  " :placeholder="$t('ruls.xxx.please',{name:$t('security.update.fundpwd.confirm.label')})" />
+					<uni-easyinput type="password " prefixIcon="locked" v-model="formData.confirmed  " :placeholder="$t('ruls.xxx.please',{name:$t('security.update.fundpwd.confirm.label')})" />
 				</uni-forms-item>
 				<uni-forms-item :label="$t('register.code.text')" name="code">
 					<uni-easyinput type="text" v-model="formData.code" :placeholder="$t('ruls.xxx.please',{name:$t('register.code.text')})" >

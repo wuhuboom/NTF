@@ -278,7 +278,7 @@
 			changeTab(index) {
 				this.tabIndex = index
 				this.matchIndex = 0
-				// this.getRefresherrefresh()
+				this.getRefresherrefresh()
 			},
 			changeMatchTab(index){
 				this.matchIndex = index

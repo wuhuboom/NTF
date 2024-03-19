@@ -16,6 +16,9 @@
 				</view>
 			</view>
 		</view>
+		<view class="logout" @click="logout">
+			{{$t('btn.logout.text')}}
+		</view>
 	</view>
 </template>
 
@@ -49,6 +52,13 @@
 			goSubPage(item){
 				uni.navigateTo({
 					url:item.path
+				})
+			},
+			logout(){
+				uni.removeStorageSync("user")
+				uni.removeStorageSync("token")
+				uni.navigateTo({
+					url:'/pages/login/login'
 				})
 			},
 			goBack(){
@@ -102,6 +112,18 @@
 				}
 			}
 		}
+	}
+	.logout{
+		background-color: $fontColor;
+		color: #fff;
+		font-size: 28upx;
+		text-align: center;
+		width: 670upx;
+		height: 100upx;
+		line-height: 100upx;
+		border-radius: 20upx;
+		position: absolute;
+		bottom: 100upx;
 	}
 }
 </style>

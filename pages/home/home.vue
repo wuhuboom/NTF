@@ -23,16 +23,17 @@
 		</view>
 		<view class="game">
 			<swiper class="swiper-game" @change="change" :display-multiple-items="2">
-				<swiper-item v-for="(item ,index) in gameTools" :key="index" @click="showDetail(item)" next-margin="20">
-					<view class="swiper-item">
-						<view class="img-bg">
-							<!-- <image :src="item.path" model="aspectFill"></image> -->
-							<img :src="item.path"/>
+				<block v-for="(item ,index) in gameTools" :key="index">
+					<swiper-item  @click="showDetail(item)" next-margin="20" v-if="index < 4">
+						<view class="swiper-item">
+							<view class="img-bg">
+								<img :src="item.img"/>
+							</view>
+							<view class="game-tools-title">{{item.name}}</view>
+							<view class="game-tools-money">${{item.price}}</view>
 						</view>
-						<view class="game-tools-title">{{item.title}}</view>
-						<view class="game-tools-money">${{item.price}}</view>
-					</view>
-				</swiper-item>
+					</swiper-item>
+				</block>
 			</swiper>
 		</view>
 		 
@@ -79,27 +80,22 @@
 				notice:{
 					content:'[单行] 这是 NoticeBar 通告栏，这是 NoticeBar 通告栏，这是 NoticeBar 通告栏'
 				},
-				gameTools:[
-					{id:'1',title:'Shadow Draggers(*) | Damason sheel',price:'97',path:'../../static/images/home/10006.png'},
-					{id:'2',title:'Eahsl Eosdfsqq of the Ciwer Where',price:'560.16',path:'../../static/images/home/10007.png'},
-					{id:'3',title:'sdfsrwer sdfsd dsfsdfsd',price:'15',path:'../../static/images/home/10008.png'},
-					{id:'4',title:'Huasdas garara swerw cxcgwer',price:'108',path:'../../static/images/home/10009.png'}
-				],
+				gameTools:[],
 				tabIndex:1,
 				gamezhis:[
-					{name:'Counter',num:'166820652',rate:'178548579',path:'../../static/images/home/10032.png'},
-					{name:'Dota2',num:'166820652',rate:'178548579',path:'../../static/images/home/10031.png'},
-					{name:'Fortnite',num:'166820652',rate:'178548579',path:'../../static/images/home/10033.png'},
-					{name:'Counter',num:'166820652',rate:'178548579',path:'../../static/images/home/10041.png'}
+					
 				],
 				gamedowns:[
-					{name:'Genshin',path:'../../static/images/home/10028.png',url:'https://www.baidu.com'},
-					{name:'Worder of Warcarit',path:'../../static/images/home/10029.png',url:'https://www.baidu.com'},
-					{name:'Grand Theft Auto V',path:'../../static/images/home/10030.png',url:'https://www.baidu.com'},
-					{name:'Genshin',path:'../../static/images/home/10031.png',url:'https://www.baidu.com'}
+					
 				],
 				formatNum:formatNum
 			}
+		},
+		onLoad() {
+			this.gameTools = require('@/static/data/props.json')
+			const gameData = require('@/static/data/games.json')
+			this.gamezhis = gameData.zhishu
+			this.gamedowns = gameData.down
 		},
 		methods: {
 			// 
@@ -230,6 +226,7 @@
 				.game-tools-title{
 					text-align: center;
 					font-size: 24upx;
+					height: 4vh;
 				}
 				.game-tools-money{
 					height: 4vh;
@@ -240,6 +237,7 @@
 					justify-content: center;
 					font-size: 30upx;
 					margin-top: 30upx;
+					margin-bottom: 20upx;
 					padding-left: 30upx;
 					padding-right: 30upx;
 					min-width: 100upx;

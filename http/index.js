@@ -1,5 +1,6 @@
 import http from './apiRequest'
-import {baseUrl} from '../utils/global'
+// import {baseUrl} from '../utils/global'
+import {baseUrl} from '../static/config/config.js'
 import Vue from 'vue'
 import VueI18n from "vue-i18n"
 import messages from "../i18n/index"

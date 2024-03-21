@@ -18,8 +18,8 @@
 				<view class="login-link" @click="gologin">{{$t('login.login.text')}}</view>
 			</view>
 			
-			<view class="down-box">
-				<view class="down-text">{{$t('login.down.text')}}</view>
+			<view class="down-box" @click="down">
+				<view class="down-text" >{{$t('login.down.text')}}</view>
 				<uni-icons type="download" size="30" color="#fff"></uni-icons>
 			</view>
 				
@@ -35,10 +35,36 @@
 		},
 		data() {
 			return {
-				
+				osType:'',
+				downObj:''
 			}
 		},
+		onLoad() {
+			this.getOsType()
+		},
 		methods: {
+			down(){
+				this.$http.get('/player/home/app_url',res=>{
+					res = res.data
+					res.forEach(item => {
+						if(item.appType==this.osType){
+							downObj = item
+						}
+					});
+					    if(this.downObj.appUrl){
+					        setTimeout(() => {
+					            window.location.href = this.downObj.appUrl
+					        }, 1000)
+					    }
+				})
+			},
+			getOsType() {
+			    if (navigator.userAgent.indexOf('iPhone') !== -1) {
+			        this.osType = 1
+			    } else if (navigator.userAgent.indexOf('Android') !== -1) {
+			        this.osType = 0
+			    }
+			},
 			gologin(){
 				uni.navigateTo({
 					url:'/pages/login/login'

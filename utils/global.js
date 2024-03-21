@@ -4,9 +4,9 @@
  * 通过 this.Global 调用
  */
 
- // 后台管理系统服务器地址
-export const baseUrl = 'http://207.148.72.170:10200'
-
-export default {
-    baseUrl
-}
+ // 服务器地址
+// export const baseUrl = 'http://207.148.72.170:10200'
+// export const baseUrl = 'https://apinft.uunn.org'
+// export default {
+//     baseUrl
+// }

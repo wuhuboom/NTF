@@ -3,22 +3,22 @@
 		<uni-nav-bar left-icon="left"  :title="$t('home.game.tool.title.text')" background-color="rgb(1,2,3)" color="#fff" :border="false" @clickLeft="goBack"></uni-nav-bar>
 		<view class="game-tools">
 			<view class="img-bg">
-				<img :src="item.path"/>
+				<img :src="item.img"/>
 			</view>
-			<view class="game-tools-title">{{item.title}}</view>
-			<view class="game-tools-sub-title">{{$t('home.game.tool.model')}} </view>
-			<view class="game-tools-sub-title">{{$t('home.game.tool.sun')}} </view>
+			<view class="game-tools-title">{{item.name}}</view>
+			<view class="game-tools-sub-title">{{$t('home.game.tool.model')}} {{item.template}} </view>
+			<view class="game-tools-sub-title">{{$t('home.game.tool.sun')}} {{item.wearDegree}}</view>
 			
 			<view class="game-attr">
 				<view class="attr-title">{{$t('home.game.tool.attr')}}</view>
 				<view class="attr-info">
-					<view class="attr-item">{{$t('home.game.tool.attr.kind')}}</view>
-					<view class="attr-item">{{$t('home.game.tool.attr.type')}}</view>
-					<view class="attr-item">{{$t('home.game.tool.attr.brand')}}</view>
-					<view class="attr-item">{{$t('home.game.tool.attr.out')}}</view>
+					<view class="attr-item">{{$t('home.game.tool.attr.kind')}} {{item.style}}</view>
+					<view class="attr-item">{{$t('home.game.tool.attr.type')}} {{item.type}}</view>
+					<view class="attr-item">{{$t('home.game.tool.attr.brand')}} {{item.Exterior}}</view>
+					<view class="attr-item">{{$t('home.game.tool.attr.out')}} {{item.quality}}</view>
 				</view>
 				<view class="attr-content">
-					{{item.detail}}
+					{{item.describe}}
 				</view>
 			</view>
 			
@@ -35,17 +35,20 @@
 		data() {
 			return {
 				id:'',
-				item:{
-					id:'1',
-					title:'Shadow Draggers(*) | Damason sheel',
-					price:'97',
-					path:'../../static/images/home/10006.png',
-					detail:'Dear TechFinger users, in view of the huge amount of userdata, Up to now, all the statisticshave not been completedresulting in the delavedechFinger2.0 upgrade, which was originally scheduled to be updated on July 10,2023. Please wait patiently and always pay attention to the APP announcement infommation. The TechFinger team apologizes for the inconvenience caused'
-				}
+				item:{},
+				games:[]
 			}
 		},
 		onLoad(option) {
-			console.log(option)
+			this.games = require('@/static/data/props.json')
+			const id = option.id
+			const arr = this.games.filter(item => {
+				return item.id == id
+			})
+			if(arr && arr.length > 0){
+				this.item = arr[0]
+			}
+			console.log(arr)
 		},
 		methods: {
 			goBack(){
@@ -110,6 +113,7 @@
 			line-height: 40upx;
 		}
 		.attr-content{
+			margin-top: 30upx;
 			font-size: 26upx;
 		}
 	}

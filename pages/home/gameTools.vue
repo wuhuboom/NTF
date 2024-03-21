@@ -5,9 +5,9 @@
 			<view class="swiper-item" v-for="(item ,index) in games" :key="index" @click="showDetail(item)">
 				<view class="img-bg">
 					<!-- <image :src="item.path" model="aspectFill"></image> -->
-					<img :src="item.path"/>
+					<img :src="item.img"/>
 				</view>
-				<view class="game-tools-title">{{item.title}}</view>
+				<view class="game-tools-title">{{item.name}}</view>
 				<view class="game-tools-money">${{item.price}}</view>
 			</view>
 		</view>
@@ -18,13 +18,11 @@
 	export default {
 		data() {
 			return {
-				games:[
-					{id:'1',title:'Shadow Draggers(*) | Damason sheel',price:'97',path:'../../static/images/home/10006.png'},
-					{id:'2',title:'Eahsl Eosdfsqq of the Ciwer Where',price:'560.16',path:'../../static/images/home/10007.png'},
-					{id:'3',title:'sdfsrwer sdfsd dsfsdfsd',price:'15',path:'../../static/images/home/10008.png'},
-					{id:'4',title:'Huasdas garara swerw cxcgwer',price:'108',path:'../../static/images/home/10009.png'}
-				]
+				games:[]
 			}
+		},
+		onLoad() {
+			this.games = require('@/static/data/props.json')
 		},
 		methods: {
 			goBack(){

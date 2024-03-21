@@ -1,0 +1,282 @@
+[
+	
+	{
+	  "id": "01",
+	  "img": "../../static/images/props/01.png",
+	  "name": "★ Karambit | Marble Fade (Factory New)",
+	  "price": "$1 821.43",
+	  "template": "878",
+	  "wearDegree": "0.05650399625301361",
+	  "type": "Knife",
+	  "style": "",
+	  "quality": "Marble Fade",
+	  "Exterior": "Factory New",
+	  "describe": "With its curved blade like a tiger's claw, the claw knife was developed as part of Malay martial arts in Southeast Asia. This dagger is usually used with an underhand grip with the index and ring fingers. The weapon is painted with faux marbling on black and silver metallic paint, and has a three-color icing on the exterior. The bayonet sees the rainbow, the bayonet sees the red"
+	},
+	
+	{
+	  "id": "02",
+	  "img": "../../static/images/props/02.png",
+	  "name": "★ Karambit | Gamma Doppler (Factory New)",
+	  "price": "$1 791.29",
+	  "template": "622",
+	  "wearDegree": "0.023734407499432564",
+	  "type": "Knife",
+	  "style": "",
+	  "quality": "Gamma Doppler",
+	  "Exterior": "Factory New",
+	  "describe": "With its curved blade like a tiger's claw, the claw knife was developed as part of Malay martial arts in Southeast Asia. This dagger is usually used with an underhand grip with the index and ring fingers. The weapon is painted in black and silver metallic with faux marbling to camouflage its danger."
+	},
+	
+	{
+	  "id": "03",
+	  "img": "../../static/images/props/03.png",
+	  "name": "★ StatTrak? Karambit | Doppler (Factory New)",
+	  "price": "$1 658.97",
+	  "template": "251",
+	  "wearDegree": "0.011265799403190613",
+	  "type": "Knife",
+	  "style": "",
+	  "quality": "Doppler",
+	  "Exterior": "Factory New",
+	  "describe": "With its curved blade like a tiger's claw, the claw knife was developed as part of Malay martial arts in Southeast Asia. This dagger is usually used with an underhand grip with the index and ring fingers. The weapon is painted with faux marbling on black and silver metallic paint and is sugar coated. Being fooled by its appearance can have serious consequences"
+	},
+	
+	{
+	  "id": "04",
+	  "img": "../../static/images/props/04.png",
+	  "name": "★ Karambit | Doppler (Factory New)",
+	  "price": "$1 560.84",
+	  "template": "16",
+	  "wearDegree": "0.025176873430609703",
+	  "type": "Knife",
+	  "style": "",
+	  "quality": "Doppler",
+	  "Exterior": "Factory New",
+	  "describe": "With its curved blade like a tiger's claw, the claw knife was developed as part of Malay martial arts in Southeast Asia. This dagger is usually used with an underhand grip with the index and ring fingers. The weapon is painted with faux marbling on black and silver metallic paint and is sugar coated. Being fooled by its appearance can have serious consequences"
+	},
+	
+	{
+	  "id": "05",
+	  "img": "../../static/images/props/05.png",
+	  "name": "★ Karambit | Tiger Tooth (Factory New)",
+	  "price": "$1 675.98",
+	  "template": "744",
+	  "wearDegree": "0.033207375556230545",
+	  "type": "Knife",
+	  "style": "",
+	  "quality": "Tiger Tooth",
+	  "Exterior": "Factory New",
+	  "describe": "With its curved blade like a tiger's claw, the claw knife was developed as part of Malay martial arts in Southeast Asia. This dagger is usually used with an underhand grip with the index and ring fingers. This weapon is anodized and hand-etched with tiger stripes. Rare as a tiger... Deadly as a tiger..."
+	},
+	
+	{
+	  "id": "06",
+	  "img": "../../static/images/props/06.png",
+	  "name": "★ Karambit | Rust Coat (Battle-Scarred)",
+	  "price": "$682.28",
+	  "template": "750",
+	  "wearDegree": "0.4504791498184204",
+	  "type": "Knife",
+	  "style": "",
+	  "quality": "Rust Coat",
+	  "Exterior": "Battle-Scarred",
+	  "describe": "With its curved blade like a tiger's claw, the claw knife was developed as part of Malay martial arts in Southeast Asia. This dagger is usually used with an underhand grip with the index and ring fingers. This weapon can be described in one sentence: While there is nothing but gold and jade. Those who wield this weapon can no longer hide the heinous crimes they committed"
+	},
+	
+	{
+	  "id": "07",
+	  "img": "../../static/images/props/07.png",
+	  "name": "★ Karambit | Blue Steel (Minimal Wear)",
+	  "price": "$1 257.59",
+	  "template": "31",
+	  "wearDegree": "0.08981300890445709",
+	  "type": "Knife",
+	  "style": "",
+	  "quality": "Blue Steel",
+	  "Exterior": "Minimal Wear",
+	  "describe": "With its curved blade like a tiger's claw, the claw knife was developed as part of Malay martial arts in Southeast Asia. This dagger is usually used with an underhand grip with the index and ring fingers. This weapon has been completely dyed blue. The Malbec of weapon design - Arms Dealer Booth"
+	},
+	
+	{
+	  "id": "08",
+	  "img": "../../static/images/props/08.png",
+	  "name": "★ Karambit | Fade (Minimal Wear)",
+	  "price": "$2 809.98",
+	  "template": "550",
+	  "wearDegree": "0.07422520220279694",
+	  "type": "Knife",
+	  "style": "",
+	  "quality": "Fade",
+	  "Exterior": "Minimal Wear",
+	  "describe": "With its curved blade like a tiger's claw, the claw knife was developed as part of Malay martial arts in Southeast Asia. This dagger is usually used with an underhand grip with the index and ring fingers. This weapon has a chrome Exterior, painted with a gradient of transparent paint using an airbrush. It's not just a weapon, it's a trend - Trainee Arms Dealer Imogen"
+	},
+	
+	{
+	  "id": "09",
+	  "img": "../../static/images/props/09.png",
+	  "name": "★ StatTrak? Karambit | Doppler (Factory New)",
+	  "price": "$1 658.97",
+	  "template": "674",
+	  "wearDegree": "0.023727940395474434",
+	  "type": "Knife",
+	  "style": "",
+	  "quality": "Doppler",
+	  "Exterior": "Factory New",
+	  "describe": "With its curved blade like a tiger's claw, the claw knife was developed as part of Malay martial arts in Southeast Asia. This dagger is usually used with an underhand grip with the index and ring fingers. The weapon is painted with faux marbling on black and silver metallic paint and is sugar coated. Being fooled by its appearance can have serious consequences"
+	},
+	
+	{
+	  "id": "10",
+	  "img": "../../static/images/props/10.png",
+	  "name": "★ StatTrak? Karambit | Doppler (Factory New)",
+	  "price": "$1 658.97",
+	  "template": "123",
+	  "wearDegree": "0.05993960425257683",
+	  "type": "Knife",
+	  "style": "",
+	  "quality": "Doppler",
+	  "Exterior": "Factory New",
+	  "describe": "With its curved blade like a tiger's claw, the claw knife was developed as part of Malay martial arts in Southeast Asia. This dagger is usually used with an underhand grip with the index and ring fingers. The weapon is painted with faux marbling on black and silver metallic paint and is sugar coated. Being fooled by its appearance can have serious consequences"
+	},
+	
+	{
+	  "id": "11",
+	  "img": "../../static/images/props/11.png",
+	  "name": "★ Karambit | Bright Water (Minimal Wear)",
+	  "price": "$1 120.64",
+	  "template": "741",
+	  "wearDegree": "0.08507615327835083",
+	  "type": "Knife",
+	  "style": "",
+	  "quality": "Bright Water",
+	  "Exterior": "Minimal Wear",
+	  "describe": "With its curved blade like a tiger's claw, the claw knife was developed as part of Malay martial arts in Southeast Asia. This dagger is usually used with an underhand grip with the index and ring fingers. This weapon has a blue camouflage pattern."
+	},
+	
+	{
+	  "id": "12",
+	  "img": "../../static/images/props/12.png",
+	  "name": "★ Karambit | Lore (Factory New)",
+	  "price": "$3 206.55",
+	  "template": "743",
+	  "wearDegree": "0.0692860335111618",
+	  "type": "Knife",
+	  "style": "",
+	  "quality": "Lore",
+	  "Exterior": "Factory New",
+	  "describe": "With its curved blade like a tiger's claw, the claw knife was developed as part of Malay martial arts in Southeast Asia. This dagger is usually used with an underhand grip with the index and ring fingers. This weapon has been custom painted using Knots."
+	},
+	
+	{
+	  "id": "13",
+	  "img": "../../static/images/props/13.png",
+	  "name": "★ Karambit | Lore (Factory New)",
+	  "price": "$3 206.55",
+	  "template": "689",
+	  "wearDegree": "0.0688619464635849",
+	  "type": "Knife",
+	  "style": "",
+	  "quality": "Lore",
+	  "Exterior": "Factory New",
+	  "describe": "With its curved blade like a tiger's claw, the claw knife was developed as part of Malay martial arts in Southeast Asia. This dagger is usually used with an underhand grip with the index and ring fingers. This weapon has been custom painted using Knots."
+	},
+	
+	{
+	  "id": "14",
+	  "img": "../../static/images/props/14.png",
+	  "name": "★ StatTrak? Karambit | Ultraviolet (Field-Tested)",
+	  "price": "$979.85",
+	  "template": "920",
+	  "wearDegree": "0.3489029109477997",
+	  "type": "Knife",
+	  "style": "",
+	  "quality": "Ultraviolet",
+	  "Exterior": "Field-Tested",
+	  "describe": "With its curved blade like a tiger's claw, the claw knife was developed as part of Malay martial arts in Southeast Asia. This dagger is usually used with an underhand grip with the index and ring fingers. Parts of this weapon are overall painted in a black and purple color scheme. A cruel and despicable conspiracy hides under the noble pattern"
+	},
+	
+	{
+	  "id": "15",
+	  "img": "../../static/images/props/15.png",
+	  "name": "★ StatTrak? Karambit | Ultraviolet (Field-Tested)",
+	  "price": "$979.85",
+	  "template": "556",
+	  "wearDegree": "0.3008832335472107",
+	  "type": "Knife",
+	  "style": "",
+	  "quality": "Ultraviolet",
+	  "Exterior": "Field-Tested",
+	  "describe": "With its curved blade like a tiger's claw, the claw knife was developed as part of Malay martial arts in Southeast Asia. This dagger is usually used with an underhand grip with the index and ring fingers. Parts of this weapon are overall painted in a black and purple color scheme. A cruel and despicable conspiracy hides under the noble pattern"
+	},
+	
+	{
+	  "id": "16",
+	  "img": "../../static/images/props/16.png",
+	  "name": "★ StatTrak? Karambit | Doppler (Factory New)",
+	  "price": "$1 658.97",
+	  "template": "98",
+	  "wearDegree": "0.011691940017044544",
+	  "type": "Knife",
+	  "style": "",
+	  "quality": "Doppler",
+	  "Exterior": "Factory New",
+	  "describe": "With its curved blade like a tiger's claw, the claw knife was developed as part of Malay martial arts in Southeast Asia. This dagger is usually used with an underhand grip with the index and ring fingers. The weapon is painted with faux marbling on black and silver metallic paint and is sugar coated. Being fooled by its appearance can have serious consequences"
+	},
+	
+	{
+	  "id": "17",
+	  "img": "../../static/images/props/17.png",
+	  "name": "★ StatTrak? Karambit | Doppler (Factory New)",
+	  "price": "$1 658.97",
+	  "template": "776",
+	  "wearDegree": "0.008951086550951004",
+	  "type": "Knife",
+	  "style": "",
+	  "quality": "Doppler",
+	  "Exterior": "Factory New",
+	  "describe": "With its curved blade like a tiger's claw, the claw knife was developed as part of Malay martial arts in Southeast Asia. This dagger is usually used with an underhand grip with the index and ring fingers. The weapon is painted with faux marbling on black and silver metallic paint and is sugar coated. Being fooled by its appearance can have serious consequences"
+	},
+	
+	{
+	  "id": "18",
+	  "img": "../../static/images/props/18.png",
+	  "name": "★ StatTrak? Karambit | Fade (Factory New)",
+	  "price": "$3 059.40",
+	  "template": "754",
+	  "wearDegree": "0.052813511341810226",
+	  "type": "Knife",
+	  "style": "",
+	  "quality": "Fade",
+	  "Exterior": "Factory New",
+	  "describe": "With its curved blade like a tiger's claw, the claw knife was developed as part of Malay martial arts in Southeast Asia. This dagger is usually used with an underhand grip with the index and ring fingers. This weapon has a chrome Exterior, painted with a gradient of transparent paint using an airbrush. It's not just a weapon, it's a trend - Trainee Arms Dealer Imogen"
+	},
+	
+	{
+	  "id": "19",
+	  "img": "../../static/images/props/19.png",
+	  "name": "★ StatTrak? Karambit | Fade (Factory New)",
+	  "price": "$3 059.40",
+	  "template": "747",
+	  "wearDegree": "0.0250046718865633",
+	  "type": "Knife",
+	  "style": "",
+	  "quality": "Fade",
+	  "Exterior": "Factory New",
+	  "describe": "With its curved blade like a tiger's claw, the claw knife was developed as part of Malay martial arts in Southeast Asia. This dagger is usually used with an underhand grip with the index and ring fingers. This weapon has a chrome Exterior, painted with a gradient of transparent paint using an airbrush. It's not just a weapon, it's a trend - Trainee Arms Dealer Imogen"
+	},
+	
+	{
+	  "id": "20",
+	  "img": "../../static/images/props/20.png",
+	  "name": "★ Karambit | Case Hardened (Well-Worn)",
+	  "price": "$1 138.89",
+	  "template": "448",
+	  "wearDegree": "0.4392581582069397",
+	  "type": "Knife",
+	  "style": "",
+	  "quality": "Case Hardened",
+	  "Exterior": "Well-Worn",
+	  "describe": "With its curved blade like a tiger's claw, the claw knife was developed as part of Malay martial arts in Southeast Asia. This dagger is usually used with an underhand grip with the index and ring fingers. Through the application of charcoal at high temperatures, this weapon has been quenched with a colored finish. A little trace of color doesn't hurt"
+	}
+]

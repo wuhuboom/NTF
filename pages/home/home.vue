@@ -30,7 +30,7 @@
 								<img :src="item.img"/>
 							</view>
 							<view class="game-tools-title">{{item.name}}</view>
-							<view class="game-tools-money">${{item.price}}</view>
+							<view class="game-tools-money">{{item.price}}</view>
 						</view>
 					</swiper-item>
 				</block>
@@ -78,7 +78,7 @@
 				current: 0,
 				mode: 'round',
 				notice:{
-					content:'[单行] 这是 NoticeBar 通告栏，这是 NoticeBar 通告栏，这是 NoticeBar 通告栏'
+					content:'[单行] 这是 NoticeBar '
 				},
 				gameTools:[],
 				tabIndex:1,
@@ -93,6 +93,7 @@
 		},
 		onLoad() {
 			this.getSwitch()
+			this.loadNotice()
 			this.gameTools = require('@/static/data/props.json')
 			const gameData = require('@/static/data/games.json')
 			this.gamezhis = gameData.zhishu
@@ -118,7 +119,12 @@
 			},
 			loadNotice(){
 				this.$http.get('/player/home/notice',(res)=>{
-					
+					if(res.code == 200){
+						const datas = res.data
+						if(datas && datas.length > 0){
+							this.notice = datas[0]
+						}
+					}
 				})
 			},
 			change(e) {

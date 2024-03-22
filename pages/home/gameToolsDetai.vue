@@ -25,7 +25,7 @@
 			
 		</view>
 		<view class="game-price">
-			<view class="price">{{$t('home.game.tool.attr.price')}} ${{item.price}}</view>
+			<view class="price">{{$t('home.game.tool.attr.price')}} {{item.price}}</view>
 		</view>
 	</view>
 </template>

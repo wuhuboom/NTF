@@ -182,7 +182,7 @@
 		},
 		onLoad() {
 			this.loadData()
-			this.getSwitch()
+			// this.getSwitch()
 		},
 		methods: {
 			getSwitch(){

@@ -8,7 +8,7 @@
 					<img :src="item.img"/>
 				</view>
 				<view class="game-tools-title">{{item.name}}</view>
-				<view class="game-tools-money">${{item.price}}</view>
+				<view class="game-tools-money">{{item.price}}</view>
 			</view>
 		</view>
 	</view>

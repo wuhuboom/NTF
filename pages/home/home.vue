@@ -5,7 +5,7 @@
 				<swiper class="swiper-box" @change="change" :autoplay="true" :circular="true">
 					<swiper-item v-for="(item ,index) in swipers" :key="index">
 						<view class="swiper-item">
-							<image :src="item.path" model="scaleToFill"></image>
+							<image :src="item.imageUrl" model="scaleToFill"></image>
 						</view>
 					</swiper-item>
 				</swiper>
@@ -71,9 +71,9 @@
 		data() {
 			return {
 				swipers:[
-					{id:'1',name:'',path:'../../static/images/home/10001.jpg'},
-					{id:'2',name:'',path:'../../static/images/home/10002.jpg'},
-					{id:'3',name:'',path:'../../static/images/home/10003.jpg'}
+					{id:'1',name:'',imageUrl:'../../static/images/home/10001.jpg'},
+					{id:'2',name:'',imageUrl:'../../static/images/home/10002.jpg'},
+					{id:'3',name:'',imageUrl:'../../static/images/home/10003.jpg'}
 				],
 				current: 0,
 				mode: 'round',
@@ -92,12 +92,21 @@
 			}
 		},
 		onLoad() {
+			this.getSwitch()
 			this.gameTools = require('@/static/data/props.json')
 			const gameData = require('@/static/data/games.json')
 			this.gamezhis = gameData.zhishu
 			this.gamedowns = gameData.down
 		},
 		methods: {
+			getSwitch(){
+				const lang = uni.getLocale();
+				this.$http.get('/player/home/slider?lang=' + lang,res=>{
+					if(res.code==200){
+						this.swipers  = res.data
+					}
+				})
+			},
 			// 
 			changeTab(index){
 				this.tabIndex = index

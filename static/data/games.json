@@ -6,9 +6,9 @@
 		{"name":"Counter","num":"163620552","rate":"135212269","path":"../../static/images/home/10041.png"}
 	],
 	"down":[
-		{"name":"Genshin","path":"../../static/images/home/10028.png","url":"https://"},
-		{"name":"Worder of Warcarit","path":"../../static/images/home/10029.png","url":"https://"},
-		{"name":"Grand Theft Auto V","path":"../../static/images/home/10030.png","url":"https://"},
-		{"name":"Genshin","path":"../../static/images/home/10031.png","url":"https://"}
+		{"name":"Genshin","path":"../../static/images/home/10028.png","url":"https://genshin.hoyoverse.com/en"},
+		{"name":"Worder of Warcarit","path":"../../static/images/home/10029.png","url":"https://worldofwarcraft.blizzard.com/"},
+		{"name":"Grand Theft Auto V","path":"../../static/images/home/10030.png","url":"https://store.steampowered.com/"},
+		{"name":"Genshin","path":"../../static/images/home/10031.png","url":"https://www.dota2.com/home"}
 	]
 }

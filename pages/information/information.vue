@@ -6,15 +6,15 @@
 				<swiper class="swiper-box" @change="change" :autoplay="true" :circular="true">
 					<swiper-item v-for="(item ,index) in swipers" :key="index">
 						<view class="swiper-item">
-							<image :src="item.path" model="scaleToFill"></image>
+							<image :src="item.imageUrl" model="scaleToFill"></image>
 						</view>
 					</swiper-item>
 				</swiper>
 			</uni-swiper-dot>
 		</view>
 		<view class="game-tab">
-			<view class="tab-bar" :class="tabIndex==1?'tab-active':''" @click="changeTab(1)">{{$t('info.menu1.title')}}
-			</view>
+			<!-- <view class="tab-bar" :class="tabIndex==1?'tab-active':''" @click="changeTab(1)">{{$t('info.menu1.title')}}
+			</view> -->
 			<view class="tab-bar" :class="tabIndex==2?'tab-active':''" @click="changeTab(2)">{{$t('info.menu2.title')}}
 			</view>
 			<view class="tab-bar" :class="tabIndex==3?'tab-active':''" @click="changeTab(3)">{{$t('info.menu3.title')}}
@@ -87,7 +87,7 @@
 						<view class="col col5">{{$t('info.trade.col5.text')}}</view>
 					</view>
 					<view class="row" v-for="(item,index) in tradeList" :key="index">
-						<view class="col col1">{{formatDate(item.createTime,1)}}</view>
+						<view class="col col1">{{formatDate(item.createTime * 1000,1)}}</view>
 						<view class="col col2">
 							<image :src="item.image" mode="scaleToFill"></image>
 						</view>
@@ -113,26 +113,48 @@
 				swipers: [{
 						id: '1',
 						name: '',
-						path: '../../static/images/info/10005.jpeg'
+						imageUrl: '../../static/images/info/10005.jpeg'
 					},
 					{
 						id: '2',
 						name: '',
-						path: '../../static/images/info/10006.jpeg'
+						imageUrl: '../../static/images/info/10006.jpeg'
 					},
 					{
 						id: '3',
 						name: '',
-						path: '../../static/images/info/10007.jpeg'
+						imageUrl: '../../static/images/info/10007.jpeg'
 					}
 				],
 				current: 0,
 				mode: 'round',
-				tabIndex: 1,
+				tabIndex: 2,
 				matchIndex:0,//状态,默认0, 0.即将开始 1.进行中 2.已结束
 				decetionList: [], //发现
 				matchList: [],
-				videoList: [],
+				videoList: [
+					{  
+						"createdAt": "2024035",
+						"title": "",
+						"imageUrl": "../../static/images/info/10009.jpeg",
+						"times": "39s",
+						"videoUrl": "https://www.twitch.tv/videos/1871760314",
+					},
+					{
+						"createdAt": "2024035",
+						"title": "",
+						"imageUrl": "../../static/images/info/10011.jpeg",
+						"times": "42s",
+						"videoUrl": "https://www.twitch.tv/videos/1871760150",
+					},
+					{
+						"createdAt": "2024035",
+						"title": "",
+						"imageUrl": "../../static/images/info/10007.jpeg",
+						"times": "26s",
+						"videoUrl": "https://www.twitch.tv/videos/1871759888",
+					}
+				],
 				tradeList: [
 					// {
 					// 	"createTime": 1710720346000,
@@ -159,8 +181,17 @@
 		},
 		onLoad() {
 			this.loadData()
+			this.getSwitch()
 		},
 		methods: {
+			getSwitch(){
+				const lang = uni.getLocale();
+				this.$http.get('/player/home/slider?lang=' + lang,res=>{
+					if(res.code==200){
+						this.swipers  = res.data
+					}
+				})
+			},
 			goPage(item){
 				uni.navigateTo({
 					url:'./decetion',
@@ -179,7 +210,7 @@
 				this.totalPage = 1
 				this.decetionList = []
 				this.matchList = []
-				this.videoList = []
+				// this.videoList = []
 				this.tradeList = []
 				await  this.loadData()
 				this.refresherTriggered = false
@@ -241,16 +272,16 @@
 					pageSize : this.pageSize
 				}
 				this.$http.post('/player/information/video',para,res => {
-					if(res.code == 200){
-						res = res.data
-						this.videoList = [...this.videoList, ...res.results]
-						this.totalPage = res.totalPage
-						if (this.pageNo >= res.totalPage) {
-						    this.pageNo = res.totalPage + 1;
-						} else {
-						    this.pageNo = this.pageNo + 1
-						}
-					}
+					// if(res.code == 200){
+					// 	res = res.data
+					// 	this.videoList = [...this.videoList, ...res.results]
+					// 	this.totalPage = res.totalPage
+					// 	if (this.pageNo >= res.totalPage) {
+					// 	    this.pageNo = res.totalPage + 1;
+					// 	} else {
+					// 	    this.pageNo = this.pageNo + 1
+					// 	}
+					// }
 				})
 			},
 			// 查询发现列表

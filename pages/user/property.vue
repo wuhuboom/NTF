@@ -7,7 +7,7 @@
 				<view class="title">{{$t('property.header.title')}}</view>
 				<uni-icons :type="isShow?'eye':'eye-slash'" color="#fff" :size="24"  @click="showBalance"></uni-icons>
 			</view>
-			<view class="balance" v-if="isShow">${{balance.totalBalance}}</view>
+			<view class="balance" v-if="isShow">${{divide(balance.totalBalance)}}</view>
 			<view class="balance" v-else>${{gethideNum(balance.totalBalance)}}</view>
 		</view>
 		
@@ -28,8 +28,8 @@
 				<view class="right">
 					<view class="menu-text">{{item.currency.name}}</view>
 					<view class="menu-num">
-						<view class="up">{{item.balance}}</view>
-						<view class="rate">${{item.currency.rate}}</view>
+						<view class="up">${{divide(item.balance)}}</view>
+						<view class="rate">{{item.currency.rate}}</view>
 					</view>
 				</view>
 			</view>
@@ -38,6 +38,7 @@
 </template>
 
 <script>
+	import {divide} from '@/utils/util.js'
 	export default {
 		data() {
 			return {
@@ -54,32 +55,33 @@
 				// 	{name:'TFI',num:'0',icon:'../../static/images/user/10026.png',path:''}
 				// ],
 				balance:{
-					totalBalance:'0',
-					list:[
-						{
-						balance: '100',
-						currency: {
-							name: "USD",
-							imgUrl: "../../static/images/user/10024.png",
-							rate: '7.12'
-						}},
-						{
-						balance: '0',
-						currency: {
-							name: "USDT",
-							imgUrl: "../../static/images/user/10025.png",
-							rate: '7.12'
-						}},
-						{
-						balance: '80',
-						currency: {
-							name: "TFI",
-							imgUrl: "../../static/images/user/10026.png",
-							rate: '7.12'
-						}},
+					// totalBalance:'0',
+					// list:[
+					// 	{
+					// 	balance: '100',
+					// 	currency: {
+					// 		name: "USD",
+					// 		imgUrl: "../../static/images/user/10024.png",
+					// 		rate: '7.12'
+					// 	}},
+					// 	{
+					// 	balance: '0',
+					// 	currency: {
+					// 		name: "USDT",
+					// 		imgUrl: "../../static/images/user/10025.png",
+					// 		rate: '7.12'
+					// 	}},
+					// 	{
+					// 	balance: '80',
+					// 	currency: {
+					// 		name: "TFI",
+					// 		imgUrl: "../../static/images/user/10026.png",
+					// 		rate: '7.12'
+					// 	}},
 						
-					]
-				}
+					// ]
+				},
+				divide:divide
 			}
 		},
 		onLoad() {
@@ -89,7 +91,7 @@
 			getCurrency(){
 				this.$http.get('/player/currency/list',res=>{
 					if(res.code == 200){
-						// this.balance = res.data
+						this.balance = res.data
 					}
 				})
 			},
@@ -104,8 +106,11 @@
 			},
 			gethideNum(num){
 				let val = "*"
-				for(var i = 0;i<num.length ;i++){
-					val +'*'
+				if(num){
+					num = num.toString();
+					for(var i = 0;i<num.length ;i++){
+						val +='*'
+					}
 				}
 				return val
 			},
@@ -195,6 +200,7 @@
 					}
 					.rate{
 						font-size: 24upx;
+						text-align: right;
 					}
 				}
 			}

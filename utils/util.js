@@ -21,5 +21,11 @@ export const formatDate = (timestamp,type)=>{
 		}else{
 			return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 		}
-      
+}
+
+export const divide = (num) =>{
+	if(num > 0){
+		num = (num / 100).toFixed(2)
+	}
+	return formatNum(num)
 }

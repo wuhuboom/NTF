@@ -39,7 +39,7 @@
 				welImg:'../../static/images/user/10015.png',
 				trades:[
 					{title:this.$t('user.trade.title1.text'),icon:'../../static/images/user/10016.png',path:'./property'},
-					{title:this.$t('user.trade.title2.text'),icon:'../../static/images/user/dingtou.png',path:'./investment'},
+					{title:this.$t('user.trade.title2.text'),icon:'../../static/images/user/dingtou.png',path:'./investDetail'},
 					{title:this.$t('user.trade.title3.text'),icon:'../../static/images/user/10017.png',path:'./income'}
 				],
 				menus:[

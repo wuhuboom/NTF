@@ -136,21 +136,21 @@
 					{  
 						"createdAt": "2024035",
 						"title": "",
-						"imageUrl": "../../static/images/info/10009.jpeg",
+						"imageUrl": "../../static/images/info/2001.png",
 						"times": "39s",
 						"videoUrl": "https://www.twitch.tv/videos/1871760314",
 					},
 					{
 						"createdAt": "2024035",
 						"title": "",
-						"imageUrl": "../../static/images/info/10011.jpeg",
+						"imageUrl": "../../static/images/info/2002.png",
 						"times": "42s",
 						"videoUrl": "https://www.twitch.tv/videos/1871760150",
 					},
 					{
 						"createdAt": "2024035",
 						"title": "",
-						"imageUrl": "../../static/images/info/10007.jpeg",
+						"imageUrl": "../../static/images/info/2003.png",
 						"times": "26s",
 						"videoUrl": "https://www.twitch.tv/videos/1871759888",
 					}
@@ -173,6 +173,7 @@
 					// 	"to": "qwerwer"
 					// }
 				],
+				cursor:'',
 				pageNo: 1,
 				pageSize: 10,
 				totalPage:1,
@@ -201,6 +202,7 @@
 				})
 			},
 			scrolltolower() {
+				this.pageNo++
 				this.loadData()
 			},
 			//下拉刷新
@@ -288,12 +290,14 @@
 			getTrade(){
 				let para = {
 					pageNo : this.pageNo,
-					pageSize : this.pageSize
+					pageSize : this.pageSize,
+					cursor : this.cursor
 				}
 				this.$http.post('/player/information/deal',para,res => {
 					if(res.code == 200){
 						res = res.data
 						this.tradeList = [...this.tradeList, ...res.results]
+						this.cursor = res.cursor
 						this.totalPage = res.totalPage
 						if (this.pageNo >= res.totalPage) {
 						    this.pageNo = res.totalPage + 1;

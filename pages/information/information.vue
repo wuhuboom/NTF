@@ -455,11 +455,11 @@
 		.match-tab {
 			display: flex;
 			align-items: center;
-			justify-content: flex-start;
+			justify-content: space-between;
 			color: rgb(183, 186, 188);
 			margin-top: -40upx;
 			.tab-bar {
-				width: 170upx;
+				min-width: 170upx;
 				height: 100upx;
 				text-align: center;
 				font-size: 32upx;

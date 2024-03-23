@@ -199,7 +199,7 @@
 			},
 			goRecord(){
 				uni.navigateTo({
-					url:''
+					url:'./investRecord'
 				})
 			},
 			goBack(){
@@ -292,8 +292,8 @@
 				color: #fff;
 			}
 			::v-deep .uni-easyinput__content{
-				background-color: rgb(24, 24, 34)!important;
-				border-color: rgb(24, 24, 34)!important;
+				background-color: rgb(1, 19, 18)!important;
+				border-color: rgb(1, 19, 18)!important;
 				color: rgb(255,255,255)!important;
 			}
 			::v-deep .uni-icons{
@@ -304,7 +304,7 @@
 				justify-content: space-between;
 				align-items: center;
 				position: relative;
-				background-color: rgb(24, 24, 34)!important;
+				background-color: rgb(1, 19, 18)!important;
 				box-shadow: inset 0 0 16upx 0upx $fontColor;
 				border-radius: 10upx;
 				padding: 10upx;
@@ -332,7 +332,29 @@
 				font-size: 24upx;
 				 
 			}
-			
+			.form-item-box{
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				width: 100%;
+				background-color: rgb(1, 19, 18);
+				padding-top: 40upx;
+				padding-bottom: 40upx;
+				margin-top: 20upx;
+				.form-item-box-item{
+					width: 33%;
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					justify-content: space-around;
+					height: 120upx;
+				}
+				.divider{
+					width: 2upx;
+					height: 50upx;
+					border-left: 1px solid rgb(51,51,51);
+				}
+			}
 			.btn{
 				background-color: $fontColor;
 				color: #fff;
@@ -342,16 +364,16 @@
 			font-size: 32upx;
 			margin-top: 20upx;
 		}
-		.form-item-box{
+		.detail-box{
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
 			width: 100%;
-			background-color: rgb(24, 24, 34);
+			background-color: rgb(1, 19, 18);
 			padding-top: 40upx;
 			padding-bottom: 40upx;
 			margin-top: 20upx;
-			.form-item-box-item{
+			.detail-box-item{
 				width: 33%;
 				display: flex;
 				flex-direction: column;
@@ -383,7 +405,7 @@
 				}
 			}
 			.rule-content{
-				background-color: rgb(24, 24, 34);
+				background-color: rgb(1, 19, 18);
 				margin-top: 20upx;
 				padding-top: 10upx;
 				padding-bottom: 20upx;

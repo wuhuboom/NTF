@@ -75,10 +75,22 @@
 					url:'./invite'
 				})
 			},
-			goSubPage(item){
-				uni.navigateTo({
-					url:item.path
+			goSrv(){
+				this.$http.get('/player/home/serv',res => {
+					if(res.code == 200){
+						window.location.href = res.data.serviceAddr
+					}
 				})
+			},
+			goSubPage(item){
+				if(item.path=='./contract'){
+					this.goSrv()
+				}else{
+					uni.navigateTo({
+						url:item.path
+					})
+				}
+				
 			}
 		}
 	}
@@ -150,8 +162,11 @@
 				height: 80upx;
 			}
 			.trade-title{
-				font-size: 30upx;
+				font-size: 24upx;
 				color: rgb(185,185,185);
+				height: 60upx;
+				display: flex;
+				align-items: flex-start
 			}
 		}
 	}

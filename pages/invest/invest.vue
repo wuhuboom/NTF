@@ -16,12 +16,12 @@
 			<view class="money" v-if="isShow">${{user.balance}}USD</view>
 			<view class="money" v-else>${{gethideNum(user.balance)}} **</view>
 		</view>
-		<view class="algorithm">
+		<view class="algorithm" v-if="tabIndex==1">
 			<view class="algorithm-item" :class="type==0?'algorithm-active':''" @click="getData(0)">{{$t('invest.algorithm1.text')}}</view>
 			<view class="algorithm-item" :class="type==1?'algorithm-active':''" @click="getData(1)">{{$t('invest.algorithm2.text')}}</view>
 			<view class="algorithm-item" :class="type==2?'algorithm-active':''" @click="getData(2)">{{$t('invest.algorithm3.text')}}</view>
 		</view>
-		<view class="form">
+		<view class="form" v-if="tabIndex==1">
 			<uni-forms ref="form" :modelValue="formData" :rules="rules" label-position="top" :label-width="300">
 				<uni-forms-item :label="$t('invest.money.text')" name="money">
 					<view class="form-item">
@@ -59,12 +59,24 @@
 			<button class="btn" @click="submit">{{$t('btn.invest.text')}}</button>
 		</view>
 		
-		<view class="invest-history" >
+		<view class="invest-history" v-if="tabIndex==1">
 			<view class="left">{{$t('invest.history.text')}}</view>
 			<view class="right" @click="showRecord">
 			{{$t('invest.more.text')}} 
 			<uni-icons type="right" color="rgb(185,185,185)" :size="20"></uni-icons>
 			</view>
+		</view>
+		
+		<view class="form" v-if="tabIndex==3">
+			<uni-forms ref="form" :modelValue="formData" :rules="rules" label-position="top" :label-width="300">
+				<uni-forms-item :label="$t('invest.money.text')" name="money">
+					<uni-easyinput type="text " prefixIcon="locked" v-model="formData.money "  />
+				</uni-forms-item>
+				<uni-forms-item :label="$t('security.update.fundpwd.label')" name="payPwd">
+					<uni-easyinput type="password " prefixIcon="locked" v-model="formData.payPwd" :placeholder="$t('ruls.xxx.please',{name:$t('security.update.fundpwd.label')})" />
+				</uni-forms-item>
+			</uni-forms>
+			<button class="btn" @click="submit">{{$t('btn.invest.text')}}</button>
 		</view>
 	</view>
 </template>
@@ -262,6 +274,7 @@
 		font-size: 26upx;
 		.algorithm-item{
 			width: 33%;
+			height: 90upx;
 			text-align: center;
 			border-bottom: 4upx solid #fff;
 			padding-bottom: 10upx;

@@ -265,8 +265,9 @@
 		align-items: center;
 		justify-content: flex-start;
 		color: rgb(183,186,188);
+		width: 100%;
 		.tab-bar{
-			width: 150upx;
+			min-width: 200upx;
 			height: 90upx;
 		}
 		.tab-active{
@@ -278,7 +279,7 @@
 	}
 	.game-zhi,.game-down {
 		.game-item{
-			height: 100upx;
+			height: 120upx;
 			background-size: 100% 100%;
 			padding-top: 240upx;
 			padding-left: 20upx;

@@ -131,6 +131,7 @@
 	"security.update.newemail.text":"新邮箱地址",
 	"security.update.password.text":"更改登录密码",
 	"security.update.fundpwd.text":"更改安全密码",
+	"security.update.fundpwd.set.text":"为了保护您的交易和账户安全，请设置安全密码",
 	"security.update.pwd.label":"输入新的登录密码",
 	"security.update.pwd.confirm.label":"请确认新的登录密码",
 	"security.update.fundpwd.label":"安全密码",

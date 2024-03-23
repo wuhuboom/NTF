@@ -61,6 +61,14 @@
 				<view class="title">{{item.name}}</view>
 			</view>
 		</view>
+		
+		<uni-popup ref="popup" :mask-click="false" background-color="rgb(1,2,3)">
+			<view class="popup-content">
+				<view class="popup-title">{{$t('security.update.fundpwd.text')}}</view>
+				<view class="popup-info">{{$t('security.update.fundpwd.set.text')}}</view>
+				<button @click="goSetPwd" class="popup-btn">{{$t('btn.change.confirm.text')}}</button>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
@@ -92,6 +100,7 @@
 			}
 		},
 		onLoad() {
+			this.checkSetPwd()
 			this.getSwitch()
 			this.loadNotice()
 			this.gameTools = require('@/static/data/props.json')
@@ -100,6 +109,20 @@
 			this.gamedowns = gameData.down
 		},
 		methods: {
+			goSetPwd(){
+				uni.navigateTo({
+					url:'/pages/user/updateFundPwd'
+				})
+			},
+			checkSetPwd(){
+				this.$http.get('/player/getPwdPay',res=>{
+					const type = res.data.paySet
+					if(type==2){
+						this.$refs.popup.open('center')
+					}
+				})
+				
+			},
 			getSwitch(){
 				const lang = uni.getLocale();
 				this.$http.get('/player/home/slider?lang=' + lang,res=>{
@@ -305,6 +328,28 @@
 					height: 50upx;
 				}
 			}
+		}
+	}
+	.popup-content{
+		width: 600upx;
+		height: 300upx;
+		color: #fff;
+		padding-top: 40upx;
+		.popup-title{
+			text-align: center;
+			font-size: 34upx;
+			font-weight: 600;
+		}
+		.popup-info{
+			margin-top: 20upx;
+			font-size: 26upx;
+		}
+		.popup-btn{
+			background-color: $fontColor;
+			color: #fff;
+			height: 80upx;
+			width: 300upx;
+			margin-top: 60upx;
 		}
 	}
 }

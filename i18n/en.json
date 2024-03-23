@@ -132,6 +132,7 @@
 	"security.update.pwd.confirm.label":"Please confirm your new login password",
 	"security.update.fundpwd.label":"Security Code",
 	"security.update.fundpwd.confirm.label":"Confirm security password",
+	"security.update.fundpwd.set.text":"To protect your transactions and account security, please set a secure password",
 	"myfriends.header.title":"ranking",
 	"myfriends.rank.title":"Cumulative earnings",
 	"myfriends.rank.invest.title":"Investment income",

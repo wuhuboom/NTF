@@ -49,7 +49,7 @@
 					</view>
 					<view class="form-tips">
 						<view class="tips-left">{{$t('invest.days.text')}}:{{selItem.days}}</view>
-						<view class="tips-right">{{$t('invest.rate.text')}}:{{selItem.rate_conf}}</view>
+						<view class="tips-right">{{$t('invest.rate.text')}}:{{selItem.rateConf}}%</view>
 					</view>
 				</uni-forms-item>
 				<uni-forms-item :label="$t('security.update.fundpwd.label')" name="payPwd">
@@ -164,7 +164,7 @@
 				this.$http.post('/player/deposit/plans',para,res=>{
 					console.log(res)
 					if(res.code == 200){
-						//this.recordList = res.data
+						this.recordList = res.data
 						this.selItem = this.recordList[0] || {}
 					}
 				})
@@ -316,6 +316,7 @@
 				image{
 					width: 60upx;
 					height: 60upx;
+					border-radius: 50%;
 				}
 			}
 			.choose{
@@ -336,6 +337,7 @@
 						image{
 							width: 60upx;
 							height: 60upx;
+							border-radius: 50%;
 						}
 						.tips{
 							font-size: 24upx;

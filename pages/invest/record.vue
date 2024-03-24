@@ -14,34 +14,72 @@
 				<view class="title">{{$t('invest.record.col3.text')}}</view>
 				<view class="money">{{divide(item.totalMoneyLock)}}</view>
 			</view>
-			<view class="row">
+			<!-- <view class="row">
 				<view class="title">{{$t('invest.record.col4.text')}}</view>
 				<view class="money">0</view>
 			</view>
 			<view class="row">
 				<view class="title">{{$t('invest.record.col5.text')}}</view>
 				<view class="money">0</view>
-			</view>
+			</view> -->
 		</view>
 		<view class="invest-record">{{$t('invest.record.order.text')}}</view>
 		<scroll-view scroll-y="true" @scrolltolower="scrolltolower" style="height: 100%;"
 		        @refresherrefresh="getRefresherrefresh" :refresher-enabled="true" :refresher-triggered="refresherTriggered"
 		        refresher-background="transparent">
 			<view class="record-list">
-				<view class="row header">
-					<view class="col col1">{{$t('invest.record.table.col1.text')}}</view>
-					<view class="col col2">{{$t('invest.record.table.col2.text')}}</view>
-					<view class="col col3">{{$t('invest.record.table.col3.text')}}</view>
-					<view class="col col4">{{$t('invest.record.table.col4.text')}}</view>
-				</view>
-				<view class="row" v-for="(item,index) in records" :key="index">
-					<view class="col col1">{{divide(item.money)}}</view>
-					<view class="col col2">{{formatDate(item.finishTime * 1000,1)}}</view>
-					<view class="col col3">{{getType(item.planType)}}</view>
-					<view class="col col4">{{count(item)}}</view>
-				</view>
+				 <view class="record-item" v-for="(item,index) in records" :key="index">
+					 <view class="record-item-head">
+						 <view class="left">
+							 <view class="top">{{$t('invest.record.table.col3.text')}}</view>
+							 <view class="down">{{getType(item.planType)}}</view>
+						 </view>
+						 <view class="right" v-if="item.status==0">
+							 <view class="cal-btn" @click="calInvest(item)">{{$t('btn.caancle.text')}}</view>
+						 </view>
+					 </view>
+					 <view class="record-item-content">
+						 <view class="row">
+							 <view class="left">{{$t('invest.record.table.col5.text')}}</view>
+							 <view class="right" :style="{'color':item.status ==0?'#05ff00':'#ff0000'}">{{getType2(item.status)}}</view>
+						 </view>
+						 <view class="row">
+							 <view class="left">{{$t('invest.record.table.col1.text')}}</view>
+							 <view class="right">$&nbsp;{{divide(item.money)}}</view>
+						 </view>
+						 <view class="row">
+							 <view class="left">{{$t('invest.record.table.col4.text')}}</view>
+							 <view class="right">$&nbsp;<text>{{count(item)}}</text></view>
+						 </view>
+						 <view class="row">
+							 <view class="left">{{$t('invest.record.table.col6.text')}}</view>
+							 <view class="right">{{item.rateConf}}%</view>
+						 </view>
+						 <view class="row">
+							 <view class="left">{{$t('invest.record.table.col7.text')}}</view>
+							 <view class="right">{{item.id}}</view>
+						 </view>
+						 <view class="row">
+							 <view class="left">{{$t('invest.record.table.col2.text')}}</view>
+							 <view class="right">{{formatDate(item.finishTime)}}</view>
+						 </view>
+					 </view>
+				 </view>
 			</view>
 		</scroll-view>
+		<uni-popup ref="popup" type="bottom" background-color="#181822" borderRadius="10px,10px,0px,0px">
+			<view class="popup-form">
+				<uni-forms ref="form" :modelValue="formData" :rules="rules" label-position="top" :label-width="300">
+					<uni-forms-item :label="$t('security.update.fundpwd.label')" name="payPwd">
+						<uni-easyinput type="password" prefixIcon="locked" v-model="formData.payPwd " :placeholder="$t('ruls.xxx.please',{name:$t('security.update.fundpwd.label')})" />
+					</uni-forms-item>
+				</uni-forms>
+				<view class="prop-btn">
+					<button class="cancle-btn btn" @click="closeProp">{{$t('btn.caancle.text')}}</button>
+					<button class="sub-btn btn" @click="submit">{{$t('btn.continue.text')}}</button>
+				</view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
@@ -68,7 +106,7 @@
 				refresherTriggered:false,
 				typeOptions: [
 				    {
-				        label: this.$t("iinvest.menu4.text"),
+				        label: this.$t("invest.menu4.text"),
 				        value: 0
 				    },
 				    {
@@ -78,14 +116,25 @@
 				],
 				typeOptions2: [
 				    {
-				        label: this.$t("invest.menu4.text"),
+				        label: this.$t("invest.record.status0.text"),
 				        value: 0
 				    },
 				    {
-				        label: this.$t("invest.menu1.text"),
+				        label: this.$t("invest.record.status1.text"),
 				        value: 1
 				    }
 				],
+				formData:{
+					payPwd:'',
+					id:''
+				},
+				rules: {
+					payPwd: {
+						rules: [
+							{required: true,errorMessage: this.$t('ruls.xxx.empty',{name:this.$t('security.update.fundpwd.label')})}
+						]
+					}
+				},
 			}
 		},
 		onLoad() {
@@ -93,6 +142,35 @@
 			this.loadRecord()
 		},
 		methods: {
+			submit(){
+				this.$refs.form.validate().then(res=>{
+					const para = Object.assign({},this.formData)
+					this.$http.post('/player/invest/my/stop',para,(res=>{
+						if(res.code ==200){
+							this.search.pageNo = 1
+							this.totalPage = 1
+							this.records = []
+							this.loadRecord()
+							this.closeProp()
+							uni.showToast({
+								title:this.$t('oper.tip.success.text'),
+								icon:'success'
+							})
+						}
+					}))
+				}).catch(err =>{
+					console.log( err);
+				})
+			},
+			closeProp(){
+				this.formData.id= ''
+				this.formData.payPwd = ''
+				this.$refs.popup.close()
+			},
+			calInvest(item){
+				this.formData.id = item.id
+				this.$refs.popup.open()
+			},
 			scrolltolower() {
 				this.loadRecord()
 			},
@@ -106,7 +184,6 @@
 			},
 			loadRecord(){
 				this.$http.post("/player/invest/my",this.search,res => {
-					console.log(res,'--------2222----------')
 					this.records = [...this.records,...res.results]
 					this.totalPage = res.totalPage;
 					if (this.search.pageNo >= res.totalPage) {
@@ -172,60 +249,91 @@
 		margin-top: 20upx;
 	}
 	.record-list{
-		.header{
-			border-bottom: 1px solid $fontColor!important;
-		}
-		.row{
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			color: #fff;
-			padding-top: 10upx;
-			padding-bottom: 10upx;
-			border-bottom: 1px solid rgb(23,26,29);
-			.col{
-				text-align: center;
-				font-size: 26upx;
-			}
-			.col1{
-				width: 120upx;
-			}
-			.col2{
-				width: 100upx;
-				image{
-					width: 80upx;
-					height: 50upx;
+		 .record-item{
+			 margin-top: 20upx;
+			 color: #fff;
+			 padding: 40upx;
+			 background-color: #181822;
+			 .record-item-head{
+				 display: flex;
+				 justify-content: space-between;
+				 align-items: center;
+				 .left{
+					 display: flex;
+					 flex-direction: column;
+					 align-items: center;
+					 .top{
+						 font-size: 32upx;
+						 font-weight: 600;
+					 }
+					 .down{
+						 color: $fontColor;
+						 font-size: 28upx;
+						 margin-top: 10upx;
+					 }
+				 }
+				.right{
+					width: 150upx;
+					height: 60upx;
+					line-height: 60upx;
+					background-color: $fontColor;
+					border-radius: 16upx;
+					text-align: center;
 				}
-			}
-			.col3{
-				width: 150upx;
-				overflow: hidden;
-				white-space: nowrap;
-				text-overflow: ellipsis;
-			}
-			.col4{
-				width: 130upx;
-			}
-			.col4_1{
-				width: 130upx;
-				color: green;
-			}
-			.col5{
-				width: 150upx;
-			}
-			.col6{
-				width: 150upx;
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-				.address{
-					width: 70upx;
-					overflow: hidden;
-					white-space: nowrap;
-					text-overflow: ellipsis;
-				}
-			}
-		}
+			 }
+			 .record-item-content{
+				 margin-top: 20upx;
+				 .row{
+					 display: flex;
+					 justify-content: space-between;
+					 align-items: center;
+					 font-size: 28upx;
+					 .right{
+						 text{
+							 color:#05ff00
+						 }
+					 }
+				 }
+			 }
+		 }
 	}
+	.popup-form{
+		width: 670upx;
+		padding: 40upx;
+		::v-deep .uni-forms-item__label{
+			color: #fff;
+		}
+		::v-deep .uni-easyinput__content{
+			background-color: rgb(40, 44, 52)!important;
+			border-color: rgb(40, 44, 52)!important;
+			color: rgb(255,255,255)!important;
+		}
+		::v-deep .uni-icons{
+			color: $fontColor!important;
+		}
+		.prop-btn{
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+			.btn{
+				width: 40%;
+				height: 70upx;
+				line-height: 70upx;
+				text-align: center;
+				font-size: 28upx;
+			}
+			.cancle-btn{
+				border: 1px solid $fontColor;
+				background-color: transparent;
+				color: #fff;
+			}
+			.sub-btn{
+				background-color: $fontColor;
+				color: #fff;
+			}
+		}
+		 
+	}
+	
 }
 </style>

@@ -26,7 +26,7 @@
 				<uni-forms-item :label="$t('invest.money.text')" name="money">
 					<view class="form-item">
 						<view class="left">
-							<uni-easyinput type="text" prefixIcon="locked" v-model="formData.money " :placeholder="$t('invest.money.placehoder')" />
+							<uni-easyinput type="text" prefixIcon="wallet" v-model="formData.money " :placeholder="$t('invest.money.placehoder')" />
 						</view>
 						<view class="right" @click="showSelect =!showSelect">
 							<image :src="selItem.headerImg" mode="scaleToFill"></image>

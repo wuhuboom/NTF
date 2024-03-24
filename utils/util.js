@@ -26,11 +26,13 @@ export const formatDate = (timestamp,type)=>{
 export const divide = (num) =>{
 	if(num > 0){
 		num = (num / 100).toFixed(2)
-	}
-	let str = formatNum(num)
-	if (str.charAt(0) === ',') {
-	  str = str.slice(1);
+		let str = formatNum(num)
+		if (str.charAt(0) === ',') {
+		  str = str.slice(1);
+		}
+		return str
+	}else{
+		return 0;
 	}
 	
-	return str
 }

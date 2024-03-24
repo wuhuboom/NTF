@@ -181,7 +181,7 @@
 	"invest.menu2.text":"自营",
 	"invest.menu3.text":"合作伙伴",
 	"invest.menu4.text":"定投",
-	"invest.record.status0.text":"未结束",
+	"invest.record.status0.text":"收益中",
 	"invest.record.status1.text":"已结束",
 	"invest.balance.text":"总资产",
 	"invest.algorithm1.text":"利差算法套利",
@@ -204,6 +204,9 @@
 	"invest.record.table.col2.text":"到期时间",
 	"invest.record.table.col3.text":"投资种类",
 	"invest.record.table.col4.text":"预计收益",
+	"invest.record.table.col5.text":"状态",
+	"invest.record.table.col6.text":"投资比例",
+	"invest.record.table.col7.text":"订单编号",
 	
 	
 	"btn.invest.text":"立即投资",

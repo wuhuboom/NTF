@@ -182,7 +182,7 @@
 	"invest.algorithm2.text":"High-value arbitrage",
 	"invest.algorithm3.text":"Market linkage arbitrage",
 	"invest.menu4.text":"Fixed investment",
-	"invest.record.status0.text":"Not over",
+	"invest.record.status0.text":"In terms of revenue",
 	"invest.record.status1.text":"Over",
 	"invest.money.text":"investment amount",
 	"invest.money.placehoder":"Please enter an integral multiple of $100",
@@ -201,6 +201,9 @@
 	"invest.record.table.col2.text":"Finish Time",
 	"invest.record.table.col3.text":"Type",
 	"invest.record.table.col4.text":"Projected Revenue",
+	"invest.record.table.col5.text":"Status",
+	"invest.record.table.col6.text":"Investment Rate",
+	"invest.record.table.col7.text":"OrderNo",
 	
 	
 	"btn.invest.text":"Invest Now",

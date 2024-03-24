@@ -42,7 +42,7 @@
 	export default {
 		data() {
 			return {
-				isShow:false,
+				isShow:true,
 				hidenum:'',
 				subPages:[
 					{title:this.$t('property.subpage.title1'),icon:'../../static/images/user/10023.png',path:'./recharge'},

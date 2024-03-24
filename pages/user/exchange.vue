@@ -24,7 +24,7 @@
 				</view>
 			</view>
 			<view class="enable-money">
-			{{$t('exchange.enable.text')}}<text>{{bFitem.balance}}</text>
+			{{$t('exchange.enable.text')}}<text>{{divide(bFitem.balance)}}</text>
 			</view>
 			<view class="trans">
 				<view class="logo">
@@ -35,7 +35,7 @@
 			<view class="payways">
 				<view class="show-box" >
 					<view class="way-item">
-						<view class="recive-money">{{aFitem.balance}}</view>
+						<view class="recive-money">{{exchangeMoney}}</view>
 						<view class="right" @click="isAfShow = !isAfShow">
 							 <img :src="aFitem.currency.imgUrl"/>
 							 <view class="way-name">{{aFitem.currency.name}}</view>
@@ -63,6 +63,7 @@
 
 <script>
 	import echarts from '@/components/echarts-uniapp/echarts-uniapp.vue'
+	import {divide100} from '@/utils/util.js'
 	export default {
 		components:{
 			echarts
@@ -72,30 +73,30 @@
 				balance:{
 					totalBalance:'0',
 					list:[
-						{
-						balance: '100',
-						currency: {
-							id:'',
-							name: "USD",
-							imgUrl: "../../static/images/user/10024.png",
-							rate: '7.12'
-						}},
-						{
-						balance: '0',
-						currency: {
-							id:'',
-							name: "USDT",
-							imgUrl: "../../static/images/user/10025.png",
-							rate: '7.12'
-						}},
-						{
-						balance: '80',
-						currency: {
-							id:'',
-							name: "TFI",
-							imgUrl: "../../static/images/user/10026.png",
-							rate: '7.12'
-						}},
+						// {
+						// balance: '100',
+						// currency: {
+						// 	id:'',
+						// 	name: "USD",
+						// 	imgUrl: "../../static/images/user/10024.png",
+						// 	rate: '7.12'
+						// }},
+						// {
+						// balance: '0',
+						// currency: {
+						// 	id:'',
+						// 	name: "USDT",
+						// 	imgUrl: "../../static/images/user/10025.png",
+						// 	rate: '7.12'
+						// }},
+						// {
+						// balance: '80',
+						// currency: {
+						// 	id:'',
+						// 	name: "TFI",
+						// 	imgUrl: "../../static/images/user/10026.png",
+						// 	rate: '7.12'
+						// }},
 						
 					]
 				},
@@ -108,7 +109,9 @@
 					currency:{}
 				},//兑换之后
 				money:'',
-				option : {}
+				exchangeMoney:'',
+				option : {},
+				divide:divide100
 			}
 		},
 		onReady() {
@@ -149,6 +152,11 @@
 		onLoad() {
 			this.getCurrency()
 		},
+		watch:{
+			money(val){
+				this.exchangeMoney =  this.divide(val * this.bFitem.currency.rate * 100)
+			}
+		},
 		methods: {
 			submit(){
 				if(this.money > this.bFitem.balance){
@@ -180,18 +188,29 @@
 			getCurrency(){
 				this.$http.get('/player/currency/list',res=>{
 					if(res.code == 200){
-						// this.balance = res.data
-						this.bFitem = this.balance.list[0] || {}
-						this.money = this.bFitem.balance
-						this.aFitem = this.balance.list[1] || {}
+						this.balance = res.data
+						this.balance.list.forEach(item => {
+							if(item.currency.name=='USD'){
+								this.bFitem = item
+							}else if(item.currency.name=='USDT'){
+								this.aFitem = item
+							}
+						})
+						this.money = this.divide(this.bFitem.balance)
+						// this.bFitem = this.balance.list[0] || {}
+						// this.aFitem = this.balance.list[1] || {}
 					}
 				})
 			},
 			changeBfWay(item){
 				this.bFitem = item
+				this.money = this.divide(this.bFitem.balance)
+				// this.exchangeMoney = this.divide(this.bFitem.balance * this.bFitem.currency.rate)
+				this.isBfShow = !this.isBfShow
 			},
 			changeAfWay(item){
 				this.aFitem = item
+				this.isAfShow = !this.isAfShow
 			},
 			goBack(){
 				uni.navigateBack({
@@ -266,6 +285,12 @@
 			padding-left: 20upx;
 			padding-right: 20upx;
 			border-radius: 20upx;
+			border-bottom: 1px solid rgb(23,24,29);
+			img{
+				width: 60upx;
+				height: auto;
+				border-radius: 50%;
+			}
 			.recive-money{
 				 
 			}
@@ -289,8 +314,9 @@
 					margin-left: 20upx;
 				}
 				img{
-					width: 80upx;
+					width: 60upx;
 					height: auto;
+					border-radius: 50%;
 				}
 			}
 		}

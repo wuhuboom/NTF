@@ -34,5 +34,12 @@ export const divide = (num) =>{
 	}else{
 		return 0;
 	}
-	
+}
+
+export const divide100 = (num) =>{
+	if(num > 0){
+		return num = (num / 100).toFixed(2)
+	}else{
+		return 0;
+	}
 }

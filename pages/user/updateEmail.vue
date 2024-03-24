@@ -55,6 +55,10 @@
 				countTime:60
 			}
 		},
+		onLoad() {
+			const user = uni.getStorageSync('user')
+			this.formData.oldEmail = user.email
+		},
 		methods: {
 			submit(){
 				this.$refs.form.validate().then(res=>{
@@ -65,9 +69,9 @@
 								title:this.$t('oper.tip.success.text'),
 								icon:'none',
 								success() {
-									setTimeout(()=>{
-										window.location.reload()
-									},2000)
+									uni.switchTab({
+										url:'/pages/user/user'
+									})
 								}
 							})
 						}else{

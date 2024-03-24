@@ -2,10 +2,10 @@
 export const formatNum =  (val)=>{
 	val = val.toString();
 	var arrNum=val.split('').reverse().join('').replace(/(\d{3})/g,'$1,').split('').reverse().join('');
-	var arrLength=arrNum.length;
-	if(arrLength%4==0){
-		 arrNum=arrNum.substring(1);
-	}
+	// var arrLength=arrNum.length;
+	// if(arrLength%4==0){
+	// 	 arrNum=arrNum.substring(1);
+	// }
 	return arrNum
 }
 export const formatDate = (timestamp,type)=>{
@@ -27,5 +27,10 @@ export const divide = (num) =>{
 	if(num > 0){
 		num = (num / 100).toFixed(2)
 	}
-	return formatNum(num)
+	let str = formatNum(num)
+	if (str.charAt(0) === ',') {
+	  str = str.slice(1);
+	}
+	
+	return str
 }

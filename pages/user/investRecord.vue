@@ -45,40 +45,23 @@
 				refresherTriggered:false,
 				typeOptions: [
 				    {
-				        label: this.$t("dropdown.billing.all.title.text"),
+				        label: this.$t("invest.record.status0.text"),
 				        value: 0
 				    },
 				    {
-				        label: this.$t("dropdown.billing.income.online.recharge.text"),
+				        label: this.$t("invest.record.status1.text"),
 				        value: 1
-				    },
-				    {
-				        label: this.$t("dropdown.billing.income.offline.recharge.text"),
-				        value: 2
 				    }
 				],
 				typeOptions2: [
 				    {
-				        label: this.$t("dropdown.billing.all.title.text"),
+				        label: this.$t("invest.menu4.text"),
 				        value: 0
 				    },
 				    {
-				        label: this.$t("recharge.record.status.pendding.text"),
+				        label: this.$t("invest.menu1.text"),
 				        value: 1
-				    },
-				    {
-				        label: this.$t("recharge.record.status.paid.text"),
-				        value: 2
-				    },
-				    {
-				        label: this.$t("recharge.record.status.scored.text"),
-				        value: 3
-				    },
-				    {
-				        label: this.$t("recharge.record.status.pay.timeout.text"),
-				        value: 4
 				    }
-				
 				],
 				loadText: {
 				    loadmore: this.$t("load.more.text"),

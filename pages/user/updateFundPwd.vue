@@ -72,9 +72,9 @@
 								title:this.$t('oper.tip.success.text'),
 								icon:'none',
 								success() {
-									setTimeout(()=>{
-										window.location.reload()
-									},2000)
+									uni.navigateTo({
+										url:'/pages/user/security'
+									})
 								}
 							})
 						}else{

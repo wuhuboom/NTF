@@ -26,7 +26,7 @@
 				<uni-forms-item :label="$t('invest.money.text')" name="money">
 					<view class="form-item">
 						<view class="left">
-							<uni-easyinput type="text " prefixIcon="locked" v-model="formData.money " :placeholder="$t('invest.money.placehoder')" />
+							<uni-easyinput type="text" prefixIcon="locked" v-model="formData.money " :placeholder="$t('invest.money.placehoder')" />
 						</view>
 						<view class="right" @click="showSelect =!showSelect">
 							<image :src="selItem.headerImg" mode="scaleToFill"></image>
@@ -41,7 +41,7 @@
 								</view>
 								<view class="row">
 									<view class="tips">{{$t('invest.days.text')}}:{{selItem.days}}</view>
-									<view class="tips">{{$t('invest.rate.text')}}:{{selItem.rate_conf}}</view>
+									<view class="tips">{{$t('invest.rate.text')}}:{{selItem.rateConf}}%</view>
 								</view>
 							</view>
 						</view>
@@ -53,7 +53,7 @@
 					</view>
 				</uni-forms-item>
 				<uni-forms-item :label="$t('security.update.fundpwd.label')" name="payPwd">
-					<uni-easyinput type="password " prefixIcon="locked" v-model="formData.payPwd" :placeholder="$t('ruls.xxx.please',{name:$t('security.update.fundpwd.label')})" />
+					<uni-easyinput type="password" prefixIcon="locked" v-model="formData.payPwd" :placeholder="$t('ruls.xxx.please',{name:$t('security.update.fundpwd.label')})" />
 				</uni-forms-item>
 			</uni-forms>
 			<button class="btn" @click="submit">{{$t('btn.invest.text')}}</button>
@@ -70,10 +70,10 @@
 		<view class="form" v-if="tabIndex==3">
 			<uni-forms ref="form" :modelValue="formData" :rules="rules" label-position="top" :label-width="300">
 				<uni-forms-item :label="$t('invest.money.text')" name="money">
-					<uni-easyinput type="text " prefixIcon="locked" v-model="formData.money "  />
+					<uni-easyinput type="text " prefixIcon="locked" v-model="formData.money"  />
 				</uni-forms-item>
 				<uni-forms-item :label="$t('security.update.fundpwd.label')" name="payPwd">
-					<uni-easyinput type="password " prefixIcon="locked" v-model="formData.payPwd" :placeholder="$t('ruls.xxx.please',{name:$t('security.update.fundpwd.label')})" />
+					<uni-easyinput type="password" prefixIcon="locked" v-model="formData.payPwd" :placeholder="$t('ruls.xxx.please',{name:$t('security.update.fundpwd.label')})" />
 				</uni-forms-item>
 			</uni-forms>
 			<button class="btn" @click="submit">{{$t('btn.invest.text')}}</button>
@@ -92,8 +92,8 @@
 				user:{},
 				formData:{
 					planId:'',
-					money :'',
-					payPwd :''
+					money:'',
+					payPwd:''
 				},
 				rules: {
 					 money: {
@@ -108,26 +108,7 @@
 					}
 				},
 				selItem:{},
-				recordList:[
-					// {
-					// 	"id": 18,
-					// 	"playerName": "AAA",
-					// 	"headerImg": '../../static/images/invest/10004.png',
-					// 	"days": 7,
-					// 	"minMax": "投资额度范围",
-					// 	"rate_conf": '3%-7%',
-					// 	"type": '投资类型:0.利差算法套利,1.高频占位套利,2.市场联动套利',
-					// },
-					// {
-					// 	"id": 19,
-					// 	"playerName": "BBB",
-					// 	"headerImg": '../../static/images/invest/10004.png',
-					// 	"days": 7,
-					// 	"minMax": "投资额度范围",
-					// 	"rate_conf": '2%-6%',
-					// 	"type": '投资类型:0.利差算法套利,1.高频占位套利,2.市场联动套利',
-					// }
-				]
+				recordList:[]
 			}
 		},
 		onLoad(){
@@ -141,14 +122,12 @@
 					para.planId = this.selItem.id
 					this.$http.post('/player/deposit',para,(res=>{
 						if(res.code ==200){
+							this.formData.planId = ''
+							this.formData.money = ''
+							this.formData.payPwd = ''
 							uni.showToast({
 								title:this.$t('oper.tip.success.text'),
-								icon:'none',
-								success() {
-									setTimeout(()=>{
-										window.location.reload()
-									},2000)
-								}
+								icon:'success',
 							})
 						}
 					}))

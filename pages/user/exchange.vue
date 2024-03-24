@@ -165,13 +165,13 @@
 				}
 				this.$http.post('/player/currency/exchange',para,res => {
 					if(res.code == 200){
+						this.money = ''
+						this.getCurrency()
 						uni.showToast({
 							title:this.$t('oper.tip.success.text'),
-							icon:'none',
+							icon:'success',
 							success() {
-								setTimeout(()=>{
-									window.location.reload()
-								},2000)
+								
 							}
 						})
 					}

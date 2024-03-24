@@ -62,8 +62,11 @@
 			</view>
 		</view>
 		
-		<uni-popup ref="popup" :mask-click="false" background-color="rgb(1,2,3)">
+		<uni-popup ref="popup" :mask-click="false" background-color="#001413">
 			<view class="popup-content">
+				<view class="popup-logo">
+					<image src="../../static/images/home/lock.webp" mode="scaleToFill"></image>
+				</view>
 				<view class="popup-title">{{$t('security.update.fundpwd.text')}}</view>
 				<view class="popup-info">{{$t('security.update.fundpwd.set.text')}}</view>
 				<button @click="goSetPwd" class="popup-btn">{{$t('btn.change.confirm.text')}}</button>
@@ -332,12 +335,21 @@
 	}
 	.popup-content{
 		width: 600upx;
-		height: 300upx;
 		color: #fff;
-		padding-top: 40upx;
+		padding: 40upx 20upx;
+		.popup-logo{
+			width: 100%;
+			height: 120upx;
+			display: flex;
+			justify-content: center;
+			image{
+				width: 100upx;
+				height: 100upx;
+			}
+		}
 		.popup-title{
 			text-align: center;
-			font-size: 34upx;
+			font-size: 28upx;
 			font-weight: 600;
 		}
 		.popup-info{

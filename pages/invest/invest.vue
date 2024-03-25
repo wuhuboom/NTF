@@ -78,13 +78,55 @@
 			</uni-forms>
 			<button class="btn" @click="submit">{{$t('btn.invest.text')}}</button>
 		</view>
+		<view class="record-list">
+			 <view class="record-item" v-for="(item,index) in records" :key="index">
+				 <view class="record-item-head">
+					 <view class="left">
+						 <view class="top">{{$t('invest.record.table.col3.text')}}</view>
+						 <view class="down">{{getType(item.planType)}}</view>
+					 </view>
+					 <view class="right" v-if="item.status==0">
+						 <view class="cal-btn" @click="calInvest(item)">{{$t('btn.caancle.text')}}</view>
+					 </view>
+				 </view>
+				 <view class="record-item-content">
+					 <view class="row">
+						 <view class="left">{{$t('invest.record.table.col5.text')}}</view>
+						 <view class="right" :style="{'color':item.status ==0?'#05ff00':item.status=='1'?'#ff0000':'#8B8989'}">{{getType2(item.status)}}</view>
+					 </view>
+					 <view class="row">
+						 <view class="left">{{$t('invest.record.table.col1.text')}}</view>
+						 <view class="right">$&nbsp;{{divide(item.money)}}</view>
+					 </view>
+					 <view class="row">
+						 <view class="left">{{$t('invest.record.table.col4.text')}}</view>
+						 <view class="right">$&nbsp;<text>{{count(item)}}</text></view>
+					 </view>
+					 <view class="row">
+						 <view class="left">{{$t('invest.record.table.col6.text')}}</view>
+						 <view class="right">{{item.rateConf}}%</view>
+					 </view>
+					 <view class="row">
+						 <view class="left">{{$t('invest.record.table.col7.text')}}</view>
+						 <view class="right">{{item.id}}</view>
+					 </view>
+					 <view class="row">
+						 <view class="left">{{$t('invest.record.table.col2.text')}}</view>
+						 <view class="right">{{formatDate(item.finishTime)}}</view>
+					 </view>
+				 </view>
+			 </view>
+		</view>
 	</view>
 </template>
 
 <script>
+	import {divide,formatDate} from '@/utils/util.js'
 	export default {
 		data() {
 			return {
+				divide:divide,
+				formatDate:formatDate,
 				showSelect:false,
 				isShow:true,
 				tabIndex:1,
@@ -108,12 +150,43 @@
 					}
 				},
 				selItem:{},
-				recordList:[]
+				records:[],
+				search:{
+					status:'',// 0未结束 1已结束
+					type:'1',//0定投 1托管
+					pageNo:1,
+					pageSize:10
+				},
+				typeOptions: [
+				    {
+				        label: this.$t("invest.menu4.text"),
+				        value: 0
+				    },
+				    {
+				        label: this.$t("invest.menu1.text"),
+				        value: 1
+				    }
+				],
+				typeOptions2: [
+				    {
+				        label: this.$t("invest.record.status0.text"),
+				        value: 0
+				    },
+				    {
+				        label: this.$t("invest.record.status1.text"),
+				        value: 1
+				    },
+					{
+					    label: this.$t("invest.record.status2.text"),
+					    value: 2
+					}
+				]
 			}
 		},
 		onLoad(){
 			this.getUserinfo()
 			this.loadData()
+			this.loadRecord()
 		},
 		methods: {
 			submit(){
@@ -188,6 +261,22 @@
 				uni.navigateTo({
 					url:'./record'
 				})
+			},
+			loadRecord(){
+				this.$http.post("/player/invest/my",this.search,res => {
+					this.records = [...this.records,...res.results]
+				})
+			},
+			count(item){
+				return (item.money * item.days * item.rateConf / 10000).toFixed(2)
+			},
+			getType(value) {
+			   let res = this.typeOptions.find(item => item.value === value)
+			   return res.label;
+			},
+			getType2(value) {
+				let res = this.typeOptions2.find(item => item.value == value)
+				return res.label;
 			}
 			
 		}
@@ -364,6 +453,54 @@
 			align-items: center;
 		}
 	}
-	
+	.record-list{
+		 .record-item{
+			 margin-top: 20upx;
+			 color: #fff;
+			 padding: 40upx;
+			 background-color: #181822;
+			 .record-item-head{
+				 display: flex;
+				 justify-content: space-between;
+				 align-items: center;
+				 .left{
+					 display: flex;
+					 flex-direction: column;
+					 align-items: center;
+					 .top{
+						 font-size: 32upx;
+						 font-weight: 600;
+					 }
+					 .down{
+						 color: $fontColor;
+						 font-size: 28upx;
+						 margin-top: 10upx;
+					 }
+				 }
+				.right{
+					width: 150upx;
+					height: 60upx;
+					line-height: 60upx;
+					background-color: $fontColor;
+					border-radius: 16upx;
+					text-align: center;
+				}
+			 }
+			 .record-item-content{
+				 margin-top: 20upx;
+				 .row{
+					 display: flex;
+					 justify-content: space-between;
+					 align-items: center;
+					 font-size: 28upx;
+					 .right{
+						 text{
+							 color:#05ff00
+						 }
+					 }
+				 }
+			 }
+		 }
+	}	 
 }
 </style>

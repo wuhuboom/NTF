@@ -1,7 +1,10 @@
 <template>
 	<view class="property">
-		<uni-nav-bar left-icon="left"  :title="$t('property.navbar.title')" background-color="rgb(1,2,3)" color="#fff" :border="false" @clickLeft="goBack"></uni-nav-bar>
-		
+		<uni-nav-bar left-icon="left"  :title="$t('property.navbar.title')" background-color="rgb(1,2,3)" color="#fff" :border="false" right-icon="icon-record" @clickLeft="goBack" @clickRight="goRecord">
+			<view slot="right">
+				<uni-icons custom-prefix="iconfont" type="icon-record" size="22" color="#fff"></uni-icons>
+			</view>
+		</uni-nav-bar>
 		<view class="top">
 			<view class="header">
 				<view class="title">{{$t('property.header.title')}}</view>
@@ -117,6 +120,11 @@
 			goBack(){
 				uni.navigateBack({
 					delta:1
+				})
+			},
+			goRecord(){
+				uni.navigateTo({
+					url:'./balanceRecord'
 				})
 			}
 		}

@@ -291,13 +291,13 @@
 				let para = {
 					pageNo : this.pageNo,
 					pageSize : this.pageSize,
-					cursor : this.cursor
+					// cursor : this.cursor
 				}
 				this.$http.post('/player/information/deal',para,res => {
 					if(res.code == 200){
 						res = res.data
 						this.tradeList = [...this.tradeList, ...res.results]
-						this.cursor = res.cursor
+						// this.cursor = res.cursor
 						this.totalPage = res.totalPage
 						if (this.pageNo >= res.totalPage) {
 						    this.pageNo = res.totalPage + 1;

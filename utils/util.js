@@ -37,7 +37,7 @@ export const divide = (num) =>{
 }
 
 export const divide100 = (num) =>{
-	if(num > 0){
+	if(num != 0){
 		return num = (num / 100).toFixed(2)
 	}else{
 		return 0;

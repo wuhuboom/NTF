@@ -25,7 +25,7 @@
 		</view>
 		<view class="invest-record">{{$t('invest.record.order.text')}}</view>
 		<scroll-view scroll-y="true" @scrolltolower="scrolltolower" style="height: 100%;"
-		        @refresherrefresh="getRefresherrefresh" :refresher-enabled="true" :refresher-triggered="refresherTriggered"
+		        @refresherrefresh="getRefresherrefresh" :refresher-enabled="false" :refresher-triggered="refresherTriggered"
 		        refresher-background="transparent">
 			<view class="record-list">
 				 <view class="record-item" v-for="(item,index) in records" :key="index">
@@ -41,7 +41,7 @@
 					 <view class="record-item-content">
 						 <view class="row">
 							 <view class="left">{{$t('invest.record.table.col5.text')}}</view>
-							 <view class="right" :style="{'color':item.status ==0?'#05ff00':'#ff0000'}">{{getType2(item.status)}}</view>
+							 <view class="right" :style="{'color':item.status ==0?'#05ff00':item.status=='1'?'#ff0000':'#8B8989'}">{{getType2(item.status)}}</view>
 						 </view>
 						 <view class="row">
 							 <view class="left">{{$t('invest.record.table.col1.text')}}</view>
@@ -122,7 +122,11 @@
 				    {
 				        label: this.$t("invest.record.status1.text"),
 				        value: 1
-				    }
+				    },
+					{
+					    label: this.$t("invest.record.status2.text"),
+					    value: 2
+					}
 				],
 				formData:{
 					payPwd:'',
@@ -214,8 +218,8 @@
 				})
 			},
 			goBack(){
-				uni.navigateBack({
-					delta:1
+				uni.switchTab({
+					url:'./invest'
 				})
 			}
 		}

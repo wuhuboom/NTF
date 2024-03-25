@@ -184,6 +184,7 @@
 	"invest.menu4.text":"Fixed investment",
 	"invest.record.status0.text":"In terms of revenue",
 	"invest.record.status1.text":"Over",
+	"invest.record.status2.text":"Canceled",
 	"invest.money.text":"investment amount",
 	"invest.money.placehoder":"Please enter an integral multiple of $100",
 	"invest.days.text":"Investment days",

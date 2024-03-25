@@ -183,6 +183,7 @@
 	"invest.menu4.text":"定投",
 	"invest.record.status0.text":"收益中",
 	"invest.record.status1.text":"已结束",
+	"invest.record.status2.text":"已取消",
 	"invest.balance.text":"总资产",
 	"invest.algorithm1.text":"利差算法套利",
 	"invest.algorithm2.text":"高额占位套利",

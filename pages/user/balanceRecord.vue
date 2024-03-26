@@ -1,24 +1,33 @@
 <template>
 	<view class="balance-record">
-		<uni-nav-bar left-icon="left"  :title="$t('property.navbar.title')" background-color="rgb(1,2,3)" color="#fff" :border="false" @clickLeft="goBack"></uni-nav-bar>
+		<uni-nav-bar left-icon="left"  :title="$t('property.record.title')" background-color="rgb(1,2,3)" color="#fff" :border="false" @clickLeft="goBack"></uni-nav-bar>
 		<view class="choose-box">
-			<view class="choose-item" @click="isShow=!isShow">
-				<view class="choose-item-name">{{selectItem.currency.name}}</view>
-				<uni-icons :type="isShow?'up':'down'" color="#fff" :size="20"></uni-icons>
+			<view class="choose-search">
+				<view class="choose-time">
+					<view class="choose-time-item" :class="search.time==1?'active':''" @click="chooseTime(1)">{{$t('property.record.search.time1.text')}}</view>
+					<view class="choose-time-item" :class="search.time==2?'active':''" @click="chooseTime(2)">{{$t('property.record.search.time2.text')}}</view>
+					<view class="choose-time-item" :class="search.time==3?'active':''" @click="chooseTime(3)">{{$t('property.record.search.time3.text')}}</view>
+				</view>
+				<view class="choose-item" @click="isShow=!isShow">
+					<view class="choose-item-name">{{selectItem.currency.name}}</view>
+					<uni-icons :type="isShow?'up':'down'" color="#fff" :size="20"></uni-icons>
+					<view class="choose-select" v-if="isShow">
+						<view class="choose-item-name" :class="selectItem.cid==item.cid?'active':''" v-for="(item,index) in balance" :key="index" @click.stop="chooseItem(item)">{{item.currency.name}}</view>
+					</view>
+				</view>
 			</view>
-			<view class="choose-select" v-if="isShow">
-				<view class="choose-item-name" :class="selectItem.cid==item.cid?'active':''" v-for="(item,index) in balance" :key="index" @click="chooseItem(item)">{{item.currency.name}}</view>
-			</view>
+			
 			<scroll-view scroll-y="true" @scrolltolower="scrolltolower" style="height: 1400upx"
 			        @refresherrefresh="getRefresherrefresh" :refresher-enabled="true" :refresher-triggered="refresherTriggered"
 			        refresher-background="transparent">
 				<view class="record-item" v-for="(item,index) in records" :key="index">
 					<view class="row1">
 						<view class="left">
-							USDT
+							{{getType(item.accountType)}}
 						</view>
 						<view class="right">
-							{{divide(item.changeMoney)}}
+							<view v-if="item.changeMoney > 0" class="money">+{{divide(item.changeMoney)}}</view>
+							<view v-else>{{divide(item.changeMoney)}}</view>
 						</view>
 					</view>
 					<view class="row2">
@@ -26,7 +35,7 @@
 							{{formatDate(item.createdAt)}}
 						</view>
 						<view class="right">
-							{{divide(item.initMoney)}}
+							{{$t('backapi.self.safe.balance.text')}}: {{divide(item.initMoney)}}
 						</view>
 					</view>
 				</view>
@@ -47,7 +56,7 @@
 				search:{
 					type:'',//0定投 1托管
 					typeb:'',//1.收入,2.支出
-					time:'',//1.今日,2.昨日,3.近7日
+					time:'1',//1.今日,2.昨日,3.近7日
 					cid:'',
 					pageNo:1,
 					pageSize:10
@@ -59,7 +68,13 @@
 				selectItem:{
 					currency:{}
 				},
-				isShow:false
+				isShow:false,
+				typeOptions:[
+					{label:this.$t('property.record.type1.text'),value:1},
+					{label:this.$t('property.record.type2.text'),value:2},
+					{label:this.$t('property.record.type3.text'),value:3},
+					{label:this.$t('property.record.type4.text'),value:4}
+				]
 			}
 		},
 		onLoad() {
@@ -75,13 +90,20 @@
 				this.records = []
 				this.loadData()
 			},
+			chooseTime(time){
+				this.search.time = time
+				this.search.pageNo = 1
+				this.totalPage = 1
+				this.records = []
+				this.loadData()
+			},
 			getCurrency(){
 				this.$http.get('/player/currency/list',res=>{
 					if(res.code == 200){
 						this.balance = res.data.list
 						if(this.balance && this.balance.length > 0){
 							this.balance.forEach(item=>{
-								if(item.currency.name=='USD'){
+								if(item.currency.name=='USDT'){
 									this.selectItem = item
 								}
 							})
@@ -90,6 +112,10 @@
 						
 					}
 				})
+			},
+			getType(value) {
+			   let res = this.typeOptions.find(item => item.value === value)
+			   return res.label;
 			},
 			 scrolltolower() {
 			 	this.loadData()
@@ -135,29 +161,63 @@
 	.choose-box{
 		width: 670upx;
 		padding: 0 40upx;
-		background-image: linear-gradient(to bottom, #252531, #000);
-		position: relative;
-		.choose-item{
+		background-color: #030408;
+		
+		.choose-search{
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-			color: #fff;
-			height: 120upx;
-			border-bottom: 1px solid #9493ac;
-		}
-		.choose-select{
-			position: absolute;
-			color: #fff;
-			background-image: linear-gradient(to bottom, #252531, #000);
-			z-index: 999;
-			width: 670upx;
-			.choose-item-name{
-				height: 80upx;
-				line-height: 80upx;
+			padding-top: 20upx;
+			margin-bottom: 40upx;
+			.choose-time{
+				display: flex;
+				align-items: center;
+				color: #9da4b4;
+				font-size: 28upx;
+				.choose-time-item{
+					min-width: 100upx;
+					text-align: center;
+					height: 50upx;
+					line-height: 50upx;
+				}
+				.active{
+					background-color: #01cecf;
+					color: #fff;
+					border-radius: 20upx;
+				}
 			}
-			.active{
-				color: $fontColor;
+			.choose-item{
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				color: #fff;
+				border-radius: 16upx;
+				width: 180upx;
+				height: 60upx;
+				background-color: #343248;
+				padding-left: 20upx;
+				padding-right: 20upx;
+				position: relative;
+				.choose-select{
+					position: absolute;
+					top: 60upx;
+					right: 0upx;
+					color: #fff;
+					border-top: 1px solid #717171;
+					background-color: #343248;
+					z-index: 999;
+					width: 220upx;
+					.choose-item-name{
+						padding-left: 20upx;
+						height: 60upx;
+						line-height: 60upx;
+					}
+					.active{
+						color: $fontColor;
+					}
+				}
 			}
+			
 		}
 		.record-item{
 				color: #fff;
@@ -177,6 +237,9 @@
 				}
 				.row1{
 					font-size: 28upx;
+					.money{
+						color: $fontColor;
+					}
 				}
 				.row2{
 					font-size: 24upx;

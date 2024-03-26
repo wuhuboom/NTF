@@ -30,8 +30,8 @@
 					{title:this.$t('security.menu1.text'),info:this.$t('security.menu1.info'),type:1,path:'./updateEmail'},
 					{title:this.$t('security.menu2.text'),info:this.$t('security.menu2.info'),type:2,path:'./updatePassword'},
 					{title:this.$t('security.menu3.text'),info:this.$t('security.menu3.info'),type:2,path:'./updateFundPwd'},
-					{title:this.$t('security.menu4.text'),info:this.$t('security.menu4.info'),type:3,path:''},
-					{title:this.$t('security.menu5.text'),info:this.$t('security.menu5.info'),type:3,path:''}
+					// {title:this.$t('security.menu4.text'),info:this.$t('security.menu4.info'),type:3,path:''},
+					// {title:this.$t('security.menu5.text'),info:this.$t('security.menu5.info'),type:3,path:''}
 				],
 				email:''
 			}
@@ -69,8 +69,8 @@
 				return email;
 			},
 			goBack(){
-				uni.navigateBack({
-					delta:1
+				uni.switchTab({
+					url:'/pages/user/user'
 				})
 			}
 		}

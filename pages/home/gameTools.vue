@@ -26,8 +26,8 @@
 		},
 		methods: {
 			goBack(){
-				uni.navigateBack({
-					delta:1
+				uni.switchTab({
+					url:'/pages/home/home'
 				})
 			},
 			showDetail(item){

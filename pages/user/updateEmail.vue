@@ -115,8 +115,8 @@
 				}
 			},
 			goBack(){
-				uni.navigateBack({
-					delta:1
+				uni.navigateTo({
+					url:'./security'
 				})
 			}
 		}

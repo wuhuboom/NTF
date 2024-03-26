@@ -60,6 +60,12 @@ http.beforeResponseFilter = function (res) {
 			  },
 			});
 			return
+		}else{
+			uni.showToast({
+				title:res.msg,
+				icon:'error',
+				duration:2000,
+			})
 		}
 		return res;
 	}else{

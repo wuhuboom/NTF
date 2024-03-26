@@ -31,8 +31,8 @@
 				<view class="right">
 					<view class="menu-text">{{item.currency.name}}</view>
 					<view class="menu-num">
-						<view class="up">${{divide(item.balance)}}</view>
-						<view class="rate">{{item.currency.rate}}</view>
+						<view class="up">{{divide(item.balance)}}</view>
+						<view class="rate">${{divide(item.balance * item.currency.rate)}}</view>
 					</view>
 				</view>
 			</view>
@@ -118,8 +118,8 @@
 				return val
 			},
 			goBack(){
-				uni.navigateBack({
-					delta:1
+				uni.switchTab({
+					url:'/pages/user/user'
 				})
 			},
 			goRecord(){

@@ -70,7 +70,7 @@
 		<view class="form" v-if="tabIndex==3">
 			<uni-forms ref="form" :modelValue="formData" :rules="rules" label-position="top" :label-width="300">
 				<uni-forms-item :label="$t('invest.money.text')" name="money">
-					<uni-easyinput type="text " prefixIcon="locked" v-model="formData.money"  />
+					<uni-easyinput type="text " prefixIcon="wallet" v-model="formData.money"  />
 				</uni-forms-item>
 				<uni-forms-item :label="$t('security.update.fundpwd.label')" name="payPwd">
 					<uni-easyinput type="password" prefixIcon="locked" v-model="formData.payPwd" :placeholder="$t('ruls.xxx.please',{name:$t('security.update.fundpwd.label')})" />

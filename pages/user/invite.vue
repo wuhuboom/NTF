@@ -58,8 +58,8 @@
 			    }
 			},
 			goBack(){
-				uni.navigateBack({
-					delta:1
+				uni.switchTab({
+					url:'/pages/user/user'
 				})
 			}
 		}

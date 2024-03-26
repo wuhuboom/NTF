@@ -54,9 +54,6 @@
 			<button class="btn" @click="submit" :disabled="this.money > this.bFitem.balance">{{$t('btn.continue.text')}}</button>
 		</view>
 		
-		<view class="container">
-			<echarts ref="echarts" :option="option" canvasId="echarts"></echarts>
-		</view>
 	</view>
 	
 </template>
@@ -115,39 +112,7 @@
 			}
 		},
 		onReady() {
-			this.option = {
-				backgroundColor: "transparent",
-				tooltip:{
-					trigger:'axis',
-					textStyle:{
-						color:'#fff'
-					},
-					backgroundColor:'rgb(41,41,55)'
-				},
-				 xAxis: {
-				    type: 'category',
-				    boundaryGap: false,
-				    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-				  },
-				  yAxis: {
-				    type: 'value'
-				  },
-				  series: [
-				    {
-				      data: [820, 932, 901, 934, 1290, 1330, 1320],
-				      type: 'line',
-					  itemStyle:{
-						color:'#04D3D5'
-					  },
-					  lineStyle:{
-						color:'#04D3D5'  
-					  },
-				      areaStyle: {
-						  color:'#04D3D5'
-					  }
-				    }
-				  ]	
-			}
+			 
 		},
 		onLoad() {
 			this.getCurrency()

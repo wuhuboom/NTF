@@ -59,8 +59,13 @@
 					}
 				},
 				isSendCode:false,
-				countTime:60
+				countTime:60,
+				type:''
 			}
+		},
+		onLoad(option) {
+			console.log(option)
+			this.type = option.type
 		},
 		methods: {
 			submit(){
@@ -108,9 +113,16 @@
 				}
 			},
 			goBack(){
-				uni.navigateTo({
-					url:'./security'
-				})
+				if(this.type=='home'){
+					uni.switchTab({
+						url:'/pages/home/home'
+					})
+				}else{
+					uni.navigateTo({
+						url:'./security'
+					})
+				}
+				
 			}
 		}
 	}

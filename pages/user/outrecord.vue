@@ -36,8 +36,7 @@
 				],
 				search:{
 					time :'',//1今日 2昨日 3.7日 4.10日 5.30日
-					status:'',//1待付款/2已到账/3已上分/4支付超时
-					type:'',//1.线上,2.线下
+					status:'',//1待审核2已审核3失败4提现成功5代付中
 					pageNo:1,
 					pageSize:10
 				},
@@ -88,6 +87,9 @@
 				},
 				status: 'more',
 			}
+		},
+		onLoad() {
+			this.loadData()
 		},
 		methods: {
 			scrolltolower() {

@@ -114,7 +114,7 @@
 		methods: {
 			goSetPwd(){
 				uni.navigateTo({
-					url:'/pages/user/updateFundPwd'
+					url:'/pages/user/updateFundPwd?type=home'
 				})
 			},
 			checkSetPwd(){

@@ -18,6 +18,8 @@ export const formatDate = (timestamp,type)=>{
       const seconds = ("0" + date.getSeconds()).slice(-2);
 		if(type==1){//mm-dd HH:mm
 			return `${month}-${day} ${hours}:${minutes}`;
+		}if(type==2){//mm-dd HH:mm
+			return `${year}-${month}-${day}`;
 		}else{
 			return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 		}

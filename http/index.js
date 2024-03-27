@@ -32,14 +32,12 @@ http.beforeRequestFilter = function(res){
 }
 http.beforeResponseFilter = function (res) {
     //X-Auth-Token
-	console.log(res,'-------------')
 	if(res.statusCode==200){
 		res = res.data
 		if(res.code == 200){
 			return res
 		}else if(res.code == 103 || res.code == 105){
 			const data = res.data;
-			
 			if(data.length > 0){
 				uni.showToast({
 					title:vueInstance.$t('backapi.'+data[0].msgKey),

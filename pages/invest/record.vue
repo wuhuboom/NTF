@@ -98,6 +98,7 @@
 				records:[],
 				search:{
 					status:'',// 0未结束 1已结束
+					time:'1',
 					type:'1',//0定投 1托管
 					pageNo:1,
 					pageSize:10

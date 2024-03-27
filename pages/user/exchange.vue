@@ -133,8 +133,8 @@
 				}
 				let para = {
 					money :this.money,
-					fromId :this.bFitem.id,
-					toId :this.aFitem.id
+					fromId :this.bFitem.cid,
+					toId :this.aFitem.cid
 				}
 				this.$http.post('/player/currency/exchange',para,res => {
 					if(res.code == 200){

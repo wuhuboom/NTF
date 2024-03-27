@@ -78,7 +78,7 @@
 			</uni-forms>
 			<button class="btn" @click="submit">{{$t('btn.invest.text')}}</button>
 		</view>
-		<view class="record-list">
+		<view class="record-list" v-if="tabIndex==1">
 			 <view class="record-item" v-for="(item,index) in records" :key="index">
 				 <view class="record-item-head">
 					 <view class="left">
@@ -214,7 +214,6 @@
 					type:this.type
 				}
 				this.$http.post('/player/deposit/plans',para,res=>{
-					console.log(res)
 					if(res.code == 200){
 						this.recordList = res.data
 						this.selItem = this.recordList[0] || {}
@@ -242,6 +241,9 @@
 			changeTab(index) {
 				this.tabIndex = index
 				this.loadData()
+				if(index==1){
+					this.loadRecord()
+				}
 			},
 			showBalance(){
 				this.isShow = !this.isShow

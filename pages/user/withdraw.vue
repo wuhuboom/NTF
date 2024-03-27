@@ -15,7 +15,7 @@
 			</view>
 		</view>
 		
-		<view class="payways" v-if="payways.length > 0">
+		<view class="payways" v-if="usdts.length > 0">
 			 <view class="way-item" v-for="(item,index) in payways" :key="index" @click="chooseItem(item,index)">
 			 	<image :src="item.img" mode="scaleToFill"></image>
 			 	<view class="way-item-text">{{item.currencySymbol}}</view>
@@ -31,7 +31,7 @@
 		</view>
 		<view class="form">
 			<uni-forms ref="form" :modelValue="formData" :rules="rules" label-position="top">
-				<uni-forms-item :label="$t('withdraw.usdt.text')" name="usdtId">
+				<uni-forms-item :label="$t('withdraw.usdt.text')" name="usdtId" v-if="usdts.length > 0">
 					<view class="choose-usdt-box">
 						<view class="choose-usdt-item" @click="usdtShow=!usdtShow">
 							<view class="left">
@@ -52,8 +52,8 @@
 				<uni-forms-item :label="$t('withdraw.money.text')" name="money">
 					<uni-easyinput type="text" v-model="formData.money" :placeholder="$t('ruls.xxx.please',{name:$t('recharge.money.text')})" />
 				</uni-forms-item>
-				<uni-forms-item :label="$t('withdraw.password.text')" name="password">
-					<uni-easyinput type="password" v-model="formData.password" :placeholder="$t('ruls.xxx.please',{name:$t('withdraw.password.text')})" />
+				<uni-forms-item :label="$t('withdraw.password.text')" name="payPwd">
+					<uni-easyinput type="password" v-model="formData.payPwd" :placeholder="$t('ruls.xxx.please',{name:$t('withdraw.password.text')})" />
 				</uni-forms-item>
 			</uni-forms>
 			<button class="btn" @click="submit">{{$t('btn.continue.text')}}</button>
@@ -97,7 +97,7 @@
 				formData:{
 					money:'',
 					type:'',
-					password:''
+					payPwd:''
 				},
 				rules: {
 					money: {
@@ -105,7 +105,7 @@
 							{required: true,errorMessage: this.$t('ruls.xxx.empty',{name:this.$t('recharge.money.text')})}
 						]
 					},
-					password: {
+					payPwd: {
 						rules: [
 							{required: true,errorMessage: this.$t('ruls.xxx.empty',{name:this.$t('withdraw.password.text')})}
 						]
@@ -138,66 +138,66 @@
 				isSendCode:false,
 				countTime:60,
 				payways:[
-					  {
-						"img": "https://img.sgodown.cc/bankCharge.png",
-						"withdrawalRateMax": 100000,
-						"withdrawalRate": 8,
-						"currencySymbol": "USDT",
-						"withdrawMax": 10000,
-						"everydayWithdrawTimes": 30,
-						"type": 1,
-						"wiModelRe": 0,
-						"wiModelRate": 0,
-						"everydayWithdrawFree": 0,
-						"withdrawalToday": 0,
-						"withdrawalRateMin": 0,
-						"wiModel": 0,
-						"rate": "1",
-						"withdrawMin": 150,
-						"name": "Bank"
-					  },
-					  {
-						"img": "https://sgo.uunn.org/USDT.png",
-						"withdrawalRateMax": 1000,
-						"withdrawalRate": 8,
-						"currencySymbol": "USDT",
-						"withdrawMax": 1000,
-						"everydayWithdrawTimes": 30,
-						"type": 2,
-						"wiModelRe": 0,
-						"wiModelRate": 0,
-						"everydayWithdrawFree": 0,
-						"withdrawalToday": 0,
-						"withdrawalRateMin": 0,
-						"wiModel": 0,
-						"rate": "1",
-						"withdrawMin": 10,
-						"name": "USDT"
-					  },
-					  {
-						"types": [
-						  "Vodafone",
-						  "Orange",
-						  "Etisalat",
-						  "We"
-						],
-						"img": "https://img.sgodown.cc/wallet.png",
-						"withdrawalRateMax": 100000,
-						"withdrawalRate": 8,
-						"currencySymbol": "USDT",
-						"withdrawMax": 10000,
-						"everydayWithdrawTimes": 30,
-						"type": 4,
-						"wiModelRe": 0,
-						"wiModelRate": 0,
-						"everydayWithdrawFree": 0,
-						"withdrawalToday": 0,
-						"withdrawalRateMin": 0,
-						"wiModel": 0,
-						"rate": "1",
-						"withdrawMin": 150,
-						"name": "E-Wallet"
-					  }
+					 //  {
+						// "img": "https://img.sgodown.cc/bankCharge.png",
+						// "withdrawalRateMax": 100000,
+						// "withdrawalRate": 8,
+						// "currencySymbol": "USDT",
+						// "withdrawMax": 10000,
+						// "everydayWithdrawTimes": 30,
+						// "type": 1,
+						// "wiModelRe": 0,
+						// "wiModelRate": 0,
+						// "everydayWithdrawFree": 0,
+						// "withdrawalToday": 0,
+						// "withdrawalRateMin": 0,
+						// "wiModel": 0,
+						// "rate": "1",
+						// "withdrawMin": 150,
+						// "name": "Bank"
+					 //  },
+					 //  {
+						// "img": "https://sgo.uunn.org/USDT.png",
+						// "withdrawalRateMax": 1000,
+						// "withdrawalRate": 8,
+						// "currencySymbol": "USDT",
+						// "withdrawMax": 1000,
+						// "everydayWithdrawTimes": 30,
+						// "type": 2,
+						// "wiModelRe": 0,
+						// "wiModelRate": 0,
+						// "everydayWithdrawFree": 0,
+						// "withdrawalToday": 0,
+						// "withdrawalRateMin": 0,
+						// "wiModel": 0,
+						// "rate": "1",
+						// "withdrawMin": 10,
+						// "name": "USDT"
+					 //  },
+					 //  {
+						// "types": [
+						//   "Vodafone",
+						//   "Orange",
+						//   "Etisalat",
+						//   "We"
+						// ],
+						// "img": "https://img.sgodown.cc/wallet.png",
+						// "withdrawalRateMax": 100000,
+						// "withdrawalRate": 8,
+						// "currencySymbol": "USDT",
+						// "withdrawMax": 10000,
+						// "everydayWithdrawTimes": 30,
+						// "type": 4,
+						// "wiModelRe": 0,
+						// "wiModelRate": 0,
+						// "everydayWithdrawFree": 0,
+						// "withdrawalToday": 0,
+						// "withdrawalRateMin": 0,
+						// "wiModel": 0,
+						// "rate": "1",
+						// "withdrawMin": 150,
+						// "name": "E-Wallet"
+					 //  }
 					],
 				sectItem:{},
 				usdts:[
@@ -217,6 +217,7 @@
 		onLoad() {
 			this.loadPayWays()
 			this.sectItem = this.payways[0] || {}
+			this.getUsdtList()
 		},
 		methods: {
 			chooseUsdt(item){
@@ -242,6 +243,7 @@
 					this.$http.post('/player/virtual_currency_add',para,(res=>{
 						if(res.code ==200){
 							this.loadPayWays()
+							this.closePopup()
 							 uni.showToast({
 							 	title:this.$t('oper.tip.success.text'),
 								icon:'success'
@@ -256,7 +258,8 @@
 				this.$refs.form.validate().then(res=>{
 					const para = {
 						money : this.formData.money,
-						password: this.formData.password,
+						payPwd: this.formData.payPwd,
+						usdtId:this.usdtItem.id,
 						type : this.sectItem.type
 					}
 					this.$http.post('/player/withdrawal',para,(res=>{

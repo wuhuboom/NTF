@@ -198,6 +198,7 @@
 							this.formData.planId = ''
 							this.formData.money = ''
 							this.formData.payPwd = ''
+							this.loadData()
 							uni.showToast({
 								title:this.$t('oper.tip.success.text'),
 								icon:'success',
@@ -209,7 +210,7 @@
 				})
 			},
 			loadData(){
-				// this.recordList = []
+				this.recordList = []
 				let para = {
 					type:this.type
 				}
@@ -242,6 +243,7 @@
 				this.tabIndex = index
 				this.loadData()
 				if(index==1){
+					this.records = []
 					this.loadRecord()
 				}
 			},
@@ -266,11 +268,16 @@
 			},
 			loadRecord(){
 				this.$http.post("/player/invest/my",this.search,res => {
-					this.records = [...this.records,...res.results]
+					this.records = [...this.records,...res.data.results]
 				})
 			},
 			count(item){
-				return (item.money * item.days * item.rateConf / 10000).toFixed(2)
+				let rate = item.rateConf 
+				if(rate.indexOf('-')>-1){
+					rate = rate.split('-')[1]
+				}
+				
+				return (item.money * item.days * rate / 10000).toFixed(2)
 			},
 			getType(value) {
 			   let res = this.typeOptions.find(item => item.value === value)

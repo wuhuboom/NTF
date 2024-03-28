@@ -23,7 +23,7 @@
 				<view class="record-item" v-for="(item,index) in records" :key="index">
 					<view class="row1">
 						<view class="left">
-							{{getType(item.accountType)}}
+							{{getType(item.balanceChangeType)}}
 						</view>
 						<view class="right">
 							<view v-if="item.changeMoney > 0" class="money">+{{divide(item.changeMoney)}}</view>
@@ -70,10 +70,158 @@
 				},
 				isShow:false,
 				typeOptions:[
-					{label:this.$t('property.record.type1.text'),value:1},
-					{label:this.$t('property.record.type2.text'),value:2},
-					{label:this.$t('property.record.type3.text'),value:3},
-					{label:this.$t('property.record.type4.text'),value:4}
+							{
+					            label: this.$t("dropdown.billing.all.title.text"),
+					            value: 0,
+					        },
+					        {
+					            label: this.$t("dropdown.billing.income.online.recharge.text"),
+					            value: 1,
+					        },
+					        {
+					            label: this.$t("dropdown.billing.income.withdraw.text"),
+					            value: 2,
+					        },
+					        {
+					            label: this.$t("dropdown.billing.expenditure.bet.text"),
+					            value: 3,
+					        },
+					        {
+					            label: this.$t("dropdown.billing.income.bet.rebate.text"),
+					            value: 4,
+					        },
+					        {
+					            label: this.$t("dropdown.billing.income.lower.level.rebate.text"),
+					            value: 5,
+					        },
+					        {
+					            label: this.$t("dropdown.billing.income.manually.add.money.text"),
+					            value: 6,
+					        },
+					        {
+					            label: this.$t("dropdown.billing.income.bet.cancel.text"),
+					            value: 7,
+					        },
+					        {
+					            label: this.$t("dropdown.billing.expenditure.manual.reduction.text"),
+					            value: 8,
+					        },
+					        {
+					            label: this.$t("dropdown.billing.expenditure.rebate.deduction.text"),
+					            value: 9,
+					        },
+					        {
+					            label: this.$t("dropdown.billing.expenditure.online.cancel.text"),
+					            value: 10,
+					        },
+					        {
+					            label: this.$t("dropdown.billing.income.offline.recharge.text"),
+					            value: 11,
+					        },
+					        {
+					            label: this.$t("dropdown.billing.income.withdraw.return.text"),
+					            value: 12
+					        },
+					        {
+					            label: this.$t("dropdown.billing.income.bets.return.text"),
+					            value: 13,
+					        },
+					        {
+					            label: this.$t("dropdown.billing.income.bet.back.text"),
+					            value: 14,
+					        },
+					        {
+					            label: this.$t("dropdown.billing.income.register.gift.text"),
+					            value: 15,
+					        },
+					        {
+					            label: this.$t("dropdown.billing.bonus.text"),
+					            value: 16,
+					        },
+					        {
+					            label: this.$t("dropdown.billing.income.vip.cash.text"),
+					            value: 17,
+					        },
+					        {
+					            label: this.$t("dropdown.billing.income.activity.cash.text"),
+					            value: 18,
+					        },
+					        {
+					            label: this.$t("dropdown.billing.income.recharge.gift.text"),
+					            value: 19,
+					        },
+					        {
+					            label: this.$t("dropdown.billing.transaction.fee.text"),
+					            value: 20,
+					        },
+					        {
+					            label: this.$t("dropdown.billing.income.lower.level.recharge.rebate.text"),
+					            value: 21,
+					        },
+					        {
+					            label: this.$t("dropdown.billing.income.lower.level.bet.rebate.text"),
+					            value: 22,
+					        },
+					        {
+					            label: this.$t("dropdown.billing.income.invite.rewards.text"),
+					            value: 23,
+					        },
+					        {
+					            label: this.$t("dropdown.billing.income.first.charge.text"),
+					            value: 24,
+					        },
+					        {
+					            label: this.$t("dropdown.billing.income.active.profit.text"),
+					            value: 25,
+					        },
+					        {
+					            label: this.$t("dropdown.billing.income.sufficient.reward.text"),
+					            value: 26,
+					        },
+					        {
+					            label: this.$t("dropdown.billing.income.fixed.day.text"),
+					            value: 27,
+					        },
+					        {
+					            label: this.$t("dropdown.billing.invite.first.charge.text"),
+					            value: 28,
+					        },
+					        // {
+					        //     label: this.$t("backapi.report.account.change.query.type.turntable.lottery.text"),
+					        //     value: 29,
+					        // },
+					        // {
+					        //     label: this.$t("backapi.report.account.change.query.type.turntable.jackpot.text"),
+					        //     value: 30,
+					        // },
+					        {
+					            label: this.$t("dropdown.billing.offline.activity.text"),
+					            value: 31,
+					        },
+					        {
+					            label: this.$t("dropdown.billing.report.score.text"),
+					            value: 32,
+					        },
+					        {
+					            label: this.$t("dropdown.billing.redo.text"),
+					            value: 33,
+					        },
+					        {
+					            label: this.$t("backapi.self.safe.huaz.transfer.text"),
+					            value: 34,
+					        },
+					        {
+					            label: this.$t("backapi.report.account.change.query.type.team.motivation.text"),
+					            value: 35,
+					        },
+					        {
+					            label: this.$t("dropdown.billing.recharge.compensation.text"),
+					            value: 36,
+					        },
+					        {
+					            label: this.$t("dropdown.billing.report.score.text"),
+					            value: 37,
+					        },
 				]
 			}
 		},

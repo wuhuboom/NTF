@@ -189,6 +189,7 @@
 			},
 			loadRecord(){
 				this.$http.post("/player/invest/my",this.search,res => {
+					res = res.data
 					this.records = [...this.records,...res.results]
 					this.totalPage = res.totalPage;
 					if (this.search.pageNo >= res.totalPage) {
@@ -201,7 +202,11 @@
 				})
 			},
 			count(item){
-				return (item.money * item.days * item.rateConf / 10000).toFixed(2)
+				let rate = item.rateConf
+				if(rate.indexOf('-')>-1){
+					rate = rate.split('-')[1]
+				}
+				return (item.money * item.days * rate / 10000).toFixed(2)
 			},
 			getType(value) {
 			   let res = this.typeOptions.find(item => item.value === value)

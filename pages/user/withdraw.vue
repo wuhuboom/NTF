@@ -1,5 +1,5 @@
 <template>
-	<view class="recharge">
+	<view class="withdraw">
 		<uni-nav-bar left-icon="left"  :title="$t('property.subpage.title2')" background-color="rgb(1,2,3)" color="#fff" :border="false" right-icon="icon-record" @clickLeft="goBack" @clickRight="goRecord">
 			<view slot="right">
 				<uni-icons custom-prefix="iconfont" type="icon-record" size="22" color="#fff"></uni-icons>
@@ -242,7 +242,7 @@
 					const para = Object.assign({},this.addFormData)
 					this.$http.post('/player/virtual_currency_add',para,(res=>{
 						if(res.code ==200){
-							this.loadPayWays()
+							this.getUsdtList()
 							this.closePopup()
 							 uni.showToast({
 							 	title:this.$t('oper.tip.success.text'),
@@ -333,7 +333,7 @@
 </script>
 
 <style scoped lang="scss">
-.recharge{
+.withdraw{
 	width: 670upx;
 	min-height: 100vh;
 	padding: 0upx 40upx;

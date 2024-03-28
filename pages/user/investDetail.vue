@@ -141,7 +141,7 @@
 			return {
 				detail:{
 					id: 3,
-					cid: 'TFI',
+					cid: 'USDT',
 					name: '项目名称',
 					imgUrl: '../../static/images/user/10019.png',
 					incomeType: 0, //结算方式 0.每日结算 1.到期结算,
@@ -313,7 +313,7 @@
 				}
 				.right{
 					display: flex;
-					width: 120upx;
+					width: 150upx;
 					justify-content: space-between;
 					align-items: center;
 					color: #fff;

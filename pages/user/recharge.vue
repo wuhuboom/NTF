@@ -8,29 +8,11 @@
 		<view class="title">{{$t('recharge.payway.title')}}</view>
 		
 		<view class="payways">
-			<view class="show-box" @click="isShow = !isShow">
-				<view class="way-item">
-					<view class="left">
-						<img :src="sectItem.img"/>
-					</view>
-					<view class="right">
-							<view class="way-name">{{sectItem.name}} - {{sectItem.currencySymbol}}</view>
-							<view class="way-minMax">{{sectItem.minMax}}</view>
-					</view>
-					<uni-icons :type="isShow?'up':'down'" color="#fff" size="24"></uni-icons>
-				</view>
-			</view>
-			<view class="hide-box" v-if="isShow">
-				<view class="way-item" v-for="(item,index) in payways" :key="index" @click="changeWay(item)">
-					<view class="left">
-						<img :src="item.img"/>
-					</view>
-					<view class="right">
-						<view class="way-name">{{item.name}} - {{item.currencySymbol}}</view>
-						<view class="way-minMax">{{item.minMax}}</view>
-					</view>
-				</view>
-			</view>
+			 <view class="way-item" v-for="(item,index) in payways" :key="index" @click="chooseItem(item,index)">
+			 	<image :src="item.img" mode="scaleToFill"></image>
+			 	<view class="way-item-text">{{item.currencySymbol}}</view>
+				<view class="active" v-if="selIndex == index"></view>
+			 </view>
 		</view>
 		<view class="form">
 			<uni-forms ref="form" :modelValue="formData" :rules="rules" label-position="top">
@@ -60,86 +42,34 @@
 					}
 				},
 				payways:[
-					  {
-					    "img": "https://img.sgodown.cc/bankCharge.png",
-					    "fast": "200",
-					    "unholdMsg": "invalid",
-					    "def": 0,
-					    "rate": "1",
-					    "name": "INPAY",
-					    "minMax": "100-99999",
-					    "currencySymbol": "USDT",
-					    "id": 6,
-					    "sort": 0,
-					    "type": 64,
-					    "unhold": 0
-					  },
-					  {
-					    "img": null,
-					    "fast": "200-300",
-					    "unholdMsg": "invalid",
-					    "def": 0,
-					    "rate": "1",
-					    "name": "JYPAY",
-					    "minMax": "100-999999",
-					    "currencySymbol": "Rp",
-					    "id": 9,
-					    "sort": 0,
-					    "type": 68,
-					    "unhold": 0
-					  },
-					  {
-					    "img": "https://img.sgodown.cc/bankCharge.png",
-					    "fast": "200-500-1000-3000-5000-10000-15000",
-					    "unholdMsg": "invalid",
-					    "def": 0,
-					    "rate": "1",
-					    "name": "Boypay",
-					    "minMax": "100-99999",
-					    "currencySymbol": "EGP",
-					    "id": 7,
-					    "sort": 0,
-					    "type": 65,
-					    "unhold": 0
-					  },
-					  {
-					    "img": "https://img.sgodown.cc/bankCharge.png",
-					    "fast": "1000",
-					    "unholdMsg": "invalid",
-					    "def": 0,
-					    "rate": "1",
-					    "name": "污渍",
-					    "minMax": null,
-					    "currencySymbol": "UZS",
-					    "id": 8,
-					    "sort": 0,
-					    "type": 66,
-					    "unhold": 0
-					  },
-					  {
-					    "img": "https://img.sgodown.cc/virtual.png",
-					    "fast": "5-10-15-30-50-100-300-500-1000-3000-5000-10000",
-					    "unholdMsg": "invalid",
-					    "def": 0,
-					    "rate": "100",
-					    "name": "USDT",
-					    "minMax": "5-9999999",
-					    "currencySymbol": "USDT",
-					    "id": 3,
-					    "sort": 0,
-					    "type": 1,
-					    "unhold": 0
-					  }
+					  // {
+					  //   "img": "https://img.sgodown.cc/bankCharge.png",
+					  //   "fast": "200",
+					  //   "unholdMsg": "invalid",
+					  //   "def": 0,
+					  //   "rate": "1",
+					  //   "name": "INPAY",
+					  //   "minMax": "100-99999",
+					  //   "currencySymbol": "USDT",
+					  //   "id": 6,
+					  //   "sort": 0,
+					  //   "type": 64,
+					  //   "unhold": 0
+					  // }
 				],
-				sectItem:{}
+				sectItem:{},
+				selIndex:0
 			}
 		},
 		onLoad() {
 			this.loadPayWays()
-			
 			this.sectItem = this.payways[0] || {}
 		},
 		methods: {
+			chooseItem(item,index){
+				this.selIndex = index
+				this.sectItem = item
+			},
 			submit(){
 				this.$refs.form.validate().then(res=>{
 					const para = {
@@ -149,7 +79,7 @@
 					this.$http.post('/player/recharge',para,(res=>{
 						if(res.code ==200){
 							res = res.data
-							if (res?.UrlAddress) {
+							if (res.UrlAddress) {
 								location.href = res?.UrlAddress
 							}
 						}
@@ -160,7 +90,9 @@
 			},
 			loadPayWays(){
 				this.$http.get('/player/recharge_pre',res => {
-					console.log(res,'------------')
+					if(res.code==200){
+						this.payways = res.data
+					}
 					this.sectItem = this.payways[0] || {}
 				})
 			},
@@ -194,46 +126,38 @@
 	}
 	.payways{
 		margin-top: 20upx;
-		background-color: rgb(41,41,55);
-		border-radius: 10upx;
-		.show-box{
-			position: relative;
-		}
-		.hide-box{
-			position: absolute;
-			width: 670upx;
-			background-color: rgba(41,41,55,.8);
-			z-index: 99;
-		}
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
 		.way-item{
-			height: 80upx;
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			color: #fff;
-			padding-left: 30upx;
-			padding-right: 30upx;
-			.left{
-				width: 20%;
-				img{
-					width: 80upx;
-					height: auto;
-				}
-			}
-			.right{
-				display: flex;
-				flex-direction: column;
-				.way-minMax{
-					font-size: 24upx;
-					color: rgb(185,185,185);
-				}
-			}
-		}
-		.hide-box .right{
-			width: 40%;
-		}
-		.show-box .right{
-			width: 70%;
+			 display: flex;
+			 flex-direction: column;
+			 align-items: center;
+			 justify-content: center;
+			 height: 170upx;
+			 width: 320upx;
+			 border-radius: 30upx;
+			 border: 1px solid $fontColor;
+			 background-color: #002c2c;
+			 margin-bottom: 20upx;
+			 position: relative;
+			 image{
+				 width: 60upx;
+				 height: 60upx;
+			 }
+			 .way-item-text{
+				 font-size: 32upx;
+				 color: #fff;
+			 }
+			 .active{
+				 background-image: url('../../static/images/user/check.webp');
+				 background-size: 100% 100%;
+				 width: 50upx;
+				 height: 40upx;
+				 position: absolute;
+				 top: 0upx;
+				 right: 0upx;
+			 }
 		}
 	}
 	.form{

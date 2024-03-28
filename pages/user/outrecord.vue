@@ -1,140 +1,153 @@
 <template>
-	<view class="inrecord">
+	<view class="balance-record">
 		<uni-nav-bar left-icon="left"  :title="$t('recharge.record.page.title')" background-color="rgb(1,2,3)" color="#fff" :border="false" @clickLeft="goBack"></uni-nav-bar>
-		<scroll-view scroll-y="true" @scrolltolower="scrolltolower" style="height: 100%;"
-                @refresherrefresh="getRefresherrefresh" :refresher-enabled="true" :refresher-triggered="refresherTriggered"
-                refresher-background="transparent">
-			<view class="record-item" v-for="(item,index) in records" :key="index">
-				<view class="row1">
-					<view class="left">
-						{{item.name}}
-					</view>
-					<view class="right">
-						<view v-if="item.money > 0">+</view>{{item.money}}
-					</view>
-				</view>
-				<view class="row2">
-					<view class="left">
-						{{item.createdAt}}
-					</view>
-					<view class="right" :style="item.status === 2 || item.status === 3 ? 'color:#00ff65' : item.status === 4 ? 'color:red' : 'color:#fff'">
-						    {{ getType2(item.status) }}
-					</view>
+		<view class="choose-box">
+			<view class="choose-search">
+				<view class="choose-time">
+					<view class="choose-time-item" :class="search.time==1?'active':''" @click="chooseTime(1)">{{$t('property.record.search.time1.text')}}</view>
+					<view class="choose-time-item" :class="search.time==2?'active':''" @click="chooseTime(2)">{{$t('property.record.search.time2.text')}}</view>
+					<view class="choose-time-item" :class="search.time==3?'active':''" @click="chooseTime(3)">{{$t('property.record.search.time3.text')}}</view>
 				</view>
 			</view>
-			<!-- <uni-load-more class="loadmore" :status="status" :contentText="loadText" @clickLoadMore="loadData()"></uni-load-more> -->
-		</scroll-view>
+			
+			<scroll-view scroll-y="true" @scrolltolower="scrolltolower" style="height: 1400upx"
+			        @refresherrefresh="getRefresherrefresh" :refresher-enabled="false" :refresher-triggered="refresherTriggered"
+			        refresher-background="transparent">
+				<view class="record-item" v-for="(item,index) in records" :key="index">
+					<view class="row1">
+						<view class="left">
+							{{getType(item.type)}}
+						</view>
+						<view class="right">
+							<view >{{divide(item.money)}}</view>
+						</view>
+					</view>
+					<view class="row2">
+						<view class="left">
+							{{formatDate(item.createdAt)}}
+						</view>
+						<view class="right">
+							{{$t('fundsRecords.commission.text')}}: {{divide(item.commission)}}
+						</view>
+					</view>
+					<view class="row2">
+						<view class="left">
+							 {{ $t('fundsRecords.orderNo.text')}}:{{ item.orderNo }}
+						</view>
+						<view class="right" :style="{ color: statusList[item.status-1].color }">
+							{{ getStatus(item.status)}}
+						</view>
+					</view>
+				</view>
+			</scroll-view>
+		</view>
+		
 	</view>
 </template>
 
 <script>
+	import {divide100,formatDate} from '@/utils/util.js'
 	export default {
 		data() {
 			return {
-				records:[
-					{createdAt:'2024-03-10 10:10:10',money:'100',type:'1',status:'2',name:'USDT'}
-				],
+				divide:divide100,
+				formatDate:formatDate,
+				records:[],
 				search:{
-					time :'',//1今日 2昨日 3.7日 4.10日 5.30日
-					status:'',//1待审核2已审核3失败4提现成功5代付中
+					time:'1',//1.今日,2.昨日,3.近7日
+					status:'',
 					pageNo:1,
 					pageSize:10
 				},
 				status:'',
 				totalPage:1,
 				refresherTriggered:false,
-				typeOptions: [
-				    {
-				        label: this.$t("dropdown.billing.all.title.text"),
-				        value: 0
-				    },
-				    {
-				        label: this.$t("dropdown.billing.income.online.recharge.text"),
-				        value: 1
-				    },
-				    {
-				        label: this.$t("dropdown.billing.income.offline.recharge.text"),
-				        value: 2
-				    }
+				typeOptions:[
+					{
+						label: this.$t('withdraw.record.center.show.detail.type.bank.text'),
+						value: 1
+					}, {
+						label: this.$t('withdraw.record.center.show.detail.usdt.bank.text'),
+						value: 2
+					}, {
+						label: this.$t('backapi.self.whitdraw.type.ewallet.form.wallet.addr.text'),
+						value: 4
+					}	
 				],
-				typeOptions2: [
-				    {
-				        label: this.$t("dropdown.billing.all.title.text"),
-				        value: 0
-				    },
-				    {
-				        label: this.$t("recharge.record.status.pendding.text"),
-				        value: 1
-				    },
-				    {
-				        label: this.$t("recharge.record.status.paid.text"),
-				        value: 2
-				    },
-				    {
-				        label: this.$t("recharge.record.status.scored.text"),
-				        value: 3
-				    },
-				    {
-				        label: this.$t("recharge.record.status.pay.timeout.text"),
-				        value: 4
-				    }
-				
-				],
-				loadText: {
-				    loadmore: this.$t("load.more.text"),
-				    loading: this.$t("load.loading.text"),
-				    nomore: this.$t("load.no.more.text"),
-				},
-				status: 'more',
+				statusList: [{
+					label: this.$t('withdraw.record.status.need.audit.text'),
+					color: '#9F9F9F'
+				}, {
+					label: this.$t('withdraw.record.status.already.audit.text'),
+					color: '#9F9F9F'
+				}, {
+					label: this.$t('withdraw.record.status.fail.text'),
+					color: '#B5DB1C'
+				}, {
+					label: this.$t('withdraw.record.status.withdraw.success.text'),
+					color: '#FF0000'
+				}, {
+					label: this.$t('withdraw.record.status.paid.in.text'),
+					color: '#FF0000'
+				}, {
+					label: this.$t('backapi.self.pay.failed.text'),
+					color:'#fff'
+				}, {
+					label: this.$t('withdraw.record.status.operation.in.text'),
+					color:'#fff'
+				}, {
+					label: this.$t('withdraw.record.status.redo.in.text'),
+					color:'#fff'
+				}, {
+					label: this.$t('backapi.self.pay.failed.text'),
+					color:'#fff'
+				}]
 			}
 		},
 		onLoad() {
 			this.loadData()
 		},
 		methods: {
-			scrolltolower() {
-			    // if (this.status == 'more') {
-			        
-			    // }
-				this.loadData()
-			},
-			//下拉刷新
-			getRefresherrefresh(){
-				this.refresherTriggered = true
+			chooseTime(time){
+				this.search.time = time
 				this.search.pageNo = 1
 				this.totalPage = 1
 				this.records = []
 				this.loadData()
 			},
-			loadData(){
-				this.$http.post("/player/withdrawal_log",this.search,res => {
-					if(res.code == 200){
-						this.records = [...this.records,...res.data.results]
-						this.totalPage = res.data.totalPage;
-						if (this.search.pageNo >= res.data.totalPage) {
-						    this.search.pageNo = res.data.totalPage + 1;
-						    this.status = "noMore";
-						} else {
-						    this.search.pageNo = this.search.pageNo + 1
-						    this.status = 'more';
-						}
-					}
-					this.refresherTriggered = false
-				})
+			getType(value) {
+			   let res = this.typeOptions.find(item => item.value === value)
+			   return res.label;
 			},
-			getType() {
-			    return (value) => {
-			        if (value) {
-			            let res = this.typeOptions.find(item => item.value === value)
-			            return res.label;
-			        }
-			
-			    }
+			getStatus(index) {
+			   let res = this.statusList[index - 1].label || ''	
+			   return res;
 			},
-			getType2(value) {
-				let res = this.typeOptions2.find(item => item.value == value)
-				return res.label;
-			},
+			 scrolltolower() {
+			 	this.loadData()
+			 },
+			 //下拉刷新
+			 getRefresherrefresh(){
+			 	this.refresherTriggered = true
+			 	this.search.pageNo = 1
+			 	this.totalPage = 1
+			 	this.records = []
+			 	this.loadData()
+			 },
+			 loadData(){
+			 	this.$http.post("/player/withdrawal_log",this.search,res => {
+			 		if(res.code == 200){
+			 			this.records = [...this.records,...res.data.results]
+			 			this.totalPage = res.data.totalPage;
+			 			if (this.search.pageNo >= res.data.totalPage) {
+			 			    this.search.pageNo = res.data.totalPage + 1;
+			 			} else {
+			 			    this.search.pageNo = this.search.pageNo + 1
+			 			}
+			 		}
+			 		this.refresherTriggered = false
+			 	})
+			 },
 			goBack(){
 				uni.navigateTo({
 					url:'./withdraw'
@@ -145,27 +158,64 @@
 </script>
 
 <style scoped lang="scss">
-.inrecord{
-	width: 670upx;
+.balance-record{
 	min-height: 100vh;
-	padding: 0upx 40upx;
-	.record-item{
-		padding: 20upx;
-		color: #fff;
-		border-bottom: 1px solid $fontColor;
-		.row1,.row2{
+	.choose-box{
+		width: 670upx;
+		padding: 0 40upx;
+		background-color: #030408;
+		
+		.choose-search{
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
+			padding-top: 20upx;
+			margin-bottom: 40upx;
+			.choose-time{
+				display: flex;
+				align-items: center;
+				color: #9da4b4;
+				font-size: 28upx;
+				.choose-time-item{
+					min-width: 100upx;
+					text-align: center;
+					height: 50upx;
+					line-height: 50upx;
+				}
+				.active{
+					background-color: #01cecf;
+					color: #fff;
+					border-radius: 20upx;
+				}
+			}
 		}
-		.row1 .right{
-			display: flex;
-			color: #ff0000;
-		}
-		.row2{
-			font-size: 23upx;
-			color: rgb(185,185,185);
-		}
+		.record-item{
+				color: #fff;
+				margin-bottom: 20upx;
+				border-radius: 5px;
+				background-color: #2a2937;
+				height: 130upx;
+				display: flex;
+				flex-direction: column;
+				.row1,.row2{
+					display: flex;
+					justify-content: space-between;
+					padding: 15upx 20upx;
+					.right{
+						display: flex;
+					}
+				}
+				.row1{
+					font-size: 28upx;
+					.money{
+						color: $fontColor;
+					}
+				}
+				.row2{
+					font-size: 24upx;
+					color:#acaebe;
+				}
+			}
 		
 	}
 }

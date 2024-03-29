@@ -17,7 +17,7 @@
 							{{$t('myfriends.rank.invest.title')}}
 						</view>
 						<view class="bottom" @click="showInvest">
-							<view>{{item.me}}</view>
+							<view>{{divide(item.me)}}</view>
 							<uni-icons type="right" color="fff"></uni-icons>
 						</view>
 					</view>
@@ -44,7 +44,7 @@
 						{{$t('myfriends.income.total.text')}}
 					</view>
 					<view class="num">
-						{{income.me}}
+						{{divide(income.me)}}
 					</view>
 				</view>
 			</view>
@@ -90,10 +90,12 @@
 </template>
 
 <script>
+	import {divide100} from '@/utils/util.js'
 	export default {
 		data() {
 			return {
-				ranking:'V0',//排名
+				divide:divide100,
+				ranking:'',//排名
 				income:{
 					"me": '我的总投资',
 					"friendsCount": '总朋友数',
@@ -116,7 +118,8 @@
 			}
 		},
 		onLoad() {
-			// this.loadRanks()
+			this.loadRanks()
+			this.loadIncome()
 		},
 		methods: {
 			// 总投资
@@ -141,14 +144,14 @@
 				})
 			},
 			showInvest(){
-					uni.navigateTo({
-						url:'./friendIncomInvest'
-					})
+				uni.navigateTo({
+					url:'./friendIncomInvest'
+				})
 			},
 			showTeam(){
-					uni.navigateTo({
-						url:'./friendIncomeTeam'
-					})
+				uni.navigateTo({
+					url:'./friendIncomeTeam'
+				})
 			},
 			goBack(){
 				uni.switchTab({

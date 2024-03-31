@@ -10,10 +10,10 @@
 		</view>
 		<view class="content">
 			 <view class="detail">
-				 <view class="title">{{detail.cid}}</view>
+				 <view class="title">{{detail.currency.name}}</view>
 				 <view class="sub-title">
-					 <view class="left">{{$t('invest.detail.nian.text')}} <text></text> </view>
-					<view class="right">{{$t('invest.detail.rate.text')}} <text></text> </view>
+					 <view class="left">{{$t('invest.detail.nian.text')}} <text>{{detail.currency.rate}}%</text> </view>
+					<view class="right">{{$t('invest.detail.rate.text')}} <text>{{detail.currency.rate}}%</text> </view>
 				 </view>
 				 <view class="dtqx">
 					 <view class="title">
@@ -22,7 +22,7 @@
 					 </view>
 					<view class="day-box">
 						<view class="day" :class="index==dayIndex?'active':''" v-for="(item,index) in detail.rateConfig" :key="index" @click="chooseRate(item,index)">
-												 {{item.days}}
+							 {{item.days}}
 						</view>
 					</view>
 				 </view>
@@ -34,28 +34,28 @@
 					 				<uni-easyinput type="text" v-model="formData.money " :placeholder="$t('invest.detail.enternum.text')" />
 					 			</view>
 					 			<view class="right">
-					 				<view class="playername">{{detail.cid}}</view>
-					 				<view class="max" @click="">{{$t('invest.detail.enter.max.text')}}</view>
+					 				<view class="playername">{{detail.currency.name}}</view>
+					 				<view class="max" @click="setAll">{{$t('invest.detail.enter.max.text')}}</view>
 					 			</view>
 					 		</view>
 					 		<view class="form-tips">
-					 			<view class="tips-left">{{$t('invest.detail.enable.text')}}</view>
+					 			<view class="tips-left">{{$t('invest.detail.enable.text')}}:{{divide(this.balance.totalBalance)}}</view>
 					 		</view>
 							<view class="form-item-box ">
 								<view class="form-item-box-item">
-									<view class="num">752</view>
+									<view class="num">{{dayItem.min}}</view>
 									<view class="title">{{$t('invest.detail.dt.num.text')}}</view>
 								</view>
 								<view class="divider"></view>
 								<view class="form-item-box-item">
-									<view class="num">15222</view>
+									<view class="num">{{dayItem.max}}</view>
 									<view class="title">{{$t('invest.detail.dt.edu.text')}}</view>
 								</view>
 							</view>
 					 	</uni-forms-item>
 					 	<uni-forms-item :label="$t('security.update.fundpwd.label')" name="payPwd">
 					 		<view class="form-item">
-								<uni-easyinput type="password " prefixIcon="locked" v-model="formData.payPwd" :placeholder="$t('ruls.xxx.please',{name:$t('security.update.fundpwd.label')})" />
+								<uni-easyinput type="password" prefixIcon="locked" v-model="formData.payPwd" :placeholder="$t('ruls.xxx.please',{name:$t('security.update.fundpwd.label')})" />
 							</view>
 					 	</uni-forms-item>
 					 </uni-forms>
@@ -66,17 +66,17 @@
 			 <view class="title">{{$t('invest.detail.page.text')}}</view>
 			 <view class="detail-box">
 				 <view class="detail-box-item">
-					 <view class="up">{{detail.cid}}</view>
+					 <view class="up">{{detail.currency.name}}</view>
 					 <view class="down">{{$t('invest.detail.dt.tonz.text')}}</view>
 				 </view>
 				 <view class="divider"></view>
 				 <view class="detail-box-item">
-						 <view class="up">{{$t('user.trade.title2.text')}}</view>
+						 <view class="up">{{detail.name}}</view>
 						 <view class="down">{{$t('invest.detail.dt.tonz.text')}}</view>
 				 </view>
 				  <view class="divider"></view>
 				 <view class="detail-box-item">
-						 <view class="up">{{detail.cid}}</view>
+						 <view class="up">{{detail.currency.rate}}%</view>
 						 <view class="down">{{$t('invest.detail.dt.flv.text')}}</view>
 				 </view>
 			 </view>
@@ -136,9 +136,12 @@
 </template>
 
 <script>
+	import {divide, divide100} from '@/utils/util.js'
 	export default {
 		data() {
 			return {
+				divide:divide100,
+				balance:{},
 				detail:{
 					id: 3,
 					cid: 'USDT',
@@ -181,18 +184,57 @@
 		},
 		onLoad() {
 			this.loadData()
+			this.getCurrency()
 		},
 		methods: {
 			submit(){
-				
+				this.$refs.form.validate().then(res=>{
+					const para = Object.assign({},this.formData)
+					para.planId = this.detail.id
+					para.days = this.dayItem.days
+					this.$http.post('/player/invest',para,(res=>{
+						if(res.code ==200){
+							this.formData.planId = ''
+							this.formData.money = ''
+							this.formData.payPwd = ''
+							uni.showToast({
+								title:this.$t('oper.tip.success.text'),
+								icon:'success',
+							})
+						}
+					}))
+				}).catch(err =>{
+					console.log( err);
+				})
+			},
+			setAll(){
+				let money = divide100(this.balance.totalBalance)
+				if(money > this.dayItem.max){
+					money = this.dayItem.max
+				}
+				this.formData.money = money
+			},
+			getCurrency(){
+				this.$http.get('/player/currency/list',res=>{
+					if(res.code == 200){
+						this.balance = res.data
+					}
+				})
 			},
 			chooseRate(item,index){
 				this.dayIndex = index
 				this.dayItem = this.detail.rateConfig[this.dayIndex]
 			},
 			loadData(){
-				this.$http.post('/player/invest/plans',{},res => {
+				this.$http.post('/player/invest/plan',{},res => {
 					if(res.code == 200){
+						this.detail = res.data
+						const config = JSON.parse(res.data.rateConfig || '')
+						this.detail.rateConfig = config
+						let imgUrl ='../../static/images/user/10019.png'
+						if(!this.detail.imgUrl){
+							this.detail.imgUrl = imgUrl
+						}
 						 this.dayItem = this.detail.rateConfig[this.dayIndex]
 					}
 				})

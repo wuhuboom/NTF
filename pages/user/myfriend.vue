@@ -16,7 +16,7 @@
 						<view class="up">
 							{{$t('myfriends.rank.invest.title')}}
 						</view>
-						<view class="bottom" @click="showInvest">
+						<view class="bottom" @click="showInvest(item)">
 							<view>{{divide(item.me)}}</view>
 							<uni-icons type="right" color="fff"></uni-icons>
 						</view>
@@ -25,7 +25,7 @@
 						<view class="up">
 							{{$t('myfriends.rank.friend.title')}}
 						</view>
-						<view class="bottom" @click="showTeam">
+						<view class="bottom" @click="showTeam(item)">
 							<text>{{item.friends}}</text>
 							<uni-icons type="right" color="fff"></uni-icons>
 						</view>
@@ -143,14 +143,16 @@
 					url:'./friendlist'
 				})
 			},
-			showInvest(){
+			showInvest(item){
+				let money = item.me || 0
 				uni.navigateTo({
-					url:'./friendIncomInvest'
+					url:'./friendIncomInvest?money='+money+'&cid='+item.cid
 				})
 			},
-			showTeam(){
+			showTeam(item){
+				let money = item.friends || 0
 				uni.navigateTo({
-					url:'./friendIncomeTeam'
+					url:'./friendIncomeTeam?money='+money+'&cid='+item.cid
 				})
 			},
 			goBack(){

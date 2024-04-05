@@ -50,7 +50,7 @@
 				</uni-forms-item>
 				
 				<uni-forms-item :label="$t('withdraw.money.text')" name="money">
-					<uni-easyinput type="text" v-model="formData.money" :placeholder="$t('ruls.xxx.please',{name:$t('recharge.money.text')})" />
+					<uni-easyinput type="number" v-model="formData.money" :placeholder="$t('ruls.xxx.please',{name:$t('recharge.money.text')})" />
 				</uni-forms-item>
 				<uni-forms-item :label="$t('withdraw.password.text')" name="payPwd">
 					<uni-easyinput type="password" v-model="formData.payPwd" :placeholder="$t('ruls.xxx.please',{name:$t('withdraw.password.text')})" />
@@ -95,7 +95,7 @@
 				isShow: false,
 				selIndex:0,
 				formData:{
-					money:'',
+					money:0,
 					type:'',
 					payPwd:''
 				},
@@ -255,6 +255,10 @@
 				})
 			},
 			submit(){
+				if(!this.usdtItem.id){
+					this.openPopup()
+					return
+				}
 				this.$refs.form.validate().then(res=>{
 					const para = {
 						money : this.formData.money,
@@ -264,10 +268,12 @@
 					}
 					this.$http.post('/player/withdrawal',para,(res=>{
 						if(res.code ==200){
-							res = res.data
-							if (res.UrlAddress) {
-								location.href = res.UrlAddress
-							}
+							this.formData.money = 0
+							this.formData.payPwd = ''
+							uni.showToast({
+								title:this.$t('oper.tip.success.text'),
+								icon:'success'
+							})
 						}
 					}))
 				}).catch(err =>{

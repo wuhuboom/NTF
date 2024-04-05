@@ -77,6 +77,7 @@
 						payId : this.sectItem.id
 					}
 					this.$http.post('/player/recharge',para,(res=>{
+						console.log(res,'---------')
 						if(res.code ==200){
 							res = res.data
 							if (res.UrlAddress) {

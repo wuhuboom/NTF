@@ -186,7 +186,7 @@
 				margin-bottom: 20upx;
 				border-radius: 5px;
 				background-color: #2a2937;
-				height: 130upx;
+				height: 180upx;
 				display: flex;
 				flex-direction: column;
 				.row1,.row2{

@@ -199,6 +199,8 @@
 							this.formData.money = ''
 							this.formData.payPwd = ''
 							this.loadData()
+							this.records = []
+							this.loadRecord()
 							uni.showToast({
 								title:this.$t('oper.tip.success.text'),
 								icon:'success',

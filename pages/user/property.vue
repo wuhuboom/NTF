@@ -50,7 +50,7 @@
 				subPages:[
 					{title:this.$t('property.subpage.title1'),icon:'../../static/images/user/10023.png',path:'./recharge'},
 					{title:this.$t('property.subpage.title2'),icon:'../../static/images/user/zjtq.png',path:'./withdraw'},
-					{title:this.$t('property.subpage.title3'),icon:'../../static/images/user/sd.png',path:'./exchange'}
+					// {title:this.$t('property.subpage.title3'),icon:'../../static/images/user/sd.png',path:'./exchange'}
 				],
 				// balances:[
 				// 	{name:'USD',num:'100',icon:'../../static/images/user/10024.png',path:''},

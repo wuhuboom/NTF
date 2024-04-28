@@ -40,8 +40,8 @@
 									<view class="choose-name">{{item.playerName}}</view>
 								</view>
 								<view class="row">
-									<view class="tips">{{$t('invest.days.text')}}:{{selItem.days}}</view>
-									<view class="tips">{{$t('invest.rate.text')}}:{{selItem.rateConf}}%</view>
+									<view class="tips">{{$t('invest.days.text')}}:{{item.days}}</view>
+									<view class="tips">{{$t('invest.rate.text')}}:{{item.rateConf}}%</view>
 								</view>
 							</view>
 						</view>
@@ -404,6 +404,8 @@
 				position: absolute;
 				top: 80upx;
 				z-index: 99;
+				height: 400upx;
+				overflow: auto;
 				.choose-item{
 					color: #fff;
 					padding: 20upx;

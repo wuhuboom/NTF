@@ -70,11 +70,11 @@
 			},
 			placeholder: {
 				type: String,
-				default: '请选择'
+				default: 'Please Select'
 			},
 			emptyTips: {
 				type: String,
-				default: '无选项'
+				default: 'No Data'
 			},
 			clear: {
 				type: Boolean,

@@ -306,6 +306,7 @@
 				})
 			},
 			loadRecord(){
+				this.records=[]
 				this.$http.post("/player/invest/my",this.search,res => {
 					this.records = [...this.records,...res.data.results]
 				})

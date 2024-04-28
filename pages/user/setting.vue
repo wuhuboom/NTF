@@ -16,9 +16,18 @@
 				</view>
 			</view>
 		</view>
-		<view class="logout" @click="logout">
+		<view class="logout" @click="openPopup">
 			{{$t('btn.logout.text')}}
 		</view>
+		<uni-popup ref="popup" type="center" background-color="rgb(0, 20, 19)">
+			<view class="popup-form">
+				<view class="popup-tip">{{$t('setting.logout.tip.text')}}</view>
+				<view class="prop-btn">
+					<button class="cancle-btn btn" @click="closeProp">{{$t('btn.caancle.text')}}</button>
+					<button class="sub-btn btn" @click="logout">{{$t('btn.continue.text')}}</button>
+				</view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
@@ -56,6 +65,7 @@
 			},
 			logout(){
 				uni.removeStorageSync("user")
+				uni.removeStorageSync('accountInfo')
 				uni.removeStorageSync("token")
 				uni.navigateTo({
 					url:'/pages/login/login'
@@ -65,6 +75,12 @@
 				uni.switchTab({
 					url:'/pages/user/user'
 				})
+			},
+			closeProp(){
+				this.$refs.popup.close()
+			},
+			openPopup(){
+				this.$refs.popup.open()
 			}
 		}
 	}
@@ -124,6 +140,51 @@
 		border-radius: 20upx;
 		position: absolute;
 		bottom: 100upx;
+	}
+	.popup-form{
+		width: 600upx!important;
+		padding: 40upx;
+		border-radius: 20upx;
+		::v-deep .uni-forms-item__label{
+			color: #fff;
+		}
+		::v-deep .uni-easyinput__content{
+			background-color: rgb(40, 44, 52)!important;
+			border-color: rgb(40, 44, 52)!important;
+			color: rgb(255,255,255)!important;
+		}
+		::v-deep .uni-icons{
+			color: $fontColor!important;
+		}
+		.popup-tip{
+			color: $fontColor;
+			text-align: center;
+			font-size: 40upx;
+			margin-bottom: 80upx;
+		}
+		.prop-btn{
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+			width: 600upx;
+			.btn{
+				width: 40%;
+				height: 70upx;
+				line-height: 70upx;
+				text-align: center;
+				font-size: 28upx;
+			}
+			.cancle-btn{
+				border: 1px solid $fontColor;
+				background-color: transparent;
+				color: #fff;
+			}
+			.sub-btn{
+				background-color: $fontColor;
+				color: #fff;
+			}
+		}
+		 
 	}
 }
 </style>

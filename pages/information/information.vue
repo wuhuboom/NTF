@@ -180,7 +180,7 @@
 				refresherTriggered:false,
 			}
 		},
-		onLoad() {
+		onShow() {
 			this.loadData()
 			// this.getSwitch()
 		},

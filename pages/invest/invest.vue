@@ -1,25 +1,25 @@
 <template>
 	<view class="invest">
-		<view class="invest-tab">
+		<!-- <view class="invest-tab">
 			<view class="tab-bar" :class="tabIndex==1?'tab-active':''" @click="changeTab(1)">{{$t('invest.menu1.text')}}
 			</view>
 			<view class="tab-bar" :class="tabIndex==2?'tab-active':''" >{{$t('invest.menu2.text')}}
 			</view>
 			<view class="tab-bar" :class="tabIndex==3?'tab-active':''" @click="changeTab(3)">{{$t('invest.menu3.text')}}
 			</view>
-		</view>
+		</view> -->
 		<view class="balance">
 			<view class="title">
 				{{$t('invest.balance.text')}}
 				<uni-icons :type="isShow?'eye':'eye-slash'" color="#fff" :size="24"  @click="showBalance"></uni-icons>
 			</view>
-			<view class="money" v-if="isShow">${{user.balance}}USD</view>
-			<view class="money" v-else>${{gethideNum(user.balance)}} **</view>
+			<view class="money" v-if="isShow">${{divide(usdtBalance.balance)}}USDT</view>
+			<view class="money" v-else>${{gethideNum(divide(usdtBalance.balance))}} **</view>
 		</view>
 		<view class="algorithm" v-if="tabIndex==1">
 			<view class="algorithm-item" :class="type==0?'algorithm-active':''" @click="getData(0)">{{$t('invest.algorithm1.text')}}</view>
-			<view class="algorithm-item" :class="type==1?'algorithm-active':''" @click="getData(1)">{{$t('invest.algorithm2.text')}}</view>
-			<view class="algorithm-item" :class="type==2?'algorithm-active':''" @click="getData(2)">{{$t('invest.algorithm3.text')}}</view>
+			<!-- <view class="algorithm-item" :class="type==1?'algorithm-active':''" @click="getData(1)">{{$t('invest.algorithm2.text')}}</view>
+			<view class="algorithm-item" :class="type==2?'algorithm-active':''" @click="getData(2)">{{$t('invest.algorithm3.text')}}</view> -->
 		</view>
 		<view class="form" v-if="tabIndex==1">
 			<uni-forms ref="form" :modelValue="formData" :rules="rules" label-position="top" :label-width="300">
@@ -96,11 +96,11 @@
 					 </view>
 					 <view class="row">
 						 <view class="left">{{$t('invest.record.table.col1.text')}}</view>
-						 <view class="right">$&nbsp;{{divide(item.money)}}</view>
+						 <view class="right">{{divide(item.money)}}</view>
 					 </view>
 					 <view class="row">
 						 <view class="left">{{$t('invest.record.table.col4.text')}}</view>
-						 <view class="right">$&nbsp;<text>{{count(item)}}</text></view>
+						 <view class="right"><text>{{count(item)}}</text></view>
 					 </view>
 					 <view class="row">
 						 <view class="left">{{$t('invest.record.table.col6.text')}}</view>
@@ -117,15 +117,28 @@
 				 </view>
 			 </view>
 		</view>
+		<uni-popup ref="popup" type="bottom" background-color="#181822" borderRadius="10px,10px,0px,0px">
+			<view class="popup-form">
+				<uni-forms ref="calForm" :modelValue="calFormData" :rules="calRules" label-position="top" :label-width="300">
+					<uni-forms-item :label="$t('security.update.fundpwd.label')" name="payPwd">
+						<uni-easyinput type="password" prefixIcon="locked" v-model="calFormData.payPwd " :placeholder="$t('ruls.xxx.please',{name:$t('security.update.fundpwd.label')})" />
+					</uni-forms-item>
+				</uni-forms>
+				<view class="prop-btn">
+					<button class="cancle-btn btn" @click="closeProp">{{$t('btn.caancle.text')}}</button>
+					<button class="sub-btn btn" @click="submitCal">{{$t('btn.continue.text')}}</button>
+				</view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
 <script>
-	import {divide,formatDate} from '@/utils/util.js'
+	import {divide100,formatDate} from '@/utils/util.js'
 	export default {
 		data() {
 			return {
-				divide:divide,
+				divide:divide100,
 				formatDate:formatDate,
 				showSelect:false,
 				isShow:true,
@@ -180,13 +193,26 @@
 					    label: this.$t("invest.record.status2.text"),
 					    value: 2
 					}
-				]
+				],
+				usdtBalance:{},
+				calFormData:{
+					payPwd:'',
+					id:''
+				},
+				calRules: {
+					payPwd: {
+						rules: [
+							{required: true,errorMessage: this.$t('ruls.xxx.empty',{name:this.$t('security.update.fundpwd.label')})}
+						]
+					}
+				},
 			}
 		},
-		onLoad(){
+		onShow(){
 			this.getUserinfo()
 			this.loadData()
 			this.loadRecord()
+			this.getUserBalance()
 		},
 		methods: {
 			submit(){
@@ -201,6 +227,7 @@
 							this.loadData()
 							this.records = []
 							this.loadRecord()
+							this.getUserBalance()
 							uni.showToast({
 								title:this.$t('oper.tip.success.text'),
 								icon:'success',
@@ -226,6 +253,16 @@
 			getData(type){
 				this.type = type
 				this.loadData()
+			},
+			calInvest(item){
+				this.calFormData.id = item.id
+				this.$refs.popup.open()
+			},
+			getUserBalance(){
+				this.$http.get('/player/currency/list',res=>{
+					let datas = res.data.list || []
+					this.usdtBalance = datas.find(item => item.currency.name=='USDT') || {}
+				})
 			},
 			getUserinfo(){
 				this.$http.get('/player/player_info',res =>{
@@ -288,7 +325,32 @@
 			getType2(value) {
 				let res = this.typeOptions2.find(item => item.value == value)
 				return res.label;
-			}
+			},
+			submitCal(){
+				this.$refs.calForm.validate().then(res=>{
+					const para = Object.assign({},this.calFormData)
+					this.$http.post('/player/invest/my/stop',para,(res=>{
+						if(res.code ==200){
+							this.search.pageNo = 1
+							this.totalPage = 1
+							this.records = []
+							this.loadRecord()
+							this.closeProp()
+							uni.showToast({
+								title:this.$t('oper.tip.success.text'),
+								icon:'success'
+							})
+						}
+					}))
+				}).catch(err =>{
+					console.log( err);
+				})
+			},
+			closeProp(){
+				this.calFormData.id= ''
+				this.calFormData.payPwd = ''
+				this.$refs.popup.close()
+			},
 			
 		}
 	}
@@ -347,13 +409,14 @@
 	}
 	.algorithm{
 		display: flex;
-		justify-content: space-around;
+		justify-content: flex-start;
 		align-items: center;
 		color: #fff;
 		font-size: 26upx;
 		.algorithm-item{
-			width: 33%;
-			height: 90upx;
+			// width: 33%;
+			height: 60upx;
+			line-height: 60upx;
 			text-align: center;
 			border-bottom: 4upx solid #fff;
 			padding-bottom: 10upx;
@@ -515,5 +578,43 @@
 			 }
 		 }
 	}	 
+	.popup-form{
+		width: 670upx;
+		padding: 40upx;
+		margin-bottom: 100upx;
+		::v-deep .uni-forms-item__label{
+			color: #fff;
+		}
+		::v-deep .uni-easyinput__content{
+			background-color: rgb(40, 44, 52)!important;
+			border-color: rgb(40, 44, 52)!important;
+			color: rgb(255,255,255)!important;
+		}
+		::v-deep .uni-icons{
+			color: $fontColor!important;
+		}
+		.prop-btn{
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+			.btn{
+				width: 40%;
+				height: 70upx;
+				line-height: 70upx;
+				text-align: center;
+				font-size: 28upx;
+			}
+			.cancle-btn{
+				border: 1px solid $fontColor;
+				background-color: transparent;
+				color: #fff;
+			}
+			.sub-btn{
+				background-color: $fontColor;
+				color: #fff;
+			}
+		}
+		 
+	}
 }
 </style>

@@ -142,7 +142,7 @@
 			 },
 			goBack(){
 				uni.navigateTo({
-					url:'./withdraw'
+					url:'./recharge'
 				})
 			}
 		}

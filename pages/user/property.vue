@@ -160,7 +160,7 @@
 		justify-content: space-between;
 		align-items: center;
 		.sub-item{
-			width: 33%;
+			// width: 33%;
 			display: flex;
 			flex-direction: column;
 			align-items: center;

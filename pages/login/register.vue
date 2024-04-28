@@ -213,6 +213,9 @@
 		::v-deep .uni-icons{
 			color: $fontColor!important;
 		}
+		::v-deep .uni-forms-item__label{
+			width: 300upx!important;
+		}
 		.btn{
 			background-color: $fontColor;
 			color: #fff;

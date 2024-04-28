@@ -45,11 +45,11 @@
 						 </view>
 						 <view class="row">
 							 <view class="left">{{$t('invest.record.table.col1.text')}}</view>
-							 <view class="right">$&nbsp;{{divide(item.money)}}</view>
+							 <view class="right">{{divide(item.money)}}</view>
 						 </view>
 						 <view class="row">
 							 <view class="left">{{$t('invest.record.table.col4.text')}}</view>
-							 <view class="right">$&nbsp;<text>{{count(item)}}</text></view>
+							 <view class="right"><text>{{count(item)}}</text></view>
 						 </view>
 						 <view class="row">
 							 <view class="left">{{$t('invest.record.table.col6.text')}}</view>

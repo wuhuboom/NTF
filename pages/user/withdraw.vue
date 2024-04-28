@@ -411,6 +411,9 @@
 		::v-deep .uni-icons{
 			color: $fontColor!important;
 		}
+		::v-deep .uni-forms-item__label{
+			width: 300upx!important;
+		}
 		.choose-usdt-box{
 			position: relative;
 			background-color: rgb(41,41,55);
@@ -423,6 +426,8 @@
 					display: flex;
 					align-items: center;
 					color: #fff;
+					max-width: 580upx;
+					overflow: hidden;
 					image{
 						width: 60upx;
 						height: 60upx;

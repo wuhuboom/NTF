@@ -102,7 +102,7 @@
 				formatNum:formatNum
 			}
 		},
-		onLoad() {
+		onShow() {
 			this.checkSetPwd()
 			this.getSwitch()
 			this.loadNotice()
@@ -353,6 +353,7 @@
 			font-weight: 600;
 		}
 		.popup-info{
+			text-align: center;
 			margin-top: 20upx;
 			font-size: 26upx;
 		}

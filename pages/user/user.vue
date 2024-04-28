@@ -51,7 +51,7 @@
 				user:{}
 			}
 		},
-		onLoad() {
+		onShow() {
 			this.getUserinfo()
 		},
 		methods: {

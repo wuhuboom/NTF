@@ -57,7 +57,7 @@
 						 </view>
 						 <view class="row">
 							 <view class="left">{{$t('invest.record.table.col7.text')}}</view>
-							 <view class="right">{{item.id}}</view>
+							 <view class="right">{{item.orderNo}}</view>
 						 </view>
 						 <view class="row">
 							 <view class="left">{{$t('invest.record.table.col2.text')}}</view>

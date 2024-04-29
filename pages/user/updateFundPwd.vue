@@ -69,6 +69,7 @@
 		},
 		methods: {
 			submit(){
+				let that = this
 				this.$refs.form.validate().then(res=>{
 					const para = Object.assign({},this.formData)
 					this.$http.post('/player/editPwdPay',para,(res=>{
@@ -77,7 +78,7 @@
 								title:this.$t('oper.tip.success.text'),
 								icon:'none',
 								success() {
-									this.goBack()
+									that.goBack()
 								}
 							})
 						}else{
@@ -112,9 +113,11 @@
 			},
 			goBack(){
 				if(this.type=='home'){
-					uni.reLaunch({
-						url:'/pages/home/home'
-					})
+					setTimeout(()=>{
+						uni.reLaunch({
+							url:'/pages/home/home'
+						})
+					},2000)
 				}else{
 					uni.navigateTo({
 						url:'./security'

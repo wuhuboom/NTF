@@ -77,9 +77,7 @@
 								title:this.$t('oper.tip.success.text'),
 								icon:'none',
 								success() {
-									uni.navigateTo({
-										url:'/pages/user/security'
-									})
+									this.goBack()
 								}
 							})
 						}else{
@@ -114,7 +112,7 @@
 			},
 			goBack(){
 				if(this.type=='home'){
-					uni.switchTab({
+					uni.reLaunch({
 						url:'/pages/home/home'
 					})
 				}else{

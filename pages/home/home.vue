@@ -119,7 +119,7 @@
 			},
 			checkSetPwd(){
 				this.$http.get('/player/getPwdPay',res=>{
-					const type = res.data.paySet
+					let type = res.data.paySet
 					if(type==2){
 						this.$refs.popup.open('center')
 					}

@@ -206,7 +206,7 @@
 				if(rate.indexOf('-')>-1){
 					rate = rate.split('-')[1]
 				}
-				return (item.money * item.days * rate / 10000).toFixed(2)
+				return (item.money * rate / 10000).toFixed(2)
 			},
 			getType(value) {
 			   let res = this.typeOptions.find(item => item.value === value)

@@ -108,11 +108,13 @@
 				width: 150upx;
 				text-align: center;
 				.opet-btn{
-					width: 120upx;
+					width: 150upx;
 					height: 60upx;
+					line-height: 60upx;
 					font-size: 28upx;
 					background-color: $fontColor;
 					color: #fff;
+					text-align: center;
 				}
 			}
 		}

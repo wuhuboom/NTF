@@ -3,11 +3,11 @@
 		<uni-nav-bar left-icon="left"  :title="$t('security.update.password.text')" background-color="rgb(1,2,3)" color="#fff" :border="false" @clickLeft="goBack"></uni-nav-bar>
 		<view class="form">
 			<uni-forms ref="form" :modelValue="formData" :rules="rules" label-position="top" :label-width="300">
-				<uni-forms-item :label="$t('security.update.pwd.label')" name="password">
-					<uni-easyinput type="password" prefixIcon="locked" v-model="formData.password" :placeholder="$t('ruls.xxx.please',{name:$t('register.password.text')})" />
+				<uni-forms-item :label="$t('security.update.pwd.label')" name="newPwd">
+					<uni-easyinput type="password" prefixIcon="locked" v-model="formData.newPwd" :placeholder="$t('ruls.xxx.please',{name:$t('register.password.text')})" />
 				</uni-forms-item>
-				<uni-forms-item :label="$t('security.update.pwd.confirm.label')" name="twoPassword">
-					<uni-easyinput type="password" prefixIcon="locked" v-model="formData.twoPassword" :placeholder="$t('ruls.xxx.please',{name:$t('register.twoPassword.text')})" />
+				<uni-forms-item :label="$t('security.update.pwd.confirm.label')" name="twicePwd">
+					<uni-easyinput type="password" prefixIcon="locked" v-model="formData.twicePwd" :placeholder="$t('ruls.xxx.please',{name:$t('register.twoPassword.text')})" />
 				</uni-forms-item>
 				<uni-forms-item :label="$t('register.code.text')" name="code">
 					<uni-easyinput type="text" v-model="formData.code" :placeholder="$t('ruls.xxx.please',{name:$t('register.code.text')})" >
@@ -29,8 +29,8 @@
 		data() {
 			return {
 				formData:{
-					password :'',
-					twoPassword :'',
+					newPwd :'',
+					twicePwd :'',
 					code :'',
 				},
 				rules: {
@@ -39,22 +39,22 @@
 					 		{required: true,errorMessage: this.$t('ruls.xxx.empty',{name:this.$t('register.code.text')})}
 					 	]
 					 },
-					password: {
+					newPwd: {
 						rules: [
 							{required: true,errorMessage: this.$t('ruls.xxx.empty',{name:this.$t('register.password.text')})}
 						]
 					},
-					twoPassword: {
+					twicePwd: {
 						rules: [
 							{required: true,errorMessage: this.$t('ruls.xxx.empty',{name:this.$t('register.twoPassword.text')})},
-												{
-													validateFunction:(rule,value,data,callback)=>{
-														if (value != this.formData.password) {
-															callback(this.$t('ruls.twoPassword'))
-														}
-														return true
-													}
-												}
+							{
+								validateFunction:(rule,value,data,callback)=>{
+									if (value != this.formData.newPwd) {
+										callback(this.$t('ruls.twoPassword'))
+									}
+									return true
+								}
+							}
 						]
 					}
 				},

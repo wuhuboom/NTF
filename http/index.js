@@ -38,9 +38,11 @@ http.beforeResponseFilter = function (res) {
 			return res
 		}else if(res.code == 103 || res.code == 105){
 			const data = res.data;
+			console.log('vueInstance',vueInstance.$t('backapi.'+data[0].msgKey))
 			if(data.length > 0){
+				let title = data[0].msg || vueInstance.$t('backapi.'+data[0].msgKey)
 				uni.showToast({
-					title:vueInstance.$t('backapi.'+data[0].msgKey),
+					title:title,
 					duration:2000,
 					icon:'error'
 				})

@@ -12,8 +12,8 @@
 			 <view class="detail">
 				 <view class="title">{{detail.currency.name}}</view>
 				 <view class="sub-title">
-					 <view class="left">{{$t('invest.detail.nian.text')}} <text>{{detail.currency.rate}}%</text> </view>
-					<view class="right">{{$t('invest.detail.rate.text')}} <text>{{detail.currency.rate}}%</text> </view>
+					 <view class="left">{{$t('invest.detail.nian.text')}} <text>{{dayItem.rate * 365}}%</text> </view>
+					<view class="right">{{$t('invest.detail.rate.text')}} <text>{{dayItem.rate}}%</text> </view>
 				 </view>
 				 <view class="dtqx">
 					 <view class="title">
@@ -39,7 +39,7 @@
 					 			</view>
 					 		</view>
 					 		<view class="form-tips">
-					 			<view class="tips-left">{{$t('invest.detail.enable.text')}}:{{divide(this.balance.totalBalance)}}</view>
+					 			<view class="tips-left">{{$t('invest.detail.enable.text')}}:{{getUsdtMoney()}}</view>
 					 		</view>
 							<view class="form-item-box ">
 								<view class="form-item-box-item">
@@ -76,7 +76,7 @@
 				 </view>
 				  <view class="divider"></view>
 				 <view class="detail-box-item">
-						 <view class="up">{{detail.currency.rate}}%</view>
+						 <view class="up">{{dayItem.rate}}%</view>
 						 <view class="down">{{$t('invest.detail.dt.flv.text')}}</view>
 				 </view>
 			 </view>
@@ -143,23 +143,18 @@
 				divide:divide100,
 				balance:{},
 				detail:{
-					id: 3,
-					cid: 'USDT',
-					name: '项目名称',
+					id: '',
+					cid: '',
+					name: '',
 					imgUrl: '../../static/images/user/10019.png',
 					incomeType: 0, //结算方式 0.每日结算 1.到期结算,
 					periodical: 1,//是否定期 0否 1是,
 					currency: {
 						id: 1,
-						name: "货币名称",
-						imgUrl: "货币图标",
+						name: "",
+						imgUrl: "",
 					},
-					rateConfig: [
-						{days:'14',rate:'10',min:'70.45212',max:'705.35212'},
-						{days:'28',rate:'10',min:'70.45212',max:'720.6325'},
-						{days:'56',rate:'10',min:'70.5262',max:'730.252122'},
-						{days:'168',rate:'10',min:'100',max:'200'}
-					]
+					rateConfig: []
 				},
 				dayIndex:0,
 				dayItem:{},
@@ -207,8 +202,21 @@
 					console.log( err);
 				})
 			},
+			getUsdtMoney(){
+				let list =  this.balance.list || []
+				let item = list.find(item=>{
+					let currency = item.currency || {}
+					return currency.name=='USDT'
+				})
+				if(item){
+					return divide100(item.balance)
+				}else{
+					return 0 
+				}
+			},
 			setAll(){
-				let money = divide100(this.balance.totalBalance)
+				
+				let money = this.getUsdtMoney()
 				if(money > this.dayItem.max){
 					money = this.dayItem.max
 				}
@@ -224,6 +232,7 @@
 			chooseRate(item,index){
 				this.dayIndex = index
 				this.dayItem = this.detail.rateConfig[this.dayIndex]
+				console.log(this.dayItem)
 			},
 			loadData(){
 				this.$http.post('/player/invest/plan',{},res => {
@@ -293,9 +302,7 @@
 				width: 100%;
 				font-size: 26upx;
 				display: flex;
-				.left{
-					margin-right: 30upx;
-				}
+				justify-content: space-between; 
 			}
 			.dtqx{
 				margin-top: 20upx;
@@ -384,12 +391,14 @@
 				padding-bottom: 40upx;
 				margin-top: 20upx;
 				.form-item-box-item{
-					width: 33%;
 					display: flex;
 					flex-direction: column;
 					align-items: center;
 					justify-content: space-around;
 					height: 120upx;
+					.title{
+						font-size: 28upx;
+					}
 				}
 				.divider{
 					width: 2upx;

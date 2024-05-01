@@ -48,7 +48,7 @@
 					res = res.data
 					res.forEach(item => {
 						if(item.appType==this.osType){
-							downObj = item
+							this.downObj = item
 						}
 					});
 					    if(this.downObj.appUrl){

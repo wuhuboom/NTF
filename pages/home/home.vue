@@ -22,7 +22,7 @@
 			</view>
 		</view>
 		<view class="game">
-			<swiper class="swiper-game" @change="change" :display-multiple-items="2">
+			<swiper class="swiper-game" @change="change" :display-multiple-items="2" :autoplay="true" :circular="true">
 				<block v-for="(item ,index) in gameTools" :key="index">
 					<swiper-item  @click="showDetail(item)" next-margin="20" v-if="index < 4">
 						<view class="swiper-item">
@@ -81,11 +81,7 @@
 	export default {
 		data() {
 			return {
-				swipers:[
-					{id:'1',name:'',imageUrl:'../../static/images/home/10001.jpg'},
-					{id:'2',name:'',imageUrl:'../../static/images/home/10002.jpg'},
-					{id:'3',name:'',imageUrl:'../../static/images/home/10003.jpg'}
-				],
+				swipers:[],
 				current: 0,
 				mode: 'round',
 				notice:{
@@ -137,11 +133,6 @@
 			// 
 			changeTab(index){
 				this.tabIndex = index
-			},
-			loadSwiper(){
-				this.$http.get('/player/home/slider',(res)=>{
-					
-				})
 			},
 			loadNotice(){
 				this.$http.get('/player/home/notice',(res)=>{

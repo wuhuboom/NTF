@@ -284,6 +284,11 @@
 	"fundsRecords.type.text": "类型",
 	"fundsRecords.initMoney.text": "初始金额",
 	
+	"user.money.available":"Available Funds",
+	"user.money.purchased":"Purchased",
+	"user.menu.title5.text":"邀请好友",
+	"user.menu.title6.text":"下载APP",
+	"user.menu.title7.text":"退出",
 	
 	"btn.invest.text":"立即投资",
 	"btn.join.text":"立即参与",

@@ -24,7 +24,13 @@ export const formatDate = (timestamp,type)=>{
 			return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 		}
 }
-
+export const getCurrentDate = ()=>{
+	const date = new Date();
+    const year = date.getFullYear();
+    const month = ("0" + (date.getMonth() + 1)).slice(-2);
+    const day = ("0" + date.getDate()).slice(-2);
+	return `${year}/${month}/${day}`;
+}
 export const divide = (num) =>{
 	if(num > 0){
 		num = (num / 100).toFixed(2)

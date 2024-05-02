@@ -224,7 +224,7 @@
 				})
 			},
 			goBack(){
-				uni.switchTab({
+				uni.reLaunch({
 					url:'./invest'
 				})
 			}

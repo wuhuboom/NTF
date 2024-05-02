@@ -96,25 +96,8 @@
 			return {
 				divide:divide100,
 				ranking:'',//排名
-				income:{
-					"me": '我的总投资',
-					"friendsCount": '总朋友数',
-					"friends": '朋友总投资'
-				},//总投资
-				ranks:[
-					{
-					"me": '100',
-					"currency": "USD",
-					"friends": 200,
-					"cid": 1
-					},
-					{
-					"me": null,
-					"currency": "USDT",
-					"friends": null,
-					"cid": 2
-					}
-				]
+				income:{},//总投资
+				ranks:[]
 			}
 		},
 		onLoad() {

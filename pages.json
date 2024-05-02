@@ -319,6 +319,22 @@
 				"enablePullDownRefresh" : false,
 				"navigationStyle":"custom"
 			}
+		},
+		{
+			"path" : "pages/invest/market",
+			"style" : 
+			{
+				"enablePullDownRefresh" : false,
+				"navigationStyle":"custom"
+			}
+		},
+		{
+			"path" : "pages/invest/marketDetail",
+			"style" : 
+			{
+				"enablePullDownRefresh" : false,
+				"navigationStyle":"custom"
+			}
 		}
 	],
 	"globalStyle": {
@@ -339,7 +355,7 @@
 				"iconPath": "static/images/tabbar/home.png"
 			},
 			{
-				"pagePath": "pages/invest/invest",
+				"pagePath": "pages/invest/market",
 				"selectedIconPath": "static/images/tabbar/investActive.png",
 				"iconPath": "static/images/tabbar/invest.png"
 			},

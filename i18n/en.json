@@ -293,6 +293,15 @@
 	"income.team.people":"团队总人数",
 	"income.team.level.count":"累计收益",
 	"income.team.level.cur":"当日收益",
+	"market.page.title":"Markets",
+	"market.page.subtitle":"Most Active Stocks",
+	"market.bay.btn":"bay",
+	"market.day.unit":"day",
+	"market.total.return":"total return",
+	"market.investment.days":"Investment days",
+	"market.company.profile":"Company Profile",
+	"market.submit.btn":"Submit Buy",
+	
 	
 	
 	"btn.invest.text":"Invest Now",

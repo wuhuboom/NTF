@@ -10,15 +10,15 @@
 			<view class="user-money">
 				<view class="user-money-item">
 					<view class="item-name">{{$t('income.team.count')}}</view>
-					<view class="item-num">$0.00</view>
+					<view class="item-num">${{divide(income.me)}}</view>
 				</view>
 				<view class="user-money-item">
 					<view class="item-name">{{$t('income.team.cur')}}</view>
-					<view class="item-num">$0.00</view>
+					<view class="item-num">${{divide(income.friends)}}</view>
 				</view>
 				<view class="user-money-item">
 					<view class="item-name">{{$t('income.team.people')}}</view>
-					<view class="item-num">$0.00</view>
+					<view class="item-num">${{divide(income.friendsCount)}}</view>
 				</view>
 			</view>
 			<view class="user-level level1">
@@ -77,13 +77,14 @@
 
 <script>
 	import echarts from '@/components/echarts-uniapp/echarts-uniapp.vue'
-	import {formatDate} from '@/utils/util.js'
+	import {formatDate,divide100} from '@/utils/util.js'
 	export default {
 		components:{
 			echarts
 		},
 		data() {
 			return {
+				divide:divide100,
 				usdts:'',
 				cid:'',
 				formatDate:formatDate,
@@ -124,19 +125,41 @@
 					{value:1,label:'团队'},
 					{value:2,label:'个人'}
 				],
-				tabIndex:1
+				tabIndex:1,
+				income:{},
+				ranks:[]
 			}
 		},
 		onReady() {
 			// this.getCurrency()
 		},
-		 
+		 onLoad() {
+		 	this.loadIncome()
+			this.loadRanks()
+		 },
 		methods: {
 			changeTab(item){
 				this.tabIndex = item.value
 				if(this.tabIndex==2){
 					this.getCurrency()
+				}else{
+					this.loadIncome()
 				}
+			},
+			//我的投资-我的朋友-收益
+			loadRanks(){
+				this.$http.get('/player/invest/my/friends',res=>{
+					if(res.code == 200){
+						this.ranks = res.data
+					}
+				})
+			},
+			loadIncome(){
+				this.$http.get('/player/invest/my/friends/total',res=>{
+					if(res.code == 200){
+						this.income = res.data
+					}
+				})
 			},
 			initChar(){
 				this.$refs['echarts'].initChart(this.option)

@@ -1,6 +1,6 @@
 <template>
 	<view class="marketDetail">
-		<uni-nav-bar left-icon="left"  :title="project.name" background-color="rgb(1,2,3)" color="#fff" :border="false" @clickLeft="goBack"></uni-nav-bar>
+		<uni-nav-bar left-icon="left"  :title="project.name" background-color="rgb(1,2,3)" color="#1accca" :border="false" @clickLeft="goBack"></uni-nav-bar>
 		<view class="projec-title-box">
 			<view class="project-title">{{$t('market.total.return')}}</view>
 			<view class="project-money">{{divide(project.moneyCurrent)}}</view>

@@ -266,7 +266,7 @@
 					para.days = this.selItem.days
 					this.$http.post('/player/invest',para,(res=>{
 						if(res.code ==200){
-							this.formData.planId = ''
+							// this.formData.planId = ''
 							this.formData.money = ''
 							this.formData.payPwd = ''
 							this.formData.days = ''

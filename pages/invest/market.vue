@@ -4,7 +4,6 @@
 			<view class="top-title">{{$t('market.page.title')}}</view>
 			<view class="top-sub-title">
 				<view>{{$t('market.page.subtitle')}}</view>
-				<view class="cur-time">{{curTime}}</view>
 			</view>
 		</view>
 		<view class="content">
@@ -122,13 +121,16 @@
 		margin-top: -300upx;
 		.project-item{
 			margin-bottom: 20upx;
+			padding-left: 40upx;
+			padding-right: 40upx;
 			.row1{
-				padding: 30upx 40upx;
+				padding: 30upx;
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
 				background-color: #17171f;
 				border-bottom: 2px solid #000;
+				border-radius: 30upx 30upx 0upx 0upx;
 				.left{
 					  font-size: 28upx;
 					  font-weight: 500;
@@ -154,13 +156,21 @@
 				justify-content: space-between;
 				align-items: center;
 				background-color: #17171f;
-				padding: 20upx 40upx;
+				padding: 20upx 20upx 20upx 20upx;
+				border-radius: 0upx 0upx 30upx 30upx ;
+				.left::-webkit-scrollbar {
+				  width: 0; /* 宽度为0，隐藏水平滚动条 */
+				  height: 0; /* 高度为0，隐藏垂直滚动条 */
+				}
 				.left{
 					display: flex;
 					flex-wrap: nowrap;
 					color: #fff;
 					max-width: 500upx;
 					overflow: auto;
+					scrollbar-width: none; /* 隐藏水平滚动条 */
+					  -ms-overflow-style: none; /* 隐藏Internet Explorer和Edge的滚动条 */
+					   scrollbar-color: transparent transparent; /* 隐藏垂直滚动条 */
 					.day-item{
 						display: flex;
 						flex-direction: column;

@@ -6,19 +6,25 @@
 			<view class="project-money">{{divide(project.moneyCurrent)}}</view>
 			<view class="project-income">$+{{divide(project.moneyIncome)}}</view>
 		</view>
-		<view class="title-box">{{$t('market.investment.days')}}</view>
-		<view class="project-days">
-			<view class="day-item" v-for="(item,index) in project.rateConfig" :key="index">
-				<view class="day-num">{{item.days}} {{$t('market.day.unit')}}</view>
-				<view class="day-rate">{{item.rate}}%</view>
-			</view> 
+		
+		<view class="project-rate">
+			<view class="title-box">{{$t('market.investment.days')}}</view>
+			<view class="project-days">
+				<view class="day-item" v-for="(item,index) in project.rateConfig" :key="index">
+					<view class="day-num">{{item.days}} {{$t('market.day.unit')}}</view>
+					<view class="day-rate">{{item.rate}}%</view>
+				</view> 
+			</view>
 		</view>
-		<view class="title-box">{{$t('market.company.profile')}}</view>
-		<view class="company-info">
-			{{project.description}}
+		<view class="project-info">
+			<view class="title-box">{{$t('market.company.profile')}}</view>
+			<view class="company-info">
+				{{project.description}}
+			</view>
 		</view>
+		
 		<view class="buy-btn" @click="goInvest">
-			<image src="../../static/images/invest/Subtract.webp" mode="scaleToFill"></image>
+			<!-- <image src="../../static/images/invest/Subtract.webp" mode="scaleToFill"></image> -->
 			<view class="btn-text">{{$t('market.submit.btn')}}</view>
 		</view>
 	</view>
@@ -68,8 +74,12 @@
 
 <style scoped lang="scss">
 .marketDetail{
+	width: 670upx;
+	padding-left: 40upx;
+	padding-right: 40upx;
 	.projec-title-box{
-		padding: 40upx;
+		padding-top: 40upx;
+		padding-bottom: 40upx;
 		margin-top: 20upx;
 		background-image: url('../../static/images/invest/dbg.png');
 		background-size: 100% 100%;
@@ -94,69 +104,64 @@
 		}
 	}
 	.title-box{
-		background-color: #17171f;
-		padding: 40upx 40upx 20upx 40upx;
 		font-size: 36upx;
 		font-weight: 600;
 		color: #fff;
-		
 	}
-	.project-days{
+	.project-rate{
 		background-color: #17171f;
-		border-bottom: 2px solid #000;
-		display: flex;
-		justify-content: space-between;
-		flex-wrap: wrap;
-		align-items: center;
-		width: 670upx;
+		border-radius: 40upx ;
 		padding: 20upx 40upx;
-		.day-item{
-			padding-top: 20upx;
-			width: 45%;
+		.project-days{
+			background-color: #17171f;
 			display: flex;
 			justify-content: space-between;
+			flex-wrap: wrap;
 			align-items: center;
-			.day-num{
-				  font-size: 24upx;
-				  font-weight: 500;
-				  color: #1accca;
-			}
-			.day-rate{
-				  font-size: 28upx;
-				  font-weight: 600;
-				  color: #fff;
+			width: 590upx;
+			.day-item{
+				padding-top: 20upx;
+				width: 45%;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				.day-num{
+					  font-size: 24upx;
+					  font-weight: 500;
+					  color: #1accca;
+				}
+				.day-rate{
+					  font-size: 28upx;
+					  font-weight: 600;
+					  color: #fff;
+				}
 			}
 		}
 	}
-	.company-info{
-		font-size: 24upx;
-		color: #1accca;
-		background-color: #17171f;
-		padding:20upx 40upx;
-		line-height: 1.8;
-		max-height: 35vh;
-		overflow: auto;
+	.project-info{
+		padding: 40upx;
+		.company-info{
+			margin-top: 40upx;
+			font-size: 24upx;
+			color: #1accca;
+			line-height: 1.8;
+			max-height: 50vh;
+			overflow: auto;
+		}
 	}
 	.buy-btn{
 		position: fixed;
-		bottom: 10upx;
-		margin-left: 40upx;
+		bottom: 60upx;
 		width:670upx;
-		height: 100upx;
+		height: 80upx;
+		line-height: 80upx;
 		background-color: #00d4d4;
 		border-radius: 50upx;
-		display: flex;
-		align-items: center;
-		image{
-			width: 80upx;
-			height: 80upx;
-			margin-left: 20upx;
-		}
+		text-align: center;
 		.btn-text{
-			  font-size: 40upx;
-			  font-weight: 600;
-			  color: #fff;
-			  margin-left: 130upx;
+		  font-size: 40upx;
+		  font-weight: 600;
+		  color: #fff;
 		}
 	}
 }

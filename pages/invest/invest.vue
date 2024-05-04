@@ -10,11 +10,11 @@
 			<view class="money" v-if="isShow">${{divide(user.balance)}}USDT</view>
 			<view class="money" v-else>${{gethideNum(divide(user.balance))}} **</view>
 		</view>
-		<view class="algorithm" v-if="tabIndex==1">
-			<!--<view class="algorithm-item" :class="type==0?'algorithm-active':''" >{{$t('invest.algorithm1.text')}}</view>
+		<!-- <view class="algorithm" v-if="tabIndex==1">
+			<view class="algorithm-item" :class="type==0?'algorithm-active':''" >{{$t('invest.algorithm1.text')}}</view>
 			 <view class="algorithm-item" :class="type==1?'algorithm-active':''" @click="getData(1)">{{$t('invest.algorithm2.text')}}</view>
-			<view class="algorithm-item" :class="type==2?'algorithm-active':''" @click="getData(2)">{{$t('invest.algorithm3.text')}}</view> -->
-		</view>
+			<view class="algorithm-item" :class="type==2?'algorithm-active':''" @click="getData(2)">{{$t('invest.algorithm3.text')}}</view> 
+		</view> -->
 		<view class="form" v-if="tabIndex==1">
 			<view class="rate-box">
 				<view class="rate-item" :class="selItem.days==item.days?'active':''" v-for="(item,index) in project.rateConfig" :key="index" @click="chooseItem(item)">
@@ -25,15 +25,14 @@
 				<uni-forms-item  name="money">
 					<view class="form-title">
 						<view class="form-label">{{$t('invest.money.text')}}</view>
-						<view class="form-earning">{{$t('invest.earnings.text')}}:{{earnings}}</view>
+						<view class="form-earning">{{$t('invest.earnings.text')}}: <text style="color: #00cece;margin-left: 10upx;">{{earnings}}</text></view>
 					</view>
 					<view class="form-item">
-						<view class="left">
-							<uni-easyinput type="text" prefixIcon="wallet" v-model="formData.money " :placeholder="$t('invest.money.placehoder',{min:selItem.min})" />
-						</view>
-						<view class="right" @click="showSelect =!showSelect">
-							<view class="playername">{{selItem.days}} {{$t('market.day.unit')}}</view>
-						</view>
+						<uni-easyinput type="text" prefixIcon="wallet" v-model="formData.money " :placeholder="$t('invest.money.placehoder',{min:selItem.min})" >
+							<template #right>
+								<view class="playername">{{selItem.days}} {{$t('market.day.unit')}}</view>
+							</template>
+						</uni-easyinput>
 					</view>
 				</uni-forms-item>
 				<view class="form-tips">
@@ -486,7 +485,7 @@
 		}
 	}
 	.form{
-		margin-top: 30upx;
+		margin-top: -30upx;
 		width: 670upx;
 		::v-deep .uni-forms-item__label{
 			color: #fff;
@@ -505,7 +504,7 @@
 			justify-content: flex-start;
 			align-items: center;
 			flex-wrap: wrap;
-			margin-bottom: 20upx;
+			margin-bottom: 40upx;
 			.rate-item{
 				width: 120upx;
 				height: 60upx;
@@ -529,6 +528,7 @@
 			color: #fff;
 			height: 72upx;
 			line-height: 72upx;
+			margin-bottom: 20upx;
 			.form-label{
 				text-transform: capitalize;
 				font-size: 30upx;
@@ -545,25 +545,11 @@
 			align-items: center;
 			position: relative;
 			background-color: rgb(24, 24, 34)!important;
-			.left{
-				width: 550upx;
-			}
-			.right{
-				display: flex;
-				width: 150upx;
-				justify-content: space-between;
-				align-items: center;
-				color: #fff;
-				image{
-					width: 60upx;
-					height: 60upx;
-					border-radius: 50%;
-				}
-				.playername{
-					 font-size: 26upx;
-					  letter-spacing: -0.12px;
-					  color: #00cece;
-				}
+			.playername{
+				 font-size: 26upx;
+				  letter-spacing: -0.12px;
+				  color: #00cece;
+				  margin-right: 20upx;
 			}
 			.choose{
 				background-color: rgb(24, 24, 34)!important;
@@ -598,6 +584,7 @@
 		}
 		.form-tips{
 			margin-top: 20upx;
+			margin-bottom: 20upx;
 			display: flex;
 			justify-content: flex-start;
 			align-items: center;
@@ -608,8 +595,8 @@
 				justify-content: flex-start;
 				align-items: center;
 				.radio{
-					width: 34upx;
-					height: 34upx;
+					width: 28upx;
+					height: 28upx;
 					border-radius: 50%;
 					border: 1px solid #fff;
 					margin-right: 20upx;

@@ -10,29 +10,29 @@
 			<view class="user-money">
 				<view class="user-money-item">
 					<view class="item-name">{{$t('income.team.count')}}</view>
-					<view class="item-num">${{divide(income.me)}}</view>
-				</view>
-				<view class="user-money-item">
-					<view class="item-name">{{$t('income.team.cur')}}</view>
 					<view class="item-num">${{divide(income.friends)}}</view>
 				</view>
 				<view class="user-money-item">
+					<view class="item-name">{{$t('income.team.cur')}}</view>
+					<view class="item-num">${{divide(income.friendsToday)}}</view>
+				</view>
+				<view class="user-money-item">
 					<view class="item-name">{{$t('income.team.people')}}</view>
-					<view class="item-num">${{divide(income.friendsCount)}}</view>
+					<view class="item-num">${{income.friendsCount}}</view>
 				</view>
 			</view>
-			<view class="user-level level1">
-				<view class="col1">23</view>
+			<view class="user-level" :class="'level' + (index +1)" v-for="(item,index) in ranks" :key="index">
+				<view class="col1">{{item.friendsCount}}</view>
 				<view class="col">
 					<view class="item-name">{{$t('income.team.level.count')}}</view>
-					<view class="item-num">$0.00</view>
+					<view class="item-num">${{divide(item.total)}}</view>
 				</view>
 				<view class="col">
 					<view class="item-name">{{$t('income.team.level.cur')}}</view>
-					<view class="item-num">$0.00</view>
+					<view class="item-num">${{divide(item.today)}}</view>
 				</view>
 			</view>
-			<view class="user-level level2">
+			<!-- <view class="user-level level2">
 				<view class="col1">23</view>
 				<view class="col">
 					<view class="item-name">{{$t('income.team.level.count')}}</view>
@@ -53,22 +53,19 @@
 					<view class="item-name">{{$t('income.team.level.cur')}}</view>
 					<view class="item-num">$0.00</view>
 				</view>
-			</view>
+			</view> -->
 		</view>
 		<view class="container" v-if="tabIndex==2">
 			
 			<view class="user-money">
 				<view class="user-money-item">
 					<view class="item-name">{{$t('income.team.level.count')}}</view>
-					<view class="item-num">$0.00</view>
+					<view class="item-num">${{divide(perIncome.total)}}</view>
 				</view>
 				<view class="user-money-item">
 					<view class="item-name">{{$t('income.team.level.cur')}}</view>
-					<view class="item-num">$0.00</view>
+					<view class="item-num">${{divide(perIncome.today)}}</view>
 				</view>
-			</view>
-			<view class="coin-box">
-				<view class="coin-item" :class="cid==item.cid?'active':''" v-for="(item,index) in usdts" :key="index" @click="choose(item.cid)">{{item.currency.name}}</view>
 			</view>
 			<echarts ref="echarts" :option="option" canvasId="echarts" style="width: 100%;height: 100%;"></echarts>
 		</view>
@@ -127,7 +124,8 @@
 				],
 				tabIndex:1,
 				income:{},
-				ranks:[]
+				ranks:[],
+				perIncome:{}
 			}
 		},
 		onReady() {
@@ -142,20 +140,21 @@
 				this.tabIndex = item.value
 				if(this.tabIndex==2){
 					this.getCurrency()
+					this.loadData()
 				}else{
 					this.loadIncome()
 				}
 			},
 			//我的投资-我的朋友-收益
 			loadRanks(){
-				this.$http.get('/player/invest/my/friends',res=>{
+				this.$http.get('/player/invest/my/statis/friends/three',res=>{
 					if(res.code == 200){
 						this.ranks = res.data
 					}
 				})
 			},
 			loadIncome(){
-				this.$http.get('/player/invest/my/friends/total',res=>{
+				this.$http.get('/player/invest/my/statis/friends',res=>{
 					if(res.code == 200){
 						this.income = res.data
 					}
@@ -169,19 +168,14 @@
 				this.loadData()
 			},
 			getCurrency(){
-				this.$http.get('/player/currency/list',res=>{
+				this.$http.get('/player/invest/my/statis',res=>{
 					if(res.code == 200){
-						this.usdts = res.data.list || []
-						this.cid = this.usdts[0].cid
-						this.loadData()
+						this.perIncome = res.data
 					}
 				})
 			},
-			loadData(){
-				let para = {
-					id:this.cid
-				}
-				this.$http.post('/player/invest/my/statis',para,res => {
+			loadData(){ 
+				this.$http.post('/player/invest/my/statis',{},res => {
 					if(res.code ==200){
 						let times = res.data.times || []
 						times = times.map(item=>{

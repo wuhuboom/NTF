@@ -17,11 +17,11 @@
 		<view class="user-money">
 			<view class="user-money-item">
 				<view class="item-name">{{$t('user.money.available')}}</view>
-				<view class="item-num">$0.00</view>
+				<view class="item-num">${{divide(user.balance)}}</view>
 			</view>
 			<view class="user-money-item">
 				<view class="item-name">{{$t('user.money.purchased')}}</view>
-				<view class="item-num">$0.00</view>
+				<view class="item-num">${{divide(user.frozenBet)}}</view>
 			</view>
 		</view>
 		<!-- <view class="title">{{$t('user.welcome.text')}}</view>
@@ -63,13 +63,14 @@
 
 <script>
 	import language  from '@/components/language.vue'
-	import {getCurrentDate} from '@/utils/util.js'
+	import {divide100,getCurrentDate} from '@/utils/util.js'
 	export default {
 		components:{
 			language
 		},
 		data() {
 			return {
+				divide:divide100,
 				headerImg:'../../static/images/user/10014.png',
 				welImg:'../../static/images/user/10015.png',
 				trades:[

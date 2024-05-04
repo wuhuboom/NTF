@@ -133,27 +133,27 @@
 				decetionList: [], //发现
 				matchList: [],
 				videoList: [
-					{  
-						"createdAt": "2024035",
-						"title": "",
-						"imageUrl": "../../static/images/info/2001.png",
-						"times": "39s",
-						"videoUrl": "https://www.twitch.tv/videos/1871760314",
-					},
-					{
-						"createdAt": "2024035",
-						"title": "",
-						"imageUrl": "../../static/images/info/2002.png",
-						"times": "42s",
-						"videoUrl": "https://www.twitch.tv/videos/1871760150",
-					},
-					{
-						"createdAt": "2024035",
-						"title": "",
-						"imageUrl": "../../static/images/info/2003.png",
-						"times": "26s",
-						"videoUrl": "https://www.twitch.tv/videos/1871759888",
-					}
+					// {  
+					// 	"createdAt": "2024035",
+					// 	"title": "",
+					// 	"imageUrl": "../../static/images/info/2001.png",
+					// 	"times": "39s",
+					// 	"videoUrl": "https://www.twitch.tv/videos/1871760314",
+					// },
+					// {
+					// 	"createdAt": "2024035",
+					// 	"title": "",
+					// 	"imageUrl": "../../static/images/info/2002.png",
+					// 	"times": "42s",
+					// 	"videoUrl": "https://www.twitch.tv/videos/1871760150",
+					// },
+					// {
+					// 	"createdAt": "2024035",
+					// 	"title": "",
+					// 	"imageUrl": "../../static/images/info/2003.png",
+					// 	"times": "26s",
+					// 	"videoUrl": "https://www.twitch.tv/videos/1871759888",
+					// }
 				],
 				tradeList: [
 					// {
@@ -202,6 +202,7 @@
 				})
 			},
 			scrolltolower() {
+				if(this.pageNo >= this.totalPage) return
 				this.pageNo++
 				this.loadData()
 			},
@@ -212,7 +213,7 @@
 				this.totalPage = 1
 				this.decetionList = []
 				this.matchList = []
-				// this.videoList = []
+				this.videoList = []
 				this.tradeList = []
 				await  this.loadData()
 				this.refresherTriggered = false
@@ -274,16 +275,16 @@
 					pageSize : this.pageSize
 				}
 				this.$http.post('/player/information/video',para,res => {
-					// if(res.code == 200){
-					// 	res = res.data
-					// 	this.videoList = [...this.videoList, ...res.results]
-					// 	this.totalPage = res.totalPage
-					// 	if (this.pageNo >= res.totalPage) {
-					// 	    this.pageNo = res.totalPage + 1;
-					// 	} else {
-					// 	    this.pageNo = this.pageNo + 1
-					// 	}
-					// }
+					if(res.code == 200){
+						res = res.data
+						this.videoList = [...this.videoList, ...res.results]
+						this.totalPage = res.totalPage
+						if (this.pageNo >= res.totalPage) {
+						    this.pageNo = res.totalPage + 1;
+						} else {
+						    this.pageNo = this.pageNo + 1
+						}
+					}
 				})
 			},
 			// 查询发现列表

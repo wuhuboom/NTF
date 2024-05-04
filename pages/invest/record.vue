@@ -24,7 +24,7 @@
 			</view> -->
 		</view>
 		<view class="invest-record">{{$t('invest.record.order.text')}}</view>
-		<scroll-view scroll-y="true" @scrolltolower="scrolltolower" style="height: 100%;"
+		<scroll-view scroll-y="true" @scrolltolower="scrolltolower" style="height: 80vh"
 		        @refresherrefresh="getRefresherrefresh" :refresher-enabled="false" :refresher-triggered="refresherTriggered"
 		        refresher-background="transparent">
 			<view class="record-list">
@@ -53,7 +53,7 @@
 						 </view>
 						 <view class="row">
 							 <view class="left">{{$t('invest.record.table.col6.text')}}</view>
-							 <view class="right">{{item.rateConf}}%</view>
+							 <view class="right">{{item.rate}}%</view>
 						 </view>
 						 <view class="row">
 							 <view class="left">{{$t('invest.record.table.col7.text')}}</view>
@@ -67,7 +67,7 @@
 				 </view>
 			</view>
 		</scroll-view>
-		<uni-popup ref="popup" type="bottom" background-color="#181822" borderRadius="10px,10px,0px,0px">
+		<uni-popup ref="popup" type="bottom" background-color="#181822" borderRadius="10px,10px,0px,0px" :is-mask-click="false">
 			<view class="popup-form">
 				<uni-forms ref="form" :modelValue="formData" :rules="rules" label-position="top" :label-width="300">
 					<uni-forms-item :label="$t('security.update.fundpwd.label')" name="payPwd">
@@ -80,6 +80,18 @@
 				</view>
 			</view>
 		</uni-popup>
+		<uni-popup ref="calPopup" type="center" background-color="#181822" borderRadius="20px,20px,20px,20px" :is-mask-click="false">
+			<view class="popup-tips">
+				 <view class="popup-info">
+					 <view class="popup-title">{{$t('invest.caldialog.title')}}</view>
+					 <view class="popup-content">{{$t('invest.caldialog.content')}}</view>
+				 </view>
+				<view class="prop-btn">
+					<button class="cancle-btn btn" @click="closeCalPopup">{{$t('btn.caancle.text')}}</button>
+					<button class="sub-btn btn" @click="openPopup">{{$t('btn.continue.text')}}</button>
+				</view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
@@ -89,9 +101,9 @@
 		data() {
 			return {
 				item:{
-					"totalMoneyIncome": 522,
-					"totalMoney": 11000,
-					"totalMoneyLock": 200
+					"totalMoneyIncome": 0,
+					"totalMoney": 0,
+					"totalMoneyLock": 0
 				},
 				divide:divide,
 				formatDate:formatDate,
@@ -99,7 +111,7 @@
 				search:{
 					status:'',// 0未结束 1已结束
 					time:'1',
-					type:'1',//0定投 1托管
+					// type:'1',//0定投 1托管
 					pageNo:1,
 					pageSize:10
 				},
@@ -140,10 +152,12 @@
 						]
 					}
 				},
+				planId:''
 			}
 		},
-		onLoad() {
-			this.loadData()
+		onLoad(option) {
+			// this.loadData()
+			this.planId = option.id
 			this.loadRecord()
 		},
 		methods: {
@@ -167,6 +181,13 @@
 					console.log( err);
 				})
 			},
+			closeCalPopup(){
+				this.$refs.calPopup.close()
+			},
+			openPopup(){
+				this.$refs.calPopup.close()
+				this.$refs.popup.open()
+			},
 			closeProp(){
 				this.formData.id= ''
 				this.formData.payPwd = ''
@@ -174,9 +195,10 @@
 			},
 			calInvest(item){
 				this.formData.id = item.id
-				this.$refs.popup.open()
+				this.$refs.calPopup.open()
 			},
 			scrolltolower() {
+				if(this.search.pageNo >= this.totalPage) return
 				this.loadRecord()
 			},
 			//下拉刷新
@@ -202,15 +224,15 @@
 				})
 			},
 			count(item){
-				let rate = item.rateConf
-				if(rate.indexOf('-')>-1){
+				let rate = item.rate
+				if(rate.toString().indexOf('-')>-1){
 					rate = rate.split('-')[1]
 				}
 				return (item.money * rate / 10000).toFixed(2)
 			},
 			getType(value) {
 			   let res = this.typeOptions.find(item => item.value === value)
-			   return res.label;
+			    return this.typeOptions[0].label
 			},
 			getType2(value) {
 				let res = this.typeOptions2.find(item => item.value == value)
@@ -225,7 +247,7 @@
 			},
 			goBack(){
 				uni.reLaunch({
-					url:'./invest'
+					url:'./invest?id='+this.planId
 				})
 			}
 		}
@@ -344,6 +366,49 @@
 		}
 		 
 	}
-	
+	.popup-tips{
+		width: 600upx;
+		padding: 40upx;
+		.popup-info{
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			color:#fff;
+			.popup-title{
+				  font-size: 34upx;
+				  font-weight: 600;
+				  line-height: 1.53;
+				  color: rgba(255, 255, 255, 0.9);
+				  margin-bottom: 40upx;
+			}
+			.popup-content{
+				font-size: 32upx;
+				  line-height: 1.5;
+				  color: rgba(255, 255, 255, 0.65);
+			}
+		}
+		.prop-btn{
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+			margin-top: 40upx;
+			.btn{
+				width: 40%;
+				height: 70upx;
+				line-height: 70upx;
+				text-align: center;
+				font-size: 28upx;
+			}
+			.cancle-btn{
+				border: 1px solid $fontColor;
+				background-color: transparent;
+				color: #fff;
+			}
+			.sub-btn{
+				background-color: $fontColor;
+				color: #fff;
+			}
+		}
+	}
 }
 </style>

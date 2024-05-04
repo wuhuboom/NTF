@@ -62,6 +62,7 @@
 		}
 		::v-deep .uni-select{
 			border: 1px solid $fontColor;
+			height: 50upx!important;
 		}
 	}
 </style>

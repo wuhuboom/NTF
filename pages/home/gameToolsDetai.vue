@@ -3,57 +3,50 @@
 		<uni-nav-bar left-icon="left"  :title="$t('home.game.tool.title.text')" background-color="rgb(1,2,3)" color="#fff" :border="false" @clickLeft="goBack"></uni-nav-bar>
 		<view class="game-tools">
 			<view class="img-bg">
-				<img :src="item.img"/>
+				<img :src="item.image"/>
 			</view>
-			<view class="game-tools-title">{{item.name}}</view>
-			<view class="game-tools-sub-title">{{$t('home.game.tool.model')}} {{item.template}} </view>
-			<view class="game-tools-sub-title">{{$t('home.game.tool.sun')}} {{item.wearDegree}}</view>
+			<view class="game-tools-title">{{item.title}}</view>
+			<view class="game-tools-sub-title">{{$t('home.game.tool.model')}} {{item.icons}} </view>
+			<view class="game-tools-sub-title">{{$t('home.game.tool.sun')}} {{item.duality}}</view>
 			
 			<view class="game-attr">
 				<view class="attr-title">{{$t('home.game.tool.attr')}}</view>
 				<view class="attr-info">
-					<view class="attr-item">{{$t('home.game.tool.attr.kind')}} {{item.style}}</view>
-					<view class="attr-item">{{$t('home.game.tool.attr.type')}} {{item.type}}</view>
-					<view class="attr-item">{{$t('home.game.tool.attr.brand')}} {{item.Exterior}}</view>
-					<view class="attr-item">{{$t('home.game.tool.attr.out')}} {{item.quality}}</view>
+					<view class="attr-item">{{$t('home.game.tool.attr.kind')}} {{item.type}}</view>
+					<view class="attr-item">{{$t('home.game.tool.attr.type')}} {{item.style}}</view>
+					<view class="attr-item">{{$t('home.game.tool.attr.brand')}} {{item.quality}}</view>
+					<view class="attr-item">{{$t('home.game.tool.attr.out')}} {{item.exterior}}</view>
 				</view>
 				<view class="attr-content">
-					{{item.describe}}
+					{{item.desp}}
 				</view>
 			</view>
 			
 			
 		</view>
 		<view class="game-price">
-			<view class="price">{{$t('home.game.tool.attr.price')}} {{item.price}}</view>
+			<view class="price">{{$t('home.game.tool.attr.price')}} {{divide(item.money)}}</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	import {formatNum,divide100} from '@/utils/util.js'
 	export default {
 		data() {
 			return {
-				id:'',
-				item:{},
-				games:[]
+				divide:divide100,
+				item:{}
 			}
 		},
 		onLoad(option) {
-			this.games = require('@/static/data/props.json')
-			const id = option.id
-			const arr = this.games.filter(item => {
-				return item.id == id
-			})
-			if(arr && arr.length > 0){
-				this.item = arr[0]
-			}
-			console.log(arr)
+			this.item = JSON.parse(option.item)
+			console.log(this.item)
 		},
 		methods: {
 			goBack(){
-				uni.navigateBack({
-					delta:1
+				uni.navigateTo({
+					url:'/pages/home/gameTools'
 				})
 			}
 		}

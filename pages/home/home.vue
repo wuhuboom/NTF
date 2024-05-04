@@ -27,10 +27,10 @@
 					<swiper-item  @click="showDetail(item)" next-margin="20" v-if="index < 4">
 						<view class="swiper-item">
 							<view class="img-bg">
-								<img :src="item.img"/>
+								<img :src="item.image"/>
 							</view>
-							<view class="game-tools-title">{{item.name}}</view>
-							<view class="game-tools-money">{{item.price}}</view>
+							<view class="game-tools-title">{{item.title}}</view>
+							<view class="game-tools-money">{{divide(item.money)}}</view>
 						</view>
 					</swiper-item>
 				</block>
@@ -76,11 +76,12 @@
 </template>
 
 <script>
-	import {formatNum} from '@/utils/util.js'
+	import {formatNum,divide100} from '@/utils/util.js'
 	// console.log(formatNum(12345))
 	export default {
 		data() {
 			return {
+				divide:divide100,
 				swipers:[],
 				current: 0,
 				mode: 'round',
@@ -102,12 +103,24 @@
 			this.checkSetPwd()
 			this.getSwitch()
 			this.loadNotice()
-			this.gameTools = require('@/static/data/props.json')
+			this.loadGameTools()
+			// this.gameTools = require('@/static/data/props.json')
 			const gameData = require('@/static/data/games.json')
 			this.gamezhis = gameData.zhishu
 			this.gamedowns = gameData.down
 		},
 		methods: {
+			loadGameTools(){
+				let para = {
+					pageNo:1,
+					pageSize:10
+				}
+				this.$http.post('/player/information/deal',para,res=>{
+					if(res.code==200){
+						this.gameTools = res.data.results
+					}
+				})
+			},
 			goSetPwd(){
 				uni.navigateTo({
 					url:'/pages/user/updateFundPwd?type=home'

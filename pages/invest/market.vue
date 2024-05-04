@@ -8,23 +8,23 @@
 			</view>
 		</view>
 		<view class="content">
-			<view class="project-item">
+			<view class="project-item" v-for="(item,index) in records" :key="index">
 				<view class="row1">
-					<view class="left">项目名称</view>
+					<view class="left">{{item.name}}</view>
 					<view class="right">
-						<view class="money">8989.235 usdt</view>
+						<view class="money">{{divide(item.moneyCurrent)}} usdt</view>
 						<view class="bottom">{{$t('market.total.return')}}</view>
 					</view>
 				</view>
 				<view class="row2">
 					<view class="left">
-						<view class="day-item">
-							<view class="day-num">7{{$t('market.day.unit')}}</view>
-							<view class="bottom">1%</view>
+						<view class="day-item" v-for="(t,i) in item.rateConfig" :key="i">
+							<view class="day-num">{{t.days}} {{$t('market.day.unit')}}</view>
+							<view class="bottom">{{t.rate}}%</view>
 						</view>
 					</view>
 					<view class="right">
-						<view class="bay-btn" @click="showDetail">{{$t('market.bay.btn')}}</view>
+						<view class="bay-btn" @click="showDetail(item)">{{$t('market.bay.btn')}}</view>
 					</view>
 				</view>
 				
@@ -34,20 +34,36 @@
 </template>
 
 <script>
+	import {divide100} from '@/utils/util.js'
 	export default {
 		data() {
 			return {
+				divide:divide100,
 				curTime:'',
 				records:[]
 			}
 		},
 		onShow() {
 			this.getCurTime()
+			this.loadMarkets()
 		},
 		methods: {
+			loadMarkets(){
+				this.$http.post('/player/invest/plans',{},res=>{
+					if(res.code == 200){
+						let datas = res.data || []
+						this.records = datas.map(item=>{
+							if(typeof item.rateConfig =='string'){
+								item.rateConfig = JSON.parse(item.rateConfig)
+							}
+							return item
+						})
+					}
+				})
+			},
 			showDetail(item){
 				uni.navigateTo({
-					url:'./marketDetail'
+					url:'./marketDetail?id='+item.id
 				})
 			},
 			getCurTime(){
@@ -65,7 +81,6 @@
 					flag = 'PM'
 				}
 				this.curTime = `as of ${hours}:${minutes} ${flag} ET ${year}/${month}/${day}`;
-				
 			}
 		}
 	}
@@ -147,6 +162,7 @@
 						justify-content: space-between;
 						align-items: center;
 						font-size: 24upx;
+						width: 100upx;
 						.day-num{
 							opacity: 0.5;
 							letter-spacing: 1upx;

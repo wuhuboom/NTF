@@ -1,30 +1,69 @@
 <template>
 	<view class="game-tools">
 		<uni-nav-bar left-icon="left"  :title="$t('home.game.tool.title.text')" background-color="rgb(1,2,3)" color="#fff" :border="false" @clickLeft="goBack"></uni-nav-bar>
-		<view class="game">
-			<view class="swiper-item" v-for="(item ,index) in games" :key="index" @click="showDetail(item)">
-				<view class="img-bg">
-					<!-- <image :src="item.path" model="aspectFill"></image> -->
-					<img :src="item.img"/>
-				</view>
-				<view class="game-tools-title">{{item.name}}</view>
-				<view class="game-tools-money">{{item.price}}</view>
-			</view>
-		</view>
+		<scroll-view scroll-y="true" @scrolltolower="scrolltolower" style="height: 95vh;"
+		        @refresherrefresh="getRefresherrefresh" :refresher-enabled="true" :refresher-triggered="refresherTriggered"
+		        refresher-background="transparent">
+			 <view class="game">
+			 	<view class="swiper-item" v-for="(item ,index) in games" :key="index" @click="showDetail(item)">
+			 		<view class="img-bg">
+			 			<img :src="item.image"/>
+			 		</view>
+			 		<view class="game-tools-title">{{item.title}}</view>
+			 		<view class="game-tools-money">{{divide(item.money)}}</view>
+			 	</view>
+			 </view>
+		</scroll-view>
 	</view>
 </template>
 
 <script>
+	import {formatNum,divide100} from '@/utils/util.js'
 	export default {
 		data() {
 			return {
-				games:[]
+				divide:divide100,
+				games:[],
+				search:{
+					pageNo:1,
+					pageSize:10
+				},
+				totalPage:1,
+				refresherTriggered:false,
 			}
 		},
 		onLoad() {
-			this.games = require('@/static/data/props.json')
+			this.loadGameTools()
 		},
 		methods: {
+			scrolltolower() {
+				if(this.search.pageNo >= this.totalPage) return
+				this.loadGameTools()
+			},
+			loadGameTools(){
+				this.$http.post('/player/information/deal',this.search,res=>{
+					if(res.code==200){
+						res = res.data
+						this.games = [...this.games,...res.results]
+						this.totalPage = res.totalPage;
+						if (this.search.pageNo >= res.totalPage) {
+							this.search.pageNo = res.totalPage + 1;
+						} else {
+							this.search.pageNo = this.search.pageNo + 1
+						}
+							
+						this.refresherTriggered = false
+					}
+				})
+			},
+			//下拉刷新
+			getRefresherrefresh(){
+				this.refresherTriggered = true
+				this.search.pageNo = 1
+				this.totalPage = 1
+				this.games = []
+				this.loadGameTools()
+			},
 			goBack(){
 				uni.switchTab({
 					url:'/pages/home/home'
@@ -32,8 +71,7 @@
 			},
 			showDetail(item){
 				uni.navigateTo({
-					url:'/pages/home/gameToolsDetai?id=' + item.id,
-					
+					url:'/pages/home/gameToolsDetai?item=' + JSON.stringify(item)
 				})
 			}
 		}

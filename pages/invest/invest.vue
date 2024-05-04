@@ -1,58 +1,55 @@
 <template>
 	<view class="invest">
-		<!-- <view class="invest-tab">
-			<view class="tab-bar" :class="tabIndex==1?'tab-active':''" @click="changeTab(1)">{{$t('invest.menu1.text')}}
-			</view>
-			<view class="tab-bar" :class="tabIndex==2?'tab-active':''" >{{$t('invest.menu2.text')}}
-			</view>
-			<view class="tab-bar" :class="tabIndex==3?'tab-active':''" @click="changeTab(3)">{{$t('invest.menu3.text')}}
-			</view>
-		</view> -->
+		<uni-nav-bar left-icon="left" background-color="rgb(1,2,3)" color="#fff" :border="false" @clickLeft="goBack"></uni-nav-bar>
+
 		<view class="balance">
 			<view class="title">
 				{{$t('invest.balance.text')}}
 				<uni-icons :type="isShow?'eye':'eye-slash'" color="#fff" :size="24"  @click="showBalance"></uni-icons>
 			</view>
-			<view class="money" v-if="isShow">${{divide(usdtBalance.balance)}}USDT</view>
-			<view class="money" v-else>${{gethideNum(divide(usdtBalance.balance))}} **</view>
+			<view class="money" v-if="isShow">${{divide(user.balance)}}USDT</view>
+			<view class="money" v-else>${{gethideNum(divide(user.balance))}} **</view>
 		</view>
 		<view class="algorithm" v-if="tabIndex==1">
-			<view class="algorithm-item" :class="type==0?'algorithm-active':''" @click="getData(0)">{{$t('invest.algorithm1.text')}}</view>
+			<view class="algorithm-item" :class="type==0?'algorithm-active':''" >{{$t('invest.algorithm1.text')}}</view>
 			<!-- <view class="algorithm-item" :class="type==1?'algorithm-active':''" @click="getData(1)">{{$t('invest.algorithm2.text')}}</view>
 			<view class="algorithm-item" :class="type==2?'algorithm-active':''" @click="getData(2)">{{$t('invest.algorithm3.text')}}</view> -->
 		</view>
 		<view class="form" v-if="tabIndex==1">
+			<view class="rate-box">
+				<view class="rate-item" :class="selItem.days==item.days?'active':''" v-for="(item,index) in project.rateConfig" :key="index" @click="chooseItem(item)">
+					{{item.rate}}%
+				</view>
+			</view>
 			<uni-forms ref="form" :modelValue="formData" :rules="rules" label-position="top" :label-width="300">
-				<uni-forms-item :label="$t('invest.money.text')" name="money">
+				<uni-forms-item  name="money">
+					<view class="form-title">
+						<view class="form-label">{{$t('invest.money.text')}}</view>
+						<view class="form-earning">{{$t('invest.earnings.text')}}:{{earnings}}</view>
+					</view>
 					<view class="form-item">
 						<view class="left">
-							<uni-easyinput type="text" prefixIcon="wallet" v-model="formData.money " :placeholder="$t('invest.money.placehoder')" />
+							<uni-easyinput type="text" prefixIcon="wallet" v-model="formData.money " :placeholder="$t('invest.money.placehoder',{min:selItem.min})" />
 						</view>
 						<view class="right" @click="showSelect =!showSelect">
-							<image :src="selItem.headerImg" mode="scaleToFill"></image>
-							<view class="playername">{{selItem.playerName}}</view>
-							<uni-icons :type="showSelect?'up':'down'" color="#fff"></uni-icons>
+							<view class="playername">{{selItem.days}} {{$t('market.day.unit')}}</view>
 						</view>
-						<view class="choose" v-if="showSelect">
-							<view class="choose-item" v-for="(item,index) in recordList" :key="index" @click="chooseItem(item)">
-								<view class="row">
-									<image :src="item.headerImg" mode="scaleToFill"></image>
-									<view class="choose-name">{{item.playerName}}</view>
-								</view>
-								<view class="row">
-									<view class="tips">{{$t('invest.days.text')}}:{{item.days}}</view>
-									<view class="tips">{{$t('invest.rate.text')}}:{{item.rateConf}}%</view>
-								</view>
-							</view>
-						</view>
-						
 					</view>
 					<view class="form-tips">
-						<view class="tips-left">{{$t('invest.days.text')}}:{{selItem.days}}</view>
-						<view class="tips-right">{{$t('invest.rate.text')}}:{{selItem.rateConf}}%</view>
+						<view class="tips-radio">
+							<view class="radio" :class="formData.incomeType==0?'active':''" @click="choseIncomeType(0)"></view>
+							<view class="radio-text">{{$t('invest.return,type1')}}</view>
+						</view>
+						<view class="tips-radio">
+							<view class="radio" :class="formData.incomeType==1?'active':''" @click="choseIncomeType(1)"></view>
+							<view class="radio-text">{{$t('invest.return,type2')}}</view>
+						</view>
 					</view>
 				</uni-forms-item>
-				<uni-forms-item :label="$t('security.update.fundpwd.label')" name="payPwd">
+				<uni-forms-item name="payPwd">
+					<view class="form-title">
+						<view class="form-label">{{$t('security.update.fundpwd.label')}}</view>
+					</view>
 					<uni-easyinput type="password" prefixIcon="locked" v-model="formData.payPwd" :placeholder="$t('ruls.xxx.please',{name:$t('security.update.fundpwd.label')})" />
 				</uni-forms-item>
 			</uni-forms>
@@ -104,7 +101,7 @@
 					 </view>
 					 <view class="row">
 						 <view class="left">{{$t('invest.record.table.col6.text')}}</view>
-						 <view class="right">{{item.rateConf}}%</view>
+						 <view class="right">{{item.rate}}%</view>
 					 </view>
 					 <view class="row">
 						 <view class="left">{{$t('invest.record.table.col7.text')}}</view>
@@ -117,7 +114,7 @@
 				 </view>
 			 </view>
 		</view>
-		<uni-popup ref="popup" type="bottom" background-color="#181822" borderRadius="10px,10px,0px,0px">
+		<uni-popup ref="popup" type="bottom" background-color="#181822" borderRadius="10px,10px,0px,0px" :is-mask-click="false">
 			<view class="popup-form">
 				<uni-forms ref="calForm" :modelValue="calFormData" :rules="calRules" label-position="top" :label-width="300">
 					<uni-forms-item :label="$t('security.update.fundpwd.label')" name="payPwd">
@@ -127,6 +124,18 @@
 				<view class="prop-btn">
 					<button class="cancle-btn btn" @click="closeProp">{{$t('btn.caancle.text')}}</button>
 					<button class="sub-btn btn" @click="submitCal">{{$t('btn.continue.text')}}</button>
+				</view>
+			</view>
+		</uni-popup>
+		<uni-popup ref="calPopup" type="center" background-color="#181822" borderRadius="20px,20px,20px,20px" :is-mask-click="false">
+			<view class="popup-tips">
+				 <view class="popup-info">
+					 <view class="popup-title">{{$t('invest.caldialog.title')}}</view>
+					 <view class="popup-content">{{$t('invest.caldialog.content')}}</view>
+				 </view>
+				<view class="prop-btn">
+					<button class="cancle-btn btn" @click="closeCalPopup">{{$t('btn.caancle.text')}}</button>
+					<button class="sub-btn btn" @click="openPopup">{{$t('btn.continue.text')}}</button>
 				</view>
 			</view>
 		</uni-popup>
@@ -148,7 +157,9 @@
 				formData:{
 					planId:'',
 					money:'',
-					payPwd:''
+					days :'',
+					payPwd:'',
+					incomeType:0
 				},
 				rules: {
 					 money: {
@@ -166,7 +177,7 @@
 				records:[],
 				search:{
 					status:'',// 0未结束 1已结束
-					type:'1',//0定投 1托管
+					// type:'1',//0定投 1托管
 					pageNo:1,
 					pageSize:10
 				},
@@ -206,28 +217,60 @@
 						]
 					}
 				},
+				project:{},
+				earnings:0
 			}
 		},
-		onShow(){
+		watch:{
+			'formData.money':function(val){
+				if(val > 0){
+					this.earnings =  (val * this.selItem.rate / 10000).toFixed(2)
+				}else{
+					this.earnings =  0;
+				}
+			}
+		},
+		onLoad(option) {
+			this.formData.planId = option.id
 			this.getUserinfo()
-			this.loadData()
+			// this.loadData()
 			this.loadRecord()
-			this.getUserBalance()
+			this.loadMarkets()
+			// this.getUserBalance()
+		},
+		onShow(){
+			
 		},
 		methods: {
+			choseIncomeType(val){
+				this.formData.incomeType = val
+			},
+			loadMarkets(){
+				this.$http.post('/player/invest/plans',{},res=>{
+					if(res.code == 200){
+						let datas = res.data || []
+						this.project = datas.find(item=>item.id==this.formData.planId)
+						this.project.rateConfig = JSON.parse(this.project.rateConfig) || []
+						if(this.project.rateConfig.length > 0){
+							this.selItem = this.project.rateConfig[0]
+						}
+					}
+				})
+			},
 			submit(){
 				this.$refs.form.validate().then(res=>{
 					const para = Object.assign({},this.formData)
-					para.planId = this.selItem.id
-					this.$http.post('/player/deposit',para,(res=>{
+					para.days = this.selItem.days
+					this.$http.post('/player/invest',para,(res=>{
 						if(res.code ==200){
 							this.formData.planId = ''
 							this.formData.money = ''
 							this.formData.payPwd = ''
-							this.loadData()
+							this.formData.days = ''
+							// this.loadData()
 							this.records = []
 							this.loadRecord()
-							this.getUserBalance()
+							// this.getUserBalance()
 							uni.showToast({
 								title:this.$t('oper.tip.success.text'),
 								icon:'success',
@@ -256,7 +299,7 @@
 			},
 			calInvest(item){
 				this.calFormData.id = item.id
-				this.$refs.popup.open()
+				this.$refs.calPopup.open()
 			},
 			getUserBalance(){
 				this.$http.get('/player/currency/list',res=>{
@@ -298,11 +341,11 @@
 			},
 			chooseItem(item){
 				this.selItem = item
-				this.showSelect = false
+				// this.showSelect = false
 			},
 			showRecord(){
 				uni.navigateTo({
-					url:'./record'
+					url:'./record?id='+this.formData.planId
 				})
 			},
 			loadRecord(){
@@ -312,16 +355,16 @@
 				})
 			},
 			count(item){
-				let rate = item.rateConf 
-				if(rate.indexOf('-')>-1){
+				let rate = item.rate
+				if(rate.toString().indexOf('-')>-1){
 					rate = rate.split('-')[1]
 				}
-				
 				return (item.money * rate / 10000).toFixed(2)
 			},
 			getType(value) {
-			   let res = this.typeOptions.find(item => item.value === value)
-			   return res.label;
+			   let res = this.typeOptions.find(item => item.value === value) || {}
+			   // return res.label;
+			   return this.typeOptions[0].label
 			},
 			getType2(value) {
 				let res = this.typeOptions2.find(item => item.value == value)
@@ -347,12 +390,23 @@
 					console.log( err);
 				})
 			},
+			closeCalPopup(){
+				this.$refs.calPopup.close()
+			},
+			openPopup(){
+				this.$refs.calPopup.close()
+				this.$refs.popup.open()
+			},
 			closeProp(){
 				this.calFormData.id= ''
 				this.calFormData.payPwd = ''
 				this.$refs.popup.close()
 			},
-			
+			goBack(){
+				 uni.navigateTo({
+				 	url:'/pages/invest/marketDetail?id=' + this.formData.planId
+				 })
+			}
 		}
 	}
 </script>
@@ -432,6 +486,7 @@
 		width: 670upx;
 		::v-deep .uni-forms-item__label{
 			color: #fff;
+			display: none;
 		}
 		::v-deep .uni-easyinput__content{
 			background-color: rgb(24, 24, 34)!important;
@@ -440,6 +495,44 @@
 		}
 		::v-deep .uni-icons{
 			color: $fontColor!important;
+		}
+		.rate-box{
+			display: flex;
+			justify-content: flex-start;
+			align-items: center;
+			flex-wrap: wrap;
+			margin-bottom: 20upx;
+			.rate-item{
+				width: 120upx;
+				height: 60upx;
+				line-height: 60upx;
+				text-align: center;
+				border-radius: 4px;
+				background-color: #17171f;
+				color: #fff;
+				margin-left: 20upx;
+			}
+			.active{
+				background-color: #00d4d4;
+				color:#343434
+			}
+		}
+		.form-title{
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			color: #fff;
+			height: 72upx;
+			line-height: 72upx;
+			.form-label{
+				text-transform: capitalize;
+				font-size: 30upx;
+				font-weight: 500;
+			}
+			.form-earning{
+				font-size: 24upx;
+				color: rgb(185,185,185);
+			}
 		}
 		.form-item{
 			display: flex;
@@ -452,7 +545,7 @@
 			}
 			.right{
 				display: flex;
-				width: 200upx;
+				width: 150upx;
 				justify-content: space-between;
 				align-items: center;
 				color: #fff;
@@ -460,6 +553,11 @@
 					width: 60upx;
 					height: 60upx;
 					border-radius: 50%;
+				}
+				.playername{
+					 font-size: 26upx;
+					  letter-spacing: -0.12px;
+					  color: #00cece;
 				}
 			}
 			.choose{
@@ -494,12 +592,30 @@
 			
 		}
 		.form-tips{
-			margin-top: 10upx;
+			margin-top: 20upx;
 			display: flex;
-			justify-content: space-between;
+			justify-content: flex-start;
 			align-items: center;
 			font-size: 24upx;
 			color: rgb(185,185,185);
+			.tips-radio{
+				display: flex;
+				justify-content: flex-start;
+				align-items: center;
+				margin-right: 80upx;
+				.radio{
+					width: 34upx;
+					height: 34upx;
+					border-radius: 50%;
+					border: 1px solid #fff;
+					margin-right: 20upx;
+				}
+				.active{
+					background-image: url('../../static/images/invest/check.webp');
+					background-size: 100% 100%;
+					border:1px solid #00cece;
+				}
+			}
 		}
 		.btn{
 			background-color: $fontColor;
@@ -524,6 +640,7 @@
 		.left{
 			font-size: 32upx;
 			font-weight: 600;
+			text-transform: capitalize;
 		}
 		.right{
 			display: flex;
@@ -616,6 +733,50 @@
 			}
 		}
 		 
+	}
+	.popup-tips{
+		width: 600upx;
+		padding: 40upx;
+		.popup-info{
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			color:#fff;
+			.popup-title{
+				  font-size: 34upx;
+				  font-weight: 600;
+				  line-height: 1.53;
+				  color: rgba(255, 255, 255, 0.9);
+				  margin-bottom: 40upx;
+			}
+			.popup-content{
+				font-size: 32upx;
+				  line-height: 1.5;
+				  color: rgba(255, 255, 255, 0.65);
+			}
+		}
+		.prop-btn{
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+			margin-top: 40upx;
+			.btn{
+				width: 40%;
+				height: 70upx;
+				line-height: 70upx;
+				text-align: center;
+				font-size: 28upx;
+			}
+			.cancle-btn{
+				border: 1px solid $fontColor;
+				background-color: transparent;
+				color: #fff;
+			}
+			.sub-btn{
+				background-color: $fontColor;
+				color: #fff;
+			}
+		}
 	}
 }
 </style>

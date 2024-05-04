@@ -10,7 +10,7 @@
 		</view>
 		<view class="content">
 			 <view class="detail">
-				 <view class="title">{{detail.currency.name}}</view>
+				 <view class="title">{{detail.name}}</view>
 				 <view class="sub-title">
 					 <view class="left">{{$t('invest.detail.nian.text')}} <text>{{dayItem.rate * 365}}%</text> </view>
 					<view class="right">{{$t('invest.detail.rate.text')}} <text>{{dayItem.rate}}%</text> </view>
@@ -34,7 +34,7 @@
 					 				<uni-easyinput type="text" v-model="formData.money " :placeholder="$t('invest.detail.enternum.text')" />
 					 			</view>
 					 			<view class="right">
-					 				<view class="playername">{{detail.currency.name}}</view>
+					 				<view class="playername">{{detail.name}}</view>
 					 				<view class="max" @click="setAll">{{$t('invest.detail.enter.max.text')}}</view>
 					 			</view>
 					 		</view>
@@ -66,7 +66,7 @@
 			 <view class="title">{{$t('invest.detail.page.text')}}</view>
 			 <view class="detail-box">
 				 <view class="detail-box-item">
-					 <view class="up">{{detail.currency.name}}</view>
+					 <view class="up">{{detail.name}}</view>
 					 <view class="down">{{$t('invest.detail.dt.tonz.text')}}</view>
 				 </view>
 				 <view class="divider"></view>
@@ -149,11 +149,6 @@
 					imgUrl: '../../static/images/user/10019.png',
 					incomeType: 0, //结算方式 0.每日结算 1.到期结算,
 					periodical: 1,//是否定期 0否 1是,
-					currency: {
-						id: 1,
-						name: "",
-						imgUrl: "",
-					},
 					rateConfig: []
 				},
 				dayIndex:0,
@@ -203,16 +198,7 @@
 				})
 			},
 			getUsdtMoney(){
-				let list =  this.balance.list || []
-				let item = list.find(item=>{
-					let currency = item.currency || {}
-					return currency.name=='USDT'
-				})
-				if(item){
-					return divide100(item.balance)
-				}else{
-					return 0 
-				}
+				return divide100(this.balance.balance)
 			},
 			setAll(){
 				
@@ -223,10 +209,11 @@
 				this.formData.money = money
 			},
 			getCurrency(){
-				this.$http.get('/player/currency/list',res=>{
+				this.$http.get('/player/player_info',res =>{
 					if(res.code == 200){
 						this.balance = res.data
-					}
+						uni.setStorageSync('user',res.data)
+					 }
 				})
 			},
 			chooseRate(item,index){
@@ -246,6 +233,7 @@
 						}
 						 this.dayItem = this.detail.rateConfig[this.dayIndex]
 					}
+					console.log(this.detail,'--------------')
 				})
 			},
 			goRecord(){

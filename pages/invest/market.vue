@@ -23,6 +23,7 @@
 							<view class="bottom">{{t.rate}}%</view>
 						</view>
 					</view>
+					<view class="divider"></view>
 					<view class="right">
 						<view class="bay-btn" @click="showDetail(item)">{{$t('market.bay.btn')}}</view>
 					</view>
@@ -143,6 +144,7 @@
 					.bottom{
 						font-size: 24upx;
 						text-align: right;
+						text-transform: capitalize;
 					}
 					
 				}
@@ -155,7 +157,10 @@
 				padding: 20upx 40upx;
 				.left{
 					display: flex;
+					flex-wrap: nowrap;
 					color: #fff;
+					max-width: 500upx;
+					overflow: auto;
 					.day-item{
 						display: flex;
 						flex-direction: column;
@@ -163,6 +168,8 @@
 						align-items: center;
 						font-size: 24upx;
 						width: 100upx;
+						flex-basis:100upx;
+						flex-shrink: 0;
 						.day-num{
 							opacity: 0.5;
 							letter-spacing: 1upx;
@@ -172,6 +179,12 @@
 							margin-top: 20upx;
 						}
 					}
+				}
+				.divider{
+					width: 4upx;
+					height: 70upx;
+					background-color: #fff;
+					opacity: 0.2;
 				}
 				.right{
 					.bay-btn{

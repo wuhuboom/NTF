@@ -1,6 +1,6 @@
 <template>
 	<view class="income">
-		<uni-nav-bar left-icon="left"  :title="$t('user.trade.title3.text')" background-color="rgb(1,2,3)" color="#fff" :border="false" @clickLeft="goBack"></uni-nav-bar>
+		<uni-nav-bar left-icon="left"  :title="$t('user.trade.title3.text')" background-color="transparent" color="#fff" :border="false" @clickLeft="goBack"></uni-nav-bar>
 		<view class="tabs">
 			<view class="tab-item" :class="tabIndex==item.value?'active':''" v-for="(item,index) in tabs" :key="index" @click="changeTab(item)">
 				{{item.label}}
@@ -21,13 +21,19 @@
 					<view class="item-num">${{income.friendsCount}}</view>
 				</view>
 			</view>
+			
+			<view class="echart-box">
+				<echarts ref="echarts" :option="option" canvasId="echarts" style="width: 100%;height: 100%;"></echarts>
+			</view>
+			
+			
 			<view class="user-level" :class="'level' + (index +1)" v-for="(item,index) in ranks" :key="index">
 				<view class="col1">{{item.friendsCount}}</view>
-				<view class="col">
+				<view class="col col2">
 					<view class="item-name">{{$t('income.team.level.count')}}</view>
 					<view class="item-num">${{divide(item.total)}}</view>
 				</view>
-				<view class="col">
+				<view class="col col3">
 					<view class="item-name">{{$t('income.team.level.cur')}}</view>
 					<view class="item-num">${{divide(item.today)}}</view>
 				</view>
@@ -119,8 +125,8 @@
 						  ]	
 				},
 				tabs:[
-					{value:1,label:'团队'},
-					{value:2,label:'个人'}
+					{value:1,label:this.$t('income.tab.team')},
+					{value:2,label:this.$t('income.tab.person')}
 				],
 				tabIndex:1,
 				income:{},
@@ -129,7 +135,7 @@
 			}
 		},
 		onReady() {
-			// this.getCurrency()
+			this.loadTeamData()
 		},
 		 onLoad() {
 		 	this.loadIncome()
@@ -143,6 +149,7 @@
 					this.loadData()
 				}else{
 					this.loadIncome()
+					this.loadTeamData()
 				}
 			},
 			//我的投资-我的朋友-收益
@@ -187,6 +194,19 @@
 					}
 				})
 			},
+			loadTeamData(){
+				this.$http.post('/player/invest/my/statis',{},res => {
+					if(res.code ==200){
+						let times = res.data.times || []
+						times = times.map(item=>{
+							return formatDate(item,2)
+						})
+						this.option.xAxis.data = times
+						this.option.series[0].data = res.data.values || []
+						this.initChar(this.option)
+					}
+				})
+			},
 			goBack(){
 				uni.switchTab({
 					url:'/pages/user/user'
@@ -204,10 +224,20 @@
 	background-image: url('../../static/images/user/incomebg.webp');
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
+	.echart-box{
+		width: 670upx;
+		height: 500upx;
+	}
 	.tabs{
 		width: 100%;
+		height: 60upx;
+		line-height: 60upx;
 		display: flex;
 		justify-content: space-between;
+		align-items: center;
+		background-color: #003C3C;
+		color: #fff;
+		border-radius: 10upx;
 		.tab-item{
 			width: 50%;
 			text-align: center;
@@ -217,7 +247,8 @@
 			letter-spacing: 0.15px;
 		}
 		.active{
-			 color: #1accca;
+			 background-color: #1accca;
+			 border-radius: 10upx;
 		}
 	}
 	.user-money{
@@ -226,9 +257,8 @@
 		justify-content: space-between;
 		align-items: center;
 		margin-top: 20upx;
-		background-color: #0c0c0c;
+		background-color: transparent;
 		padding-top: 40upx;
-		padding-bottom: 40upx;
 		.user-money-item{
 			width: 220upx;
 			display: flex;
@@ -238,6 +268,7 @@
 			   font-size: 24upx;
 			   color: #fff;
 			   margin-bottom: 20upx;
+			   text-align: center;
 			}
 			.item-num{
 				 font-size: 44upx;
@@ -261,18 +292,33 @@
 				left: 50upx;
 				font-size: 24upx;
 			}
+			.col2{
+				position: absolute;
+				left:200upx;
+				top: 60upx;
+			}
+			.col3{
+				position: absolute;
+				left:450upx;
+				top: 60upx;
+			}
 			.col{
-				padding-top: 70upx;
-				margin-right: 100upx;
+				max-width: 150upx;
+				height: 140upx;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-around;
+				align-items: center;
 				.item-name{
 				   font-size: 28upx;
 				   color: #1accca;
-				   margin-bottom: 20upx;
+				   text-align: center;
 				}
 				.item-num{
 					 font-size: 44upx;
 					  font-weight: bold;
 					  color: #fff;
+					  text-align: center;
 				}
 			}
 		}

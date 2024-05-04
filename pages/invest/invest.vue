@@ -11,8 +11,8 @@
 			<view class="money" v-else>${{gethideNum(divide(user.balance))}} **</view>
 		</view>
 		<view class="algorithm" v-if="tabIndex==1">
-			<view class="algorithm-item" :class="type==0?'algorithm-active':''" >{{$t('invest.algorithm1.text')}}</view>
-			<!-- <view class="algorithm-item" :class="type==1?'algorithm-active':''" @click="getData(1)">{{$t('invest.algorithm2.text')}}</view>
+			<!--<view class="algorithm-item" :class="type==0?'algorithm-active':''" >{{$t('invest.algorithm1.text')}}</view>
+			 <view class="algorithm-item" :class="type==1?'algorithm-active':''" @click="getData(1)">{{$t('invest.algorithm2.text')}}</view>
 			<view class="algorithm-item" :class="type==2?'algorithm-active':''" @click="getData(2)">{{$t('invest.algorithm3.text')}}</view> -->
 		</view>
 		<view class="form" v-if="tabIndex==1">
@@ -35,17 +35,13 @@
 							<view class="playername">{{selItem.days}} {{$t('market.day.unit')}}</view>
 						</view>
 					</view>
-					<view class="form-tips">
-						<view class="tips-radio">
-							<view class="radio" :class="formData.incomeType==0?'active':''" @click="choseIncomeType(0)"></view>
-							<view class="radio-text">{{$t('invest.return,type1')}}</view>
-						</view>
-						<view class="tips-radio">
-							<view class="radio" :class="formData.incomeType==1?'active':''" @click="choseIncomeType(1)"></view>
-							<view class="radio-text">{{$t('invest.return,type2')}}</view>
-						</view>
-					</view>
 				</uni-forms-item>
+				<view class="form-tips">
+					<view class="tips-radio">
+						<view class="radio" :class="formData.autoInvest==1?'active':''" @click="choseIncomeType"></view>
+						<view class="radio-text">{{$t('invest.return,type1')}}</view>
+					</view>
+				</view>
 				<uni-forms-item name="payPwd">
 					<view class="form-title">
 						<view class="form-label">{{$t('security.update.fundpwd.label')}}</view>
@@ -56,13 +52,13 @@
 			<button class="btn" @click="submit">{{$t('btn.invest.text')}}</button>
 		</view>
 		
-		<view class="invest-history" v-if="tabIndex==1">
+		<!-- <view class="invest-history" v-if="tabIndex==1">
 			<view class="left">{{$t('invest.history.text')}}</view>
 			<view class="right" @click="showRecord">
 			{{$t('invest.more.text')}} 
 			<uni-icons type="right" color="rgb(185,185,185)" :size="20"></uni-icons>
 			</view>
-		</view>
+		</view> -->
 		
 		<view class="form" v-if="tabIndex==3">
 			<uni-forms ref="form" :modelValue="formData" :rules="rules" label-position="top" :label-width="300">
@@ -159,12 +155,20 @@
 					money:'',
 					days :'',
 					payPwd:'',
-					incomeType:0
+					autoInvest:0
 				},
 				rules: {
 					 money: {
 					 	rules: [
-					 		{required: true,errorMessage: this.$t('ruls.xxx.empty',{name:this.$t('invest.money.text')})}
+					 		{required: true,errorMessage: this.$t('ruls.xxx.empty',{name:this.$t('invest.money.text')})},
+							{
+								validateFunction:(rule,value,data,callback)=>{
+									if (value < this.selItem.min) {
+										callback(this.$t('invest.check.minmoney.error',{min:this.selItem.min}))
+									}
+									return true
+								}
+							}
 					 	]
 					 },
 					payPwd: {
@@ -234,7 +238,7 @@
 			this.formData.planId = option.id
 			this.getUserinfo()
 			// this.loadData()
-			this.loadRecord()
+			// this.loadRecord()
 			this.loadMarkets()
 			// this.getUserBalance()
 		},
@@ -242,8 +246,8 @@
 			
 		},
 		methods: {
-			choseIncomeType(val){
-				this.formData.incomeType = val
+			choseIncomeType(){
+				this.formData.autoInvest = this.formData.autoInvest == 0 ? 1 : 0
 			},
 			loadMarkets(){
 				this.$http.post('/player/invest/plans',{},res=>{
@@ -269,7 +273,7 @@
 							this.formData.days = ''
 							// this.loadData()
 							this.records = []
-							this.loadRecord()
+							// this.loadRecord()
 							// this.getUserBalance()
 							uni.showToast({
 								title:this.$t('oper.tip.success.text'),
@@ -295,7 +299,7 @@
 			},
 			getData(type){
 				this.type = type
-				this.loadData()
+				// this.loadData()
 			},
 			calInvest(item){
 				this.calFormData.id = item.id
@@ -323,10 +327,10 @@
 			},
 			changeTab(index) {
 				this.tabIndex = index
-				this.loadData()
+				// this.loadData()
 				if(index==1){
 					this.records = []
-					this.loadRecord()
+					// this.loadRecord()
 				}
 			},
 			showBalance(){
@@ -510,7 +514,8 @@
 				border-radius: 4px;
 				background-color: #17171f;
 				color: #fff;
-				margin-left: 20upx;
+				margin-left: 16upx;
+				margin-top: 16upx;
 			}
 			.active{
 				background-color: #00d4d4;
@@ -602,7 +607,6 @@
 				display: flex;
 				justify-content: flex-start;
 				align-items: center;
-				margin-right: 80upx;
 				.radio{
 					width: 34upx;
 					height: 34upx;

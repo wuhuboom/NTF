@@ -105,8 +105,9 @@
 				invitation_code:1
 			}
 		},
-		onLoad() {
+		onLoad(option) {
 			this.getSysConfig()
+			this.formData.invitationCode = option.code || ''
 		},
 		methods: {
 			goBack(){

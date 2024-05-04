@@ -302,11 +302,13 @@
 	"market.company.profile":"Company Profile",
 	"market.submit.btn":"Submit Buy",
 	"invest.earnings.text":"Projected earnings",
-	"invest.return,type1":"Daily return",
+	"invest.return,type1":"Whether to automatically subscribe when it expires",
 	"invest.return,type2":"Compound",
 	"invest.caldialog.title":"attention",
 	"invest.caldialog.content":"After canceling the order, your earnings will be reset to zero",
-	
+	"invest.check.minmoney.error":"The amount cannot be less than  ${min}",
+	"income.tab.team":"Team",
+	"income.tab.person":"Individual",
 	
 	"btn.invest.text":"Invest Now",
 	"btn.join.text":"Participate now",

@@ -252,7 +252,7 @@
 		justify-content: space-between;
 		align-items: center;
 		margin-top: 20upx;
-		background-color: #0c0c0c;
+		background-color: transparent;
 		padding-top: 40upx;
 		padding-bottom: 40upx;
 		.user-money-item{

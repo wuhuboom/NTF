@@ -71,6 +71,9 @@
 	.projec-title-box{
 		padding: 40upx;
 		margin-top: 20upx;
+		background-image: url('../../static/images/invest/dbg.png');
+		background-size: 100% 100%;
+		background-repeat: no-repeat;
 		.project-title{
 		  font-size: 28upx;
 		  color: #fff;
@@ -131,16 +134,19 @@
 		background-color: #17171f;
 		padding:20upx 40upx;
 		line-height: 1.8;
+		max-height: 35vh;
+		overflow: auto;
 	}
 	.buy-btn{
+		position: fixed;
+		bottom: 10upx;
+		margin-left: 40upx;
 		width:670upx;
 		height: 100upx;
-		margin: 0 auto;
 		background-color: #00d4d4;
 		border-radius: 50upx;
 		display: flex;
 		align-items: center;
-		margin-top: 40upx;
 		image{
 			width: 80upx;
 			height: 80upx;

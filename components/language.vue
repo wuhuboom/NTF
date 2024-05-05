@@ -46,8 +46,8 @@
 		// width: 80upx;
 		// height: 50upx;
 		background-color: transparent;
-		
 		color: #fff;
+		z-index: 99;
 		::v-deep .uni-select__input-text{
 			color: #fff;
 		}

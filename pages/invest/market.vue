@@ -92,8 +92,8 @@
 	min-height: 100vh;
 	.top{
 		width: 750upx;
-		height: 750upx;
-		background-image: url('../../static/images/invest/marketbg.webp');
+		height: 400upx;
+		background-image: url('../../static/images/invest/marketbg.png');
 		background-size: 100% 100%;
 		background-repeat: no-repeat;
 		padding-left: 40upx;
@@ -102,7 +102,7 @@
 		  font-weight: 500;
 		  letter-spacing: normal;
 		  color: #fff;
-		  padding-top: 230upx;
+		  padding-top: 130upx;
 		}
 		.top-sub-title{
 			  font-size: 32upx;
@@ -118,7 +118,7 @@
 		}
 	}
 	.content{
-		margin-top: -300upx;
+		margin-top: -80upx;
 		.project-item{
 			margin-bottom: 20upx;
 			padding-left: 40upx;
@@ -166,7 +166,7 @@
 					display: flex;
 					flex-wrap: nowrap;
 					color: #fff;
-					max-width: 500upx;
+					width: 500upx;
 					overflow: auto;
 					scrollbar-width: none; /* 隐藏水平滚动条 */
 					  -ms-overflow-style: none; /* 隐藏Internet Explorer和Edge的滚动条 */

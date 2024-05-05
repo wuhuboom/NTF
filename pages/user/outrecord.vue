@@ -1,7 +1,7 @@
 <template>
 	<view class="balance-record">
-		<uni-nav-bar left-icon="left"  :title="$t('recharge.record.page.title')" background-color="rgb(1,2,3)" color="#fff" :border="false" @clickLeft="goBack"></uni-nav-bar>
 		<view class="choose-box">
+		<uni-nav-bar left-icon="left"  :title="$t('invoice.menu2.text')" background-color="rgb(1,2,3)" color="#fff" :border="false" @clickLeft="goBack"></uni-nav-bar>
 			<view class="choose-search">
 				<view class="choose-time">
 					<view class="choose-time-item" :class="search.time==1?'active':''" @click="chooseTime(1)">{{$t('property.record.search.time1.text')}}</view>
@@ -9,7 +9,15 @@
 					<view class="choose-time-item" :class="search.time==3?'active':''" @click="chooseTime(3)">{{$t('property.record.search.time3.text')}}</view>
 				</view>
 			</view>
-			
+			<view class="choose-status-filter">
+				<view class="choose-status-search" @click="isShow=!isShow">
+					<view class="choose-item-name">{{selectItem.label}}</view>
+					<uni-icons :type="isShow?'up':'down'" color="#9da4b4" :size="20"></uni-icons>
+				</view>
+				<view class="choose-select" v-if="isShow">
+					<view class="choose-item-name" :class="selectItem.index==index?'active':''" v-for="(item,index) in statusList" :key="index" @click="chooseItem(item,index)">{{item.label}}</view>
+				</view>
+			</view>
 			<scroll-view scroll-y="true" @scrolltolower="scrolltolower" style="height: 1400upx"
 			        @refresherrefresh="getRefresherrefresh" :refresher-enabled="false" :refresher-triggered="refresherTriggered"
 			        refresher-background="transparent">
@@ -74,40 +82,67 @@
 						value: 4
 					}	
 				],
-				statusList: [{
-					label: this.$t('withdraw.record.status.need.audit.text'),
-					color: '#9F9F9F'
-				}, {
-					label: this.$t('withdraw.record.status.already.audit.text'),
-					color: '#9F9F9F'
-				}, {
-					label: this.$t('withdraw.record.status.fail.text'),
-					color: '#B5DB1C'
-				}, {
-					label: this.$t('withdraw.record.status.withdraw.success.text'),
-					color: '#FF0000'
-				}, {
-					label: this.$t('withdraw.record.status.paid.in.text'),
-					color: '#FF0000'
-				}, {
-					label: this.$t('backapi.self.pay.failed.text'),
-					color:'#fff'
-				}, {
-					label: this.$t('withdraw.record.status.operation.in.text'),
-					color:'#fff'
-				}, {
-					label: this.$t('withdraw.record.status.redo.in.text'),
-					color:'#fff'
-				}, {
-					label: this.$t('backapi.self.pay.failed.text'),
-					color:'#fff'
-				}]
+				statusList: [
+					{
+					    label: this.$t("order.search.all.text"),
+					    color: '#9F9F9F'
+					},{
+						label: this.$t('withdraw.record.status.need.audit.text'),
+						color: '#9F9F9F'
+					}, {
+						label: this.$t('withdraw.record.status.already.audit.text'),
+						color: '#9F9F9F'
+					}, {
+						label: this.$t('withdraw.record.status.fail.text'),
+						color: '#B5DB1C'
+					}, {
+						label: this.$t('withdraw.record.status.withdraw.success.text'),
+						color: '#FF0000'
+					}, {
+						label: this.$t('withdraw.record.status.paid.in.text'),
+						color: '#FF0000'
+					}
+					// , {
+					// 	label: this.$t('backapi.self.pay.failed.text'),
+					// 	color:'#fff'
+					// }, {
+					// 	label: this.$t('withdraw.record.status.operation.in.text'),
+					// 	color:'#fff'
+					// }, {
+					// 	label: this.$t('withdraw.record.status.redo.in.text'),
+					// 	color:'#fff'
+					// }, {
+					// 	label: this.$t('backapi.self.pay.failed.text'),
+					// 	color:'#fff'
+					// }
+				],
+				isShow:false,
+				selectItem:{
+					index:'',
+					label:this.$t('record.filter.text')
+				}
 			}
 		},
 		onLoad() {
 			this.loadData()
 		},
 		methods: {
+			chooseItem(item,index){
+				this.isShow = false
+				this.selectItem = {
+					index:index,
+					label:item.label
+				}
+				if(this.selectItem.index > 0){
+					this.search.status = this.selectItem.index
+				}else{
+					this.search.status = ''
+				}
+				this.search.pageNo = 1
+				this.totalPage = 1
+				this.records = []
+				this.loadData()
+			},
 			chooseTime(time){
 				this.search.time = time
 				this.search.pageNo = 1
@@ -124,6 +159,7 @@
 			   return res;
 			},
 			 scrolltolower() {
+				  if(this.search.pageNo >= this.totalPage) return
 			 	this.loadData()
 			 },
 			 //下拉刷新
@@ -149,9 +185,18 @@
 			 	})
 			 },
 			goBack(){
-				uni.navigateTo({
-					url:'./withdraw'
-				})
+				let pages = getCurrentPages()
+				if(pages && pages.length > 1){
+					let path = pages[pages.length - 2].route
+					if(!path.startsWith('/')){
+						path = '/' + path
+					}
+					uni.reLaunch({
+						url:path
+					})
+				}else{
+					history.go(-1)
+				}
 			}
 		}
 	}
@@ -171,21 +216,66 @@
 			align-items: center;
 			padding-top: 20upx;
 			margin-bottom: 40upx;
+			.choose-time::-webkit-scrollbar {
+			  width: 0; /* 宽度为0，隐藏水平滚动条 */
+			  height: 0; /* 高度为0，隐藏垂直滚动条 */
+			}
 			.choose-time{
 				display: flex;
 				align-items: center;
 				color: #9da4b4;
 				font-size: 28upx;
+				width: 100%;
+				overflow: auto;
+				scrollbar-width: none; /* 隐藏水平滚动条 */
+				  -ms-overflow-style: none; /* 隐藏Internet Explorer和Edge的滚动条 */
+				   scrollbar-color: transparent transparent; /* 隐藏垂直滚动条 */
 				.choose-time-item{
 					min-width: 100upx;
 					text-align: center;
 					height: 50upx;
 					line-height: 50upx;
+					margin-right: 20upx;
+					flex-basis:180upx;
+					flex-shrink: 0;
+					background-color: #2a2937;
+					font-size: 26upx;
+					border-radius: 10upx;
 				}
 				.active{
 					background-color: #01cecf;
 					color: #fff;
 					border-radius: 20upx;
+				}
+			}
+		}
+		.choose-status-filter{
+			position: relative;
+			color: #acaebe;
+			font-size: 26upx;
+			.choose-status-search{
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				background-color: #2a2937;
+				height: 60upx;
+				border-radius: 10upx;
+				.choose-item-name{
+					margin-right: 20upx;
+				}
+			}
+			.choose-select{
+				position: absolute;
+				background-color: #2a2937;
+				top: 70upx;
+				width: 670upx;
+				z-index: 99;
+				.choose-item-name{
+					line-height: 60upx;
+					padding-left: 20upx;
+				}
+				.active{
+					color: #01cecf;
 				}
 			}
 		}

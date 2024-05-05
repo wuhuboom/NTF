@@ -2,6 +2,7 @@
 	<view class="user">
 		<language></language>
 		<view class="top">
+			<view class="top-bg"></view>
 			<view class="left">
 				<image :src="headerImg" mode="scaleToFill" ></image>
 			</view>
@@ -22,6 +23,16 @@
 			<view class="user-money-item">
 				<view class="item-name">{{$t('user.money.purchased')}}</view>
 				<view class="item-num">${{divide(user.frozenBet)}}</view>
+			</view>
+		</view>
+		<view class="user-fund">
+			<view class="user-fund-item" @click="goSubPage({path:'./recharge'})">
+				<image src="../../static/images/user/Subtract.png" mode="aspectFill"></image>
+				<view class="fund-item-text">{{$t('property.subpage.title1')}}</view>
+			</view>
+			<view class="user-fund-item" @click="goSubPage({path:'./withdraw'})">
+				<image src="../../static/images/user/deposit.png" mode="aspectFill"></image>
+				<view class="fund-item-text">{{$t('property.subpage.title2')}}</view>
 			</view>
 		</view>
 		<!-- <view class="title">{{$t('user.welcome.text')}}</view>
@@ -74,7 +85,7 @@
 				headerImg:'../../static/images/user/10014.png',
 				welImg:'../../static/images/user/10015.png',
 				trades:[
-					{title:this.$t('user.trade.title1.text'),icon:'../../static/images/user/10016.png',path:'./property'},
+					{title:this.$t('user.trade.title4.text'),icon:'../../static/images/user/history.png',path:'./invoice'},
 					{title:this.$t('user.trade.title2.text'),icon:'../../static/images/user/dingtou.png',path:'./investDetail'},
 					{title:this.$t('user.trade.title3.text'),icon:'../../static/images/user/10017.png',path:'./income'}
 				],
@@ -214,6 +225,17 @@
 		justify-content: flex-start;
 		align-items: center;
 		padding-top: 120upx;
+		position: relative;
+		.top-bg{
+			position: absolute;
+			left: -70upx;
+			top: 70upx;
+			width: 230upx;
+			height: 230upx;
+			background-image: url('../../static/images/user/10018.png');
+			background-size: 100% 100%;
+			 
+		}
 		.left{
 			display: flex;
 			justify-content: center;
@@ -229,6 +251,7 @@
 			.username{
 			  font-size: 28upx;
 			  color: #fff;
+			  opacity: 0.6;
 			  padding-bottom: 10upx;
 			}
 			.userid{
@@ -263,12 +286,36 @@
 			.item-name{
 			   font-size: 24upx;
 			   color: #fff;
+			   opacity: 0.6;
 			   margin-bottom: 20upx;
 			}
 			.item-num{
 				 font-size: 44upx;
 				  font-weight: bold;
 				  color: #fff;
+			}
+		}
+	}
+	.user-fund{
+		width: 400upx;
+		height: 87upx;
+		margin: 0 auto;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		.user-fund-item{
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			image{
+				width: 50upx;
+				height: 50upx;
+			}
+			.fund-item-text{
+				font-size: 24upx;
+				line-height: 33upx;
+				color: #fff;
+				opacity: 0.6;
 			}
 		}
 	}

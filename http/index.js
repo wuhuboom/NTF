@@ -60,6 +60,12 @@ http.beforeResponseFilter = function (res) {
 			  },
 			});
 			return
+		}else if(res.code==500 || res.code==409){
+			uni.showToast({
+				title:vueInstance.$t('backapi.sysError'),
+				icon:'error',
+				duration:2000,
+			})
 		}else{
 			uni.showToast({
 				title:res.msg,

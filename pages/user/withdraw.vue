@@ -303,8 +303,8 @@
 				})
 			},
 			goBack(){
-				uni.navigateTo({
-					url:'./property'
+				uni.reLaunch({
+					url:'./user'
 				})
 			},
 			openPopup(){

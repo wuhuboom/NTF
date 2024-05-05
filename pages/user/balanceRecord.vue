@@ -1,20 +1,20 @@
 <template>
 	<view class="balance-record">
-		<uni-nav-bar left-icon="left"  :title="$t('property.record.title')" background-color="rgb(1,2,3)" color="#fff" :border="false" @clickLeft="goBack"></uni-nav-bar>
 		<view class="choose-box">
+		<uni-nav-bar left-icon="left"  :title="$t('property.record.title')" background-color="rgb(1,2,3)" color="#fff" :border="false" @clickLeft="goBack"></uni-nav-bar>
 			<view class="choose-search">
 				<view class="choose-time">
 					<view class="choose-time-item" :class="search.time==1?'active':''" @click="chooseTime(1)">{{$t('property.record.search.time1.text')}}</view>
 					<view class="choose-time-item" :class="search.time==2?'active':''" @click="chooseTime(2)">{{$t('property.record.search.time2.text')}}</view>
 					<view class="choose-time-item" :class="search.time==3?'active':''" @click="chooseTime(3)">{{$t('property.record.search.time3.text')}}</view>
 				</view>
-				<view class="choose-item" @click="isShow=!isShow">
+				<!-- <view class="choose-item" @click="isShow=!isShow">
 					<view class="choose-item-name">{{selectItem.currency.name}}</view>
 					<uni-icons :type="isShow?'up':'down'" color="#fff" :size="20"></uni-icons>
 					<view class="choose-select" v-if="isShow">
 						<view class="choose-item-name" :class="selectItem.cid==item.cid?'active':''" v-for="(item,index) in balance" :key="index" @click.stop="chooseItem(item)">{{item.currency.name}}</view>
 					</view>
-				</view>
+				</view> -->
 			</view>
 			
 			<scroll-view scroll-y="true" @scrolltolower="scrolltolower" style="height: 1400upx"
@@ -226,8 +226,8 @@
 			}
 		},
 		onLoad() {
-			this.getCurrency()
-			// this.loadData()
+			// this.getCurrency()
+			this.loadData()
 		},
 		methods: {
 			chooseItem(item){
@@ -245,27 +245,13 @@
 				this.records = []
 				this.loadData()
 			},
-			getCurrency(){
-				this.$http.get('/player/currency/list',res=>{
-					if(res.code == 200){
-						this.balance = res.data.list
-						if(this.balance && this.balance.length > 0){
-							this.balance.forEach(item=>{
-								if(item.currency.name=='USDT'){
-									this.selectItem = item
-								}
-							})
-							this.loadData()
-						}
-						
-					}
-				})
-			},
+			 
 			getType(value) {
 			   let res = this.typeOptions.find(item => item.value === value)
 			   return res.label;
 			},
 			 scrolltolower() {
+				 if(this.search.pageNo >= this.totalPage) return
 			 	this.loadData()
 			 },
 			 //下拉刷新
@@ -277,10 +263,10 @@
 			 	this.loadData()
 			 },
 			 loadData(){
-				 const cid = this.selectItem.cid
-				 if(cid){
-					 this.search.cid = cid
-				 }
+				 // const cid = this.selectItem.cid
+				 // if(cid){
+					//  this.search.cid = cid
+				 // }
 			 	this.$http.post("/player/balance_change",this.search,res => {
 			 		if(res.code == 200){
 			 			this.records = [...this.records,...res.data.results]
@@ -295,9 +281,18 @@
 			 	})
 			 },
 			goBack(){
-				uni.navigateTo({
-					url:'./property'
-				})
+				let pages = getCurrentPages()
+				if(pages && pages.length > 1){
+					let path = pages[pages.length - 2].route
+					if(!path.startsWith('/')){
+						path = '/' + path
+					}
+					uni.reLaunch({
+						url:path
+					})
+				}else{
+					history.go(-1)
+				}
 			}
 		}
 	}
@@ -317,21 +312,35 @@
 			align-items: center;
 			padding-top: 20upx;
 			margin-bottom: 40upx;
+			.choose-time::-webkit-scrollbar {
+			  width: 0; /* 宽度为0，隐藏水平滚动条 */
+			  height: 0; /* 高度为0，隐藏垂直滚动条 */
+			}
 			.choose-time{
 				display: flex;
 				align-items: center;
 				color: #9da4b4;
 				font-size: 28upx;
+				width: 100%;
+				overflow: auto;
+				scrollbar-width: none; /* 隐藏水平滚动条 */
+				  -ms-overflow-style: none; /* 隐藏Internet Explorer和Edge的滚动条 */
+				   scrollbar-color: transparent transparent; /* 隐藏垂直滚动条 */
 				.choose-time-item{
 					min-width: 100upx;
 					text-align: center;
 					height: 50upx;
 					line-height: 50upx;
+					margin-right: 20upx;
+					flex-basis:180upx;
+					flex-shrink: 0;
+					background-color: #2a2937;
+					font-size: 26upx;
+					border-radius: 10upx;
 				}
 				.active{
 					background-color: #01cecf;
 					color: #fff;
-					border-radius: 20upx;
 				}
 			}
 			.choose-item{

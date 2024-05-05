@@ -23,8 +23,8 @@
 				<view class="money">0</view>
 			</view> -->
 		</view>
-		<view class="invest-record">{{$t('invest.record.order.text')}}</view>
-		<scroll-view scroll-y="true" @scrolltolower="scrolltolower" style="height: 80vh"
+		<!-- <view class="invest-record">{{$t('invest.record.order.text')}}</view> -->
+		<scroll-view scroll-y="true" @scrolltolower="scrolltolower" style="height: 90vh"
 		        @refresherrefresh="getRefresherrefresh" :refresher-enabled="false" :refresher-triggered="refresherTriggered"
 		        refresher-background="transparent">
 			<view class="record-list">
@@ -247,7 +247,8 @@
 			},
 			goBack(){
 				uni.reLaunch({
-					url:'./invest?id='+this.planId
+					// url:'./invest?id='+this.planId
+					url:'/pages/user/invoice'
 				})
 			}
 		}
@@ -263,6 +264,7 @@
 		box-shadow: inset 0 0 16upx 0upx $fontColor;
 		color: #fff;
 		padding: 20upx;
+		display: none;
 		.row{
 			line-height: 80upx;
 			display: flex;

@@ -17,10 +17,29 @@
 		<view class="form">
 			<uni-forms ref="form" :modelValue="formData" :rules="rules" label-position="top">
 				<uni-forms-item :label="$t('recharge.money.text')" name="money">
-					<uni-easyinput type="text" v-model="formData.money" :placeholder="$t('ruls.xxx.please',{name:$t('recharge.money.text')})" />
+					<uni-easyinput type="text" v-model="formData.money" :placeholder="$t('ruls.xxx.please',{name:$t('recharge.money.text')}) + ' ' + sectItem.minMax" />
 				</uni-forms-item>
 			</uni-forms>
+			<view class="tips">
+				<view class="tips-row">
+					<view class="left">{{$t('recharge.actual.text')}}</view>
+					<view class="right">{{actualMount}} {{sectItem.currencySymbol}}</view>
+				</view>
+				<view class="tips-row">
+					<view class="left">{{$t('recharge.rate.text')}}</view>
+					<view class="right">{{sectItem.rate}}</view>
+				</view>
+			</view>
+			<view class="fast-box">
+				<view class="fast-item" v-for="(item,index) in sectItem.fast" :key="index" @click="chooseNum(item)">{{item}}</view>
+			</view>
 			<button class="btn" @click="submit">{{$t('btn.continue.text')}}</button>
+		</view>
+		<view class="tip_mod">
+		    <view class="tip_title">{{ $t("recharge.tip.title.text") }}</view>
+		    <view class="tip_item" v-for="(item, index) in rechargeTipLists" :key="index">
+		        {{ item }}
+		    </view>
 		</view>
 	</view>
 </template>
@@ -58,14 +77,32 @@
 					  // }
 				],
 				sectItem:{},
-				selIndex:0
+				selIndex:0,
+				actualMount:0,
+				rechargeTipLists: [
+				    this.$t('backapi.self.recharge.tip.content1.text'),
+				    this.$t('backapi.self.recharge.tip.content2.text'),
+				    this.$t('backapi.self.recharge.tip.content3.text')
+				]
 			}
 		},
 		onLoad() {
 			this.loadPayWays()
 			this.sectItem = this.payways[0] || {}
 		},
+		watch:{
+			'formData.money':function(val){
+				if(val > 0){
+					this.actualMount = val * this.sectItem.rate
+				}else{
+					this.actualMount = 0
+				}
+			}
+		},
 		methods: {
+			chooseNum(num){
+				this.formData.money = num
+			},
 			chooseItem(item,index){
 				this.selIndex = index
 				this.sectItem = item
@@ -77,7 +114,6 @@
 						payId : this.sectItem.id
 					}
 					this.$http.post('/player/recharge',para,(res=>{
-						console.log(res,'---------')
 						if(res.code ==200){
 							res = res.data
 							if (res.UrlAddress) {
@@ -92,7 +128,10 @@
 			loadPayWays(){
 				this.$http.get('/player/recharge_pre',res => {
 					if(res.code==200){
-						this.payways = res.data
+						this.payways = res.data || []
+						this.payways.forEach(item=>{
+							item.fast = item.fast.split('-')
+						})
 					}
 					this.sectItem = this.payways[0] || {}
 				})
@@ -122,7 +161,7 @@
 	padding: 0upx 40upx;
 	.title{
 		color: #fff;
-		font-size: 36upx;
+		font-size: 26upx;
 		margin-top: 20upx;
 	}
 	.payways{
@@ -149,6 +188,7 @@
 			 .way-item-text{
 				 font-size: 32upx;
 				 color: #fff;
+				 margin-top: 20upx;
 			 }
 			 .active{
 				 background-image: url('../../static/images/user/check.webp');
@@ -165,6 +205,7 @@
 		width: 670upx;
 		margin-top: 20upx;
 		::v-deep .uni-forms-item__label{
+			width: 300upx!important;
 			color: #fff;
 		}
 		::v-deep .uni-easyinput__content{
@@ -175,7 +216,35 @@
 		::v-deep .uni-icons{
 			color: $fontColor!important;
 		}
+		.tips{
+			background-color: rgb(41,41,55);
+			border-radius: 10upx;
+			.tips-row{
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				padding: 10upx;
+				color: #999;
+				font-size: 26upx;
+			}
+		}
+		.fast-box{
+			display: flex;
+			flex-wrap: wrap;
+			.fast-item{
+				background-color: rgb(41,41,55);
+				width: 100upx;
+				margin-right: 20upx;
+				margin-top: 20upx;
+				border-radius: 10upx;
+				text-align: center;
+				height: 60upx;
+				line-height: 60upx;
+				color: #999;
+			}
+		}
 		.btn{
+			margin-top: 40upx;
 			background-color: $fontColor;
 			color: #fff;
 		}
@@ -188,6 +257,25 @@
 				color: $fontColor;
 			}
 		}
+	}
+	.tip_mod {
+	    width: 670;
+	    min-height: 300rpx;
+	    background-color: rgb(41,41,55);
+	    padding: 16rpx 32rpx;
+	    margin-bottom: 48rpx;
+		margin-top: 40upx;
+	    .tip_title {
+	        margin-bottom: 24rpx;
+	        color: $fontColor;
+			font-size: 28upx;
+	    }
+	
+	    .tip_item {
+	        margin-bottom: 16rpx;
+	         color: rgba(255, 255, 255, 0.6);
+			 font-size: 24upx;
+	    }
 	}
 	
 }

@@ -1,6 +1,10 @@
 <template>
 	<view class="invest">
-		<uni-nav-bar left-icon="left" background-color="rgb(1,2,3)" color="#fff" :border="false" @clickLeft="goBack"></uni-nav-bar>
+		<uni-nav-bar left-icon="left" background-color="rgb(1,2,3)" color="#fff" :border="false" @clickLeft="goBack" @clickRight="showRecord">
+			<view slot="right">
+				<uni-icons custom-prefix="iconfont" type="icon-record" size="22" color="#fff"></uni-icons>
+			</view>
+		</uni-nav-bar>
 
 		<view class="balance">
 			<view class="title">

@@ -246,10 +246,16 @@
 				})
 			},
 			goBack(){
-				uni.reLaunch({
-					// url:'./invest?id='+this.planId
-					url:'/pages/user/invoice'
-				})
+				if(this.planId){
+					uni.reLaunch({
+						url:'./invest?id='+this.planId
+					})
+				}else{
+					uni.reLaunch({
+						url:'/pages/user/invoice'
+					})
+				}
+				
 			}
 		}
 	}

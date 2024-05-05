@@ -18,7 +18,10 @@
 				</view>
 				<view class="user-money-item">
 					<view class="item-name">{{$t('income.team.people')}}</view>
-					<view class="item-num">${{income.friendsCount}}</view>
+					<view class="item-num">
+					<text>{{income.friendsCount}}</text>
+					<uni-icons type="right" color="#fff" size="20"></uni-icons>
+					</view>
 				</view>
 			</view>
 			
@@ -195,7 +198,7 @@
 				})
 			},
 			loadTeamData(){
-				this.$http.post('/player/invest/my/statis',{},res => {
+				this.$http.post('/player/invest/friends/statis',{},res => {
 					if(res.code ==200){
 						let times = res.data.times || []
 						times = times.map(item=>{
@@ -269,6 +272,7 @@
 			   color: #fff;
 			   margin-bottom: 20upx;
 			   text-align: center;
+			   opacity: 0.6;
 			}
 			.item-num{
 				 font-size: 44upx;

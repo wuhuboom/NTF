@@ -50,13 +50,54 @@
 				</uni-forms-item>
 				
 				<uni-forms-item :label="$t('withdraw.money.text')" name="money">
-					<uni-easyinput type="number" v-model="formData.money" :placeholder="$t('ruls.xxx.please',{name:$t('recharge.money.text')})" />
+					<uni-easyinput type="number" v-model="formData.money" :placeholder="$t('ruls.xxx.please',{name:$t('withdraw.money.text')})" >
+						<template #right>
+							<view class="all-btn" @click="chooseAll">{{$t('backapi.self.safe.bill.data.choose.type.all.text')}}</view>
+						</template>
+					</uni-easyinput>
 				</uni-forms-item>
+				<view class="tips">
+					<view class="tips-row">
+						<view class="left">{{$t('recharge.actual.text')}}</view>
+						<view class="right">{{actualMount}} {{sectItem.currencySymbol}}</view>
+					</view>
+					<view class="tips-row">
+						<view class="left">{{$t('recharge.rate.text')}}</view>
+						<view class="right">{{sectItem.rate}}</view>
+					</view>
+				</view>
 				<uni-forms-item :label="$t('withdraw.password.text')" name="payPwd">
 					<uni-easyinput type="password" v-model="formData.payPwd" :placeholder="$t('ruls.xxx.please',{name:$t('withdraw.password.text')})" />
 				</uni-forms-item>
 			</uni-forms>
 			<button class="btn" @click="submit">{{$t('btn.continue.text')}}</button>
+		</view>
+		<view class="tip_mod_container">
+		    <view class="tip_mod">
+		        <view class="tip_title">{{ $t("recharge.tip.title.text") }}</view>
+		        <view class="tip_item">
+		            1、{{ $t('withdraw.desc.list1') }} {{ sectItem.everydayWithdrawFree }}
+		        </view>
+		        <view class="tip_item">
+		            2、{{ $t('withdraw.desc.list2') }} {{ sectItem.everydayWithdrawTimes }}
+		        </view>
+		        <view class="tip_item">
+		            3、{{ $t('withdraw.desc.list3') }} {{ sectItem.withdrawalRate }}%
+		        </view>
+		        <view class="tip_item">
+		            4、{{ $t('withdraw.desc.list4') }} {{ sectItem.withdrawMax }},{{ $t('withdraw.desc.list5') }} {{sectItem.withdrawMin }}
+		        </view>
+		        <view class="tip_item">
+		            5、{{ $t('withdraw.desc.list6') }} {{ sectItem.withdrawalToday }}
+		        </view>
+		        <view class="tip_item">
+		            6、{{ $t('withdraw.desc.list7') }} {{ sectItem.withdrawalRateMin }},{{ $t('withdraw.desc.list8') }}
+		            {{sectItem.withdrawalRateMax }}
+		        </view>
+		        <view class="tip_item">
+		            7、{{ $t('withdraw.desc.list9') }} {{ sectItem.usdtWithdrawPer }}
+		        </view>
+		    </view>
 		</view>
 		<uni-popup ref="popup" type="bottom" backgroundColor="#081f1f" border-radius="40upx,40upx,0upx,0upx" :mask-click="false">
 			<view class="add-form">
@@ -89,6 +130,7 @@
 </template>
 
 <script>
+	import { divide100 } from '../../utils/util'
 	export default {
 		data() {
 			return {
@@ -137,68 +179,7 @@
 				},
 				isSendCode:false,
 				countTime:60,
-				payways:[
-					 //  {
-						// "img": "https://img.sgodown.cc/bankCharge.png",
-						// "withdrawalRateMax": 100000,
-						// "withdrawalRate": 8,
-						// "currencySymbol": "USDT",
-						// "withdrawMax": 10000,
-						// "everydayWithdrawTimes": 30,
-						// "type": 1,
-						// "wiModelRe": 0,
-						// "wiModelRate": 0,
-						// "everydayWithdrawFree": 0,
-						// "withdrawalToday": 0,
-						// "withdrawalRateMin": 0,
-						// "wiModel": 0,
-						// "rate": "1",
-						// "withdrawMin": 150,
-						// "name": "Bank"
-					 //  },
-					 //  {
-						// "img": "https://sgo.uunn.org/USDT.png",
-						// "withdrawalRateMax": 1000,
-						// "withdrawalRate": 8,
-						// "currencySymbol": "USDT",
-						// "withdrawMax": 1000,
-						// "everydayWithdrawTimes": 30,
-						// "type": 2,
-						// "wiModelRe": 0,
-						// "wiModelRate": 0,
-						// "everydayWithdrawFree": 0,
-						// "withdrawalToday": 0,
-						// "withdrawalRateMin": 0,
-						// "wiModel": 0,
-						// "rate": "1",
-						// "withdrawMin": 10,
-						// "name": "USDT"
-					 //  },
-					 //  {
-						// "types": [
-						//   "Vodafone",
-						//   "Orange",
-						//   "Etisalat",
-						//   "We"
-						// ],
-						// "img": "https://img.sgodown.cc/wallet.png",
-						// "withdrawalRateMax": 100000,
-						// "withdrawalRate": 8,
-						// "currencySymbol": "USDT",
-						// "withdrawMax": 10000,
-						// "everydayWithdrawTimes": 30,
-						// "type": 4,
-						// "wiModelRe": 0,
-						// "wiModelRate": 0,
-						// "everydayWithdrawFree": 0,
-						// "withdrawalToday": 0,
-						// "withdrawalRateMin": 0,
-						// "wiModel": 0,
-						// "rate": "1",
-						// "withdrawMin": 150,
-						// "name": "E-Wallet"
-					 //  }
-					],
+				payways:[],
 				sectItem:{},
 				usdts:[
 					{
@@ -211,15 +192,30 @@
 					}
 				],
 				usdtItem:{},
-				usdtShow:false
+				usdtShow:false,
+				actualMount:0,
+				user:{}
 			}
 		},
 		onLoad() {
+			this.getUserinfo()
 			this.loadPayWays()
 			this.sectItem = this.payways[0] || {}
 			this.getUsdtList()
 		},
+		watch:{
+			'formData.money':function(val){
+				if(val > 0){
+					this.actualMount = val * this.sectItem.rate
+				}else{
+					this.actualMount = 0
+				}
+			}
+		},
 		methods: {
+			chooseAll(){
+				this.formData.money = divide100(this.user.balance)
+			},
 			chooseUsdt(item){
 				this.usdtItem = item
 				this.usdtShow = false
@@ -334,6 +330,14 @@
 					setTimeout(this.startCount,1000)
 				}
 			},
+			getUserinfo(){
+				this.$http.get('/player/player_info',res =>{
+					if(res.code == 200){
+						this.user = res.data
+						uni.setStorageSync('user',res.data)
+					}
+				})
+			}
 		}
 	}
 </script>
@@ -349,7 +353,7 @@
 		display: flex;
 		justify-content: space-between;
 		.left{
-			font-size: 36upx;
+			font-size: 26upx;
 		}
 		.right{
 			display: flex;
@@ -414,6 +418,18 @@
 		::v-deep .uni-forms-item__label{
 			width: 300upx!important;
 		}
+		.all-btn{
+			width: 100upx;
+			height: 42upx;
+			background-color: $fontColor;
+			color: #fff;
+			font-size: 26upx;
+			text-align: center;
+			line-height: 42upx;
+			border-radius: 10upx;
+			margin-right: 20upx;
+			text-transform: capitalize;
+		}
 		.choose-usdt-box{
 			position: relative;
 			background-color: rgb(41,41,55);
@@ -449,6 +465,18 @@
 						height: 60upx;
 					}
 				}
+			}
+		}
+		.tips{
+			background-color: rgb(41,41,55);
+			border-radius: 10upx;
+			.tips-row{
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				padding: 10upx;
+				color: #999;
+				font-size: 26upx;
 			}
 		}
 		.btn{
@@ -507,6 +535,29 @@
 		}
 		::v-deep .uni-forms-item__label{
 			display: none;
+		}
+	}
+	.tip_mod_container{
+		margin-top: 40upx;
+		width: 670upx;
+		background-color: rgb(41,41,55);
+		border-radius: 10upx;
+		.tip_mod {
+		    min-height: 300rpx;
+		    padding: 16rpx 32rpx;
+		    margin-bottom: 48rpx;
+			margin-top: 40upx;
+		    .tip_title {
+		        margin-bottom: 24rpx;
+		        color: $fontColor;
+				font-size: 28upx;
+		    }
+		
+		    .tip_item {
+		        margin-bottom: 16rpx;
+		         color: rgba(255, 255, 255, 0.6);
+				 font-size: 24upx;
+		    }
 		}
 	}
 }

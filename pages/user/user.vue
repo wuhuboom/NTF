@@ -55,7 +55,7 @@
 					
 					<view class="menu-text">{{item.title}}</view>
 				</view>
-				<view class="right" v-if="item.path">
+				<view class="right">
 					<uni-icons type="right" color="rgb(185,185,185)"></uni-icons>
 				</view>
 			</view>
@@ -91,7 +91,7 @@
 				],
 				menus:[
 					{title:this.$t('user.menu.title1.text'),icon:'wallet',path:'./security'},
-					{title:this.$t('user.menu.title2.text'),icon:'staff',path:'./myfriend'},
+					// {title:this.$t('user.menu.title2.text'),icon:'staff',path:'./myfriend'},
 					{title:this.$t('user.menu.title3.text'),icon:'headphones',path:'./contract'},
 					// {title:this.$t('user.menu.title4.text'),icon:'gear',path:'./setting'},
 					{title:this.$t('user.menu.title5.text'),icon:'../../static/images/user/invite.webp',path:'./invite'},

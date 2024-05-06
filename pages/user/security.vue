@@ -11,7 +11,8 @@
 				<view class="right">
 					<view class="oper" v-if="item.type==1" @click="goPage(item)">{{email}}</view>
 					<view class="oper" v-else-if="item.type==2">
-						<button class="opet-btn" @click="goPage(item)">{{$t('btn.change.text')}}</button>
+						<!-- <button class="opet-btn" @click="goPage(item)">{{$t('btn.change.text')}}</button> -->
+						<uni-icons type="right" color="#fff" :size="20" @click="goPage(item)"></uni-icons>
 					</view>
 					<view class="oper" v-else>
 						<switch color="#04D3D5" style="transform:scale(0.8)" @change="switchChange(item)"/>
